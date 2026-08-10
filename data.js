@@ -23,6 +23,10 @@ var DB = {
               "open": false,
               "children": [
                 {
+                  "id": "ch-sys",
+                  "type": "chapter"
+                },
+                {
                   "id": "sys-1",
                   "type": "problem"
                 },
@@ -41,6 +45,10 @@ var DB = {
               "type": "folder",
               "open": false,
               "children": [
+                {
+                  "id": "ch-rand",
+                  "type": "chapter"
+                },
                 {
                   "id": "rand-1",
                   "type": "problem"
@@ -61,6 +69,10 @@ var DB = {
               "open": false,
               "children": [
                 {
+                  "id": "ch-list",
+                  "type": "chapter"
+                },
+                {
                   "id": "list-1",
                   "type": "problem"
                 },
@@ -79,6 +91,10 @@ var DB = {
               "type": "folder",
               "open": false,
               "children": [
+                {
+                  "id": "ch-dict",
+                  "type": "chapter"
+                },
                 {
                   "id": "dict-1",
                   "type": "problem"
@@ -99,6 +115,10 @@ var DB = {
               "open": false,
               "children": [
                 {
+                  "id": "ch-nested",
+                  "type": "chapter"
+                },
+                {
                   "id": "nested-1",
                   "type": "problem"
                 },
@@ -117,6 +137,10 @@ var DB = {
               "type": "folder",
               "open": false,
               "children": [
+                {
+                  "id": "ch-func",
+                  "type": "chapter"
+                },
                 {
                   "id": "func-1",
                   "type": "problem"
@@ -137,6 +161,10 @@ var DB = {
               "open": false,
               "children": [
                 {
+                  "id": "ch-class",
+                  "type": "chapter"
+                },
+                {
                   "id": "class-1",
                   "type": "problem"
                 },
@@ -155,6 +183,10 @@ var DB = {
               "type": "folder",
               "open": false,
               "children": [
+                {
+                  "id": "ch-pdimport",
+                  "type": "chapter"
+                },
                 {
                   "id": "pdimport-1",
                   "type": "problem"
@@ -176,6 +208,10 @@ var DB = {
                   "open": false,
                   "children": [
                     {
+                      "id": "ch-series",
+                      "type": "chapter"
+                    },
+                    {
                       "id": "series-1",
                       "type": "problem"
                     },
@@ -194,6 +230,10 @@ var DB = {
                   "type": "folder",
                   "open": true,
                   "children": [
+                    {
+                      "id": "ch-df",
+                      "type": "chapter"
+                    },
                     {
                       "id": "df-1",
                       "type": "problem"
@@ -216,6 +256,10 @@ var DB = {
               "open": false,
               "children": [
                 {
+                  "id": "ch-pw",
+                  "type": "chapter"
+                },
+                {
                   "id": "pw-1",
                   "type": "problem"
                 },
@@ -236,6 +280,10 @@ var DB = {
                   "open": false,
                   "children": [
                     {
+                      "id": "ch-str",
+                      "type": "chapter"
+                    },
+                    {
                       "id": "str-1",
                       "type": "problem"
                     },
@@ -255,6 +303,10 @@ var DB = {
                   "open": false,
                   "children": [
                     {
+                      "id": "ch-dataset",
+                      "type": "chapter"
+                    },
+                    {
                       "id": "dataset-1",
                       "type": "problem"
                     },
@@ -269,6 +321,10 @@ var DB = {
                   "type": "folder",
                   "open": false,
                   "children": [
+                    {
+                      "id": "ch-array",
+                      "type": "chapter"
+                    },
                     {
                       "id": "array-1",
                       "type": "problem"
@@ -1319,6 +1375,429 @@ var DB = {
       "solutionNote": "<code>matrix[K - 1][L - 1]</code> の <code>-1</code> を書き忘れると、1つ右・1つ下の要素を取得してしまうミスになりやすいので注意してください。",
       "stdin": "2 3 2 3\n1 2 3\n4 5 6\n",
       "stdinLabel": "入力例1"
+    }
+  },
+  "chapters": {
+    "ch-sys": {
+      "title": "sys / 標準入力の基礎",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "01. sys / stdin 入力"
+      ],
+      "notionUrl": "https://app.notion.com/p/36fe3be8d5ac80c5b830ee4217f62f57",
+      "intro": "標準入力からデータを受け取るときによく使う <code>sys</code> モジュールの基本と、そこで登場する関数・メソッドをまとめます。",
+      "terms": [
+        {
+          "term": "import",
+          "desc": "外部のモジュール（機能のかたまり）を自分のプログラムで使えるようにする命令。ファイルの先頭に書くのが基本です。"
+        },
+        {
+          "term": "sys",
+          "desc": "標準入力・標準出力など、Pythonの実行環境そのものを扱うための標準モジュール。"
+        },
+        {
+          "term": "sys.stdin.readline()",
+          "desc": "標準入力から1行を文字列として読み込む関数。読み込んだ文字列の末尾には改行文字が残ります。"
+        },
+        {
+          "term": ".rstrip()",
+          "desc": "文字列の右端（末尾）にある空白や改行を取り除くメソッド。"
+        },
+        {
+          "term": "print()",
+          "desc": "引数に渡した値を画面（標準出力）に表示する、最も基本的な出力関数。"
+        },
+        {
+          "term": "int()",
+          "desc": "文字列や小数を整数に変換する関数。"
+        },
+        {
+          "term": ".split()",
+          "desc": "文字列を区切り文字（省略時は空白）で分割し、リストにするメソッド。"
+        },
+        {
+          "term": "map()",
+          "desc": "リストなどの全要素へ、指定した関数をまとめて適用する関数。"
+        },
+        {
+          "term": "list()",
+          "desc": "map() の結果などを、実体のあるリストに変換する関数。"
+        },
+        {
+          "term": "sum()",
+          "desc": "リストに入った数値をすべて足し合わせる関数。"
+        }
+      ]
+    },
+    "ch-rand": {
+      "title": "random モジュールの基礎",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "02. random モジュール"
+      ],
+      "notionUrl": "https://app.notion.com/p/380e3be8d5ac80629d4bff3a896a7f41",
+      "intro": "乱数（ランダムな値）を扱う <code>random</code> モジュールの関数をまとめます。",
+      "terms": [
+        {
+          "term": "random",
+          "desc": "乱数（ランダムな値）を生成するための標準モジュール。"
+        },
+        {
+          "term": "random.seed()",
+          "desc": "乱数の「種」を固定し、以降の乱数生成を毎回同じ結果に再現できるようにする関数。"
+        },
+        {
+          "term": "random.randint(a, b)",
+          "desc": "a以上b以下の整数をランダムに1つ返す関数。"
+        },
+        {
+          "term": "random.shuffle()",
+          "desc": "リストの要素の並び順をランダムに入れ替える関数。リストそのものを直接書き換える点に注意。"
+        },
+        {
+          "term": "random.choice()",
+          "desc": "リストの中から要素を1つだけランダムに選ぶ関数。"
+        },
+        {
+          "term": "random.sample(list, k=)",
+          "desc": "リストの中から重複なしで k 個の要素をランダムに選ぶ関数。"
+        }
+      ]
+    },
+    "ch-list": {
+      "title": "リスト（list）の基礎",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "03. リスト（list）"
+      ],
+      "notionUrl": "https://app.notion.com/p/380e3be8d5ac80ee9d6cc19cc08b97f9",
+      "intro": "複数の値をまとめて扱う「リスト」の基本操作をまとめます。",
+      "terms": [
+        {
+          "term": "リスト（list）",
+          "desc": "複数の値を順番に並べて格納できるデータ構造。角カッコ <code>[]</code> で作ります。"
+        },
+        {
+          "term": ".append()",
+          "desc": "リストの末尾に要素を1つ追加するメソッド。"
+        },
+        {
+          "term": ".insert(位置, 値)",
+          "desc": "リストの指定した位置に要素を割り込ませて挿入するメソッド。"
+        },
+        {
+          "term": "sorted()",
+          "desc": "リストを並び替えた「新しい」リストを返す関数。元のリストは変化しません。"
+        },
+        {
+          "term": "reverse=True",
+          "desc": "<code>sorted()</code> などに渡すことで、並び順を逆（降順）にするオプション引数。"
+        },
+        {
+          "term": "スライシング [開始:終了:ステップ]",
+          "desc": "リストや文字列の一部を範囲指定で取り出す記法。ステップに <code>-1</code> を指定すると逆順に取り出せます。"
+        }
+      ]
+    },
+    "ch-dict": {
+      "title": "辞書（dict）の基礎",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "04. 辞書（dict）"
+      ],
+      "notionUrl": "https://app.notion.com/p/380e3be8d5ac806ba5d1e0e7a9e79c20",
+      "intro": "「キー」と「値」の組でデータを管理する辞書の基本をまとめます。",
+      "terms": [
+        {
+          "term": "辞書（dict）",
+          "desc": "「キー」と「値」の組み合わせでデータを管理するデータ構造。波カッコ <code>{}</code> で作ります。"
+        },
+        {
+          "term": "キーと値（key / value）",
+          "desc": "辞書の中身を構成する2つの要素。キーを使って値を検索・追加・更新します。"
+        },
+        {
+          "term": ".items()",
+          "desc": "辞書のキーと値のペアを同時に取り出すためのメソッド。<code>for</code> 文と組み合わせてよく使います。"
+        }
+      ]
+    },
+    "ch-nested": {
+      "title": "多次元リストとリスト内包表記の基礎",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "05. 多次元リストとリスト内包表記"
+      ],
+      "notionUrl": "https://app.notion.com/p/380e3be8d5ac8061a702e27420938f60",
+      "intro": "リストを2重に組み合わせる書き方と、for文を1行にまとめるリスト内包表記をまとめます。",
+      "terms": [
+        {
+          "term": "リスト内包表記",
+          "desc": "<code>[式 for 変数 in 範囲]</code> という形で、for文とリスト作成を1行にまとめる書き方。"
+        },
+        {
+          "term": "range()",
+          "desc": "0からn未満（または指定した範囲）の整数の並びを生成する関数。"
+        },
+        {
+          "term": "** （べき乗演算子）",
+          "desc": "<code>**</code> は「累乗（べき乗）」を表す演算子。<code>x**2</code> は x の2乗。"
+        },
+        {
+          "term": "2次元リスト（多次元リスト）",
+          "desc": "リストの中にリストが入った構造。<code>list[i][j]</code> の形で要素にアクセスします。"
+        },
+        {
+          "term": "enumerate()",
+          "desc": "リストなどを for文で回すときに、インデックス（何番目か）と要素を同時に取得できる関数。"
+        },
+        {
+          "term": "str()",
+          "desc": "値を文字列に変換する関数。文字列同士でないと <code>+</code> で連結できないため使います。"
+        }
+      ]
+    },
+    "ch-func": {
+      "title": "関数（def）とスコープの基礎",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "06. 関数（def）・スコープ"
+      ],
+      "notionUrl": "https://app.notion.com/p/380e3be8d5ac80be9830daaef38bad96",
+      "intro": "処理をひとまとめにする「関数」の定義方法と、引数の渡し方のバリエーションをまとめます。",
+      "terms": [
+        {
+          "term": "def",
+          "desc": "関数（一連の処理をまとめて名前をつけたもの）を定義するキーワード。"
+        },
+        {
+          "term": "return",
+          "desc": "関数の処理結果を呼び出し元に返すキーワード。"
+        },
+        {
+          "term": "引数とデフォルト引数",
+          "desc": "関数に渡す値のこと。<code>引数=デフォルト値</code> と書くと、呼び出し時にその引数を省略できるようになります。"
+        },
+        {
+          "term": "*args（可変長引数）",
+          "desc": "引数名の前に <code>*</code> をつけることで、いくつ渡されてもまとめてタプルとして受け取れる書き方。"
+        }
+      ]
+    },
+    "ch-class": {
+      "title": "クラス（class）の基礎",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "07. クラス（class）"
+      ],
+      "notionUrl": "https://app.notion.com/p/380e3be8d5ac8008973ddeb5974164c1",
+      "intro": "オブジェクト指向の基本である「クラス」の定義方法と、継承・オーバーライドをまとめます。",
+      "terms": [
+        {
+          "term": "class",
+          "desc": "オブジェクトの「設計図」を定義するキーワード。"
+        },
+        {
+          "term": "__init__",
+          "desc": "インスタンスが作られた瞬間に自動で呼ばれる初期化メソッド。"
+        },
+        {
+          "term": "self",
+          "desc": "「今動いているインスタンス自身」を指す、クラス内メソッドの最初の引数。"
+        },
+        {
+          "term": "インスタンス",
+          "desc": "<code>クラス名(引数)</code> の形で、設計図（クラス）から作られた実体（オブジェクト）。"
+        },
+        {
+          "term": "メソッド",
+          "desc": "クラスの中に定義された関数。<code>インスタンス.メソッド名()</code> の形で呼び出します。"
+        },
+        {
+          "term": "継承",
+          "desc": "<code>class 子クラス(親クラス):</code> の形で、親クラスの機能をそのまま引き継ぐ仕組み。"
+        },
+        {
+          "term": "オーバーライド",
+          "desc": "継承した親クラスのメソッドと同じ名前のメソッドを子クラスで定義し直し、動作を上書きすること。"
+        }
+      ]
+    },
+    "ch-pdimport": {
+      "title": "pandas 導入の基礎",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pandas"
+      ],
+      "notionUrl": "https://app.notion.com/p/383e3be8d5ac80feb729c87e47fa38f7",
+      "intro": "データ分析でよく使う外部ライブラリ pandas の読み込み方と、基本のデータ構造をまとめます。",
+      "terms": [
+        {
+          "term": "pandas",
+          "desc": "表形式データの操作・集計を得意とする外部ライブラリ。<code>import pandas as pd</code> として読み込むのが定番です。"
+        },
+        {
+          "term": "as（別名インポート）",
+          "desc": "<code>import pandas as pd</code> のように書くことで、以降 <code>pandas</code> を短く <code>pd</code> と書けるようにする「あだ名」の指定。"
+        },
+        {
+          "term": "Series",
+          "desc": "ラベル（インデックス）付きの1次元データを表す、pandasの基本的なデータ構造。"
+        },
+        {
+          "term": "dtype",
+          "desc": "SeriesやDataFrameの列に入っているデータの種類（型）を表す属性。<code>int64</code>（整数）や <code>float64</code>（小数）などがあります。"
+        }
+      ]
+    },
+    "ch-series": {
+      "title": "Series の基礎",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "Seriesの基本"
+      ],
+      "notionUrl": "https://app.notion.com/p/3a5e3be8d5ac800a9354c1069473813c",
+      "intro": "Series（pandasの1次元データ）の参照・抽出方法をまとめます。",
+      "terms": [
+        {
+          "term": "インデックス（index / ラベル）",
+          "desc": "Seriesの各値につけられた「見出し」。辞書のキーに近い役割を持ちます。"
+        },
+        {
+          "term": "ラベルのリストによる複数取得",
+          "desc": "<code>s[[\"a\", \"c\"]]</code> のように、ラベルを並べたリストを渡すと、連続していない複数の要素をまとめて取り出せます。"
+        },
+        {
+          "term": "条件によるフィルタリング",
+          "desc": "<code>s[条件式]</code> のように比較演算子を使うと、条件に合う要素だけを抽出できます。"
+        },
+        {
+          "term": "&（複数条件の組み合わせ）",
+          "desc": "pandasで複数の条件を組み合わせるときは <code>and</code> ではなく <code>&</code> を使い、それぞれの条件をカッコで囲みます。"
+        }
+      ]
+    },
+    "ch-df": {
+      "title": "DataFrame の基礎",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "DataFrameの基本"
+      ],
+      "notionUrl": "https://app.notion.com/p/3a7e3be8d5ac80608af9fc27ec4a195e",
+      "intro": "複数のSeriesをまとめた表形式データ DataFrame の作成・参照方法をまとめます。",
+      "terms": [
+        {
+          "term": "DataFrame",
+          "desc": "複数のSeriesを列として持つ、表（2次元）形式のデータ構造。"
+        },
+        {
+          "term": "NaN（欠損値）",
+          "desc": "データが存在しない箇所を表す特別な値。数値列に混ざると、その列は <code>float64</code>（小数）扱いになります。"
+        },
+        {
+          "term": "DataFrameの行スライシング",
+          "desc": "DataFrameに対する <code>df[開始:終了]</code> は「行」を範囲で取り出します（<code>df[\"列名\"]</code> で列を取り出すのとは別の意味になります）。"
+        },
+        {
+          "term": "loc",
+          "desc": "行・列を「ラベル（名前）」で指定してデータを取得する方法。"
+        },
+        {
+          "term": "iloc",
+          "desc": "行・列を「位置（0始まりの整数）」で指定してデータを取得する方法。"
+        }
+      ]
+    },
+    "ch-pw": {
+      "title": "標準入力と文字列生成の基礎",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "配列メニュー"
+      ],
+      "notionUrl": "https://app.notion.com/p/397e3be8d5ac806aa640ea381bea5c41",
+      "intro": "標準入力から値を受け取り、文字列を組み立てて出力する定番のテクニックをまとめます。",
+      "terms": [
+        {
+          "term": "input()",
+          "desc": "標準入力から1行を文字列として読み込む、最も基本的な入力関数。"
+        },
+        {
+          "term": "文字列・リストの掛け算（* n）",
+          "desc": "<code>\"文字\" * n</code> や <code>[値] * n</code> のように書くと、その要素を n 個並べたものを作れます。"
+        },
+        {
+          "term": "\"\".join(リスト)",
+          "desc": "リストの要素を1つの文字列に連結するメソッド。<code>\"\"</code> の部分が区切り文字になります（空文字なら詰めて連結）。"
+        }
+      ]
+    },
+    "ch-str": {
+      "title": "文字列処理の基礎",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "問題集",
+        "文字列処理"
+      ],
+      "notionUrl": "https://app.notion.com/p/39ce3be8d5ac8017b333d81743dc239f",
+      "intro": "文字列に対してスライシングを使う方法をまとめます（<code>input()</code> はすでに配列メニューの章で紹介済みです）。",
+      "terms": [
+        {
+          "term": "文字列のスライシング",
+          "desc": "リストと同じ <code>[開始:終了]</code> や <code>[::-1]</code> の記法が、文字列（str）にもそのまま使えます。"
+        }
+      ]
+    },
+    "ch-dataset": {
+      "title": "辞書を使った検索の基礎",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "問題集",
+        "データセット"
+      ],
+      "notionUrl": "https://app.notion.com/p/39ce3be8d5ac8072bcf6e3441de4c2ba",
+      "intro": "辞書を使って「存在しないかもしれないキー」を安全に検索する方法をまとめます。",
+      "terms": [
+        {
+          "term": "dict.get(キー, デフォルト値)",
+          "desc": "辞書からキーで値を取り出しますが、キーが存在しなくてもエラーにならず、指定したデフォルト値を返してくれるメソッド。"
+        },
+        {
+          "term": "in演算子（キーの存在確認）",
+          "desc": "<code>キー in 辞書</code> と書くと、そのキーが辞書に存在するかを <code>True</code>/<code>False</code> で確認できます。"
+        }
+      ]
+    },
+    "ch-array": {
+      "title": "2次元配列の添字の基礎",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "問題集",
+        "配列"
+      ],
+      "notionUrl": "https://app.notion.com/p/39ce3be8d5ac8079b053cbd981e0f563",
+      "intro": "2次元配列（多次元リストは05章で既出）の添字の読み方をまとめます。",
+      "terms": [
+        {
+          "term": "2次元配列の添字 [i][j]",
+          "desc": "「上から i+1 番目、左から j+1 番目」の要素を指します。入力が1始まりで与えられる場合は、それぞれ <code>-1</code> して0始まりのインデックスに変換します。"
+        }
+      ]
     }
   },
   "syncMeta": {

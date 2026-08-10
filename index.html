@@ -264,6 +264,35 @@ button{font-family:inherit;font-size:inherit;cursor:pointer;border:none;backgrou
   padding:13px 15px;font-family:var(--mono);font-size:13px;line-height:1.85;
   white-space:pre;overflow-x:auto;color:var(--text-2);
 }
+
+/* ---------- チャプター（用語解説） ---------- */
+.node-row.chapter{padding-left:10px;color:var(--text-2)}
+.node-row.chapter .ico{opacity:.9}
+.node-row.chapter.active{background:var(--amber-soft);color:var(--amber);font-weight:600}
+:root[data-theme="dark"] .node-row.chapter.active{color:#e5b45c}
+.term-list{display:flex;flex-direction:column;gap:10px;margin-top:2px}
+.term-card{
+  border:1px solid var(--border);border-radius:var(--radius);background:var(--panel-2);
+  padding:12px 14px;
+}
+.term-card .term-name{
+  font-family:var(--mono);font-size:12.5px;font-weight:700;color:var(--amber);
+  margin-bottom:5px;display:inline-block;
+}
+.term-card .term-desc{font-size:13px;line-height:1.8;color:var(--text-2)}
+.term-card .term-desc code{
+  font-family:var(--mono);font-size:12px;background:var(--panel);
+  padding:1px 5px;border-radius:4px;border:1px solid var(--border);
+}
+.term-empty{
+  font-size:12.5px;color:var(--muted);border:1px dashed var(--border-strong);
+  border-radius:var(--radius);padding:14px;text-align:center;
+}
+.code-placeholder{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:10px;color:#6c6a85;font-size:13px;text-align:center;padding:30px;line-height:1.8;
+}
+.code-placeholder .cp-em{font-size:26px}
 .meta-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
 .chip{
   font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:99px;
@@ -568,6 +597,16 @@ textarea.code::selection{background:rgba(127,227,210,.25)}
         <div id="ansWrap"></div>
       </section>
 
+      <!-- チャプター（演習の前に読む用語解説） -->
+      <section class="panel-view" data-view="chapter">
+        <h1 class="prob-title"><span class="mark" style="background:var(--amber)">📖</span><span id="chTitle"></span></h1>
+        <div class="statement" id="chIntro" style="background:var(--amber-soft);border-left-color:var(--amber)"></div>
+        <div class="block">
+          <div class="block-h"><span class="gi">📚</span>このチャプターで登場する用語</div>
+          <div class="term-list" id="chTerms"></div>
+        </div>
+      </section>
+
     </div>
   </main>
 
@@ -583,6 +622,10 @@ textarea.code::selection{background:rgba(127,227,210,.25)}
     </div>
 
     <div class="editor">
+      <div class="code-placeholder" id="codePlaceholder" style="display:none">
+        <div class="cp-em">📖</div>
+        <div>このチャプターにはコード演習はありません。<br>左のヒントタブ相当の用語解説を読んだら、下の一覧から演習問題を選びましょう。</div>
+      </div>
       <div class="gutter" id="gutter">1</div>
       <div class="ed-scroll" id="edScroll">
         <pre class="hl ed-layer" id="hl"><code></code></pre>
@@ -740,6 +783,8 @@ if (typeof DB === "undefined" || !DB) { var DB = FALLBACK_DB; }
    状態
    ============================================================ */
 let curId = DB.problems["df-2"] ? "df-2" : Object.keys(DB.problems)[0];
+let curType = "problem";   // "problem" | "chapter"
+let chapterMode = false;
 let revealed = 0;          // 開いたヒント数
 let problemStartedAt = Date.now();
 const progress = {};       // 問題ID -> status（本番は localStorage / KV）
@@ -795,7 +840,11 @@ ta.addEventListener("keydown", e => {
 /* ============================================================
    ツリー描画（Notion の階層をそのまま再現）
    ============================================================ */
-function nodeTitle(n){ return n.type === "problem" ? DB.problems[n.id].title : n.title; }
+function nodeTitle(n){
+  if(n.type === "problem") return DB.problems[n.id].title;
+  if(n.type === "chapter") return DB.chapters[n.id].title;
+  return n.title;
+}
 function statusOf(id){ return progress[id] || DB.problems[id].status; }
 
 function renderTree(){
@@ -803,7 +852,17 @@ function renderTree(){
   const build = (nodes) => {
     const ul = document.createElement("div");
     nodes.forEach(n => {
-      if(n.type === "problem"){
+      if(n.type === "chapter"){
+        if(filter) return; // チャプターは検索結果には出さない（親フォルダが一致すれば表示される）
+        const row = document.createElement("div");
+        row.className = "node";
+        row.innerHTML = `<div class="node-row chapter ${n.id===curId?"active":""}" data-open="${n.id}">
+          <span class="tw"></span>
+          <span class="ico">📖</span>
+          <span class="label">${nodeTitle(n)}</span>
+        </div>`;
+        ul.appendChild(row);
+      } else if(n.type === "problem"){
         const p = DB.problems[n.id];
         if(filter && !p.title.toLowerCase().includes(filter) && !p.tags.toLowerCase().includes(filter)) return;
         const st = statusOf(n.id);
@@ -848,15 +907,52 @@ $("#tree").addEventListener("click", e => {
   const t = e.target.closest("[data-toggle]");
   if(t){ t.parentElement.classList.toggle("open"); return; }
   const o = e.target.closest("[data-open]");
-  if(o){ loadProblem(o.dataset.open); if(innerWidth <= 1000) showMobile("prob"); }
+  if(o){
+    const id = o.dataset.open;
+    if(DB.chapters[id]) loadChapter(id); else loadProblem(id);
+    if(innerWidth <= 1000) showMobile("prob");
+  }
 });
 $("#q").addEventListener("input", renderTree);
 
 /* ============================================================
    問題の読み込み
    ============================================================ */
+function setChapterMode(on){
+  chapterMode = on;
+  $(".tabs").style.display = on ? "none" : "";
+  $("#codePlaceholder").style.display = on ? "flex" : "none";
+  $("#gutter").style.display = on ? "none" : "";
+  $("#edScroll").style.display = on ? "none" : "";
+  $("#btnRun").disabled = on;
+  $("#btnGrade").disabled = on;
+  $("#btnReset").disabled = on;
+}
+
+function loadChapter(id){
+  curId = id; curType = "chapter";
+  const c = DB.chapters[id];
+
+  $("#crumb").innerHTML =
+    c.path.map(s => `<span class="seg">${s}</span>`).join(`<span class="sep">/</span>`) +
+    `<span class="sep">/</span><span class="seg">${c.title}</span>` +
+    `<a class="notion-link" href="${c.notionUrl}" target="_blank" rel="noopener">↗ Notionで開く</a>`;
+
+  $("#chTitle").textContent = c.title;
+  $("#chIntro").innerHTML = c.intro;
+  $("#chTerms").innerHTML = c.terms.length
+    ? c.terms.map(t => `<div class="term-card"><span class="term-name">${t.term}</span><div class="term-desc">${t.desc}</div></div>`).join("")
+    : `<div class="term-empty">このチャプターで新しく登場する用語はありません（すでに前のチャプターで紹介済みです）。</div>`;
+
+  setChapterMode(true);
+  document.querySelectorAll(".panel-view").forEach(v => v.classList.toggle("on", v.dataset.view === "chapter"));
+  resetConsole();
+  renderTree();
+}
+
 function loadProblem(id){
-  curId = id; revealed = 0; problemStartedAt = Date.now();
+  curId = id; curType = "problem"; revealed = 0; problemStartedAt = Date.now();
+  setChapterMode(false);
   const p = DB.problems[id];
 
   // パンくず（Notion のパスをそのまま表示）
@@ -1032,6 +1128,7 @@ function resetConsole(){
 function normalize(s){ return s.trim().split("\n").map(l => l.trimEnd()).join("\n"); }
 
 async function runCode(){
+  if(chapterMode) return null;
   const p = DB.problems[curId], src = ta.value;
   const out = $("#out");
   if(!src.trim()){
@@ -1099,7 +1196,10 @@ $("#mNext").onclick = () => {
   $("#ov").classList.remove("on");
   loadProblem(next);
 };
-$("#btnReset").onclick = () => { ta.value = DB.problems[curId].starter || ""; syncEditor(); resetConsole(); };
+$("#btnReset").onclick = () => {
+  if(chapterMode || !DB.problems[curId]) return;
+  ta.value = DB.problems[curId].starter || ""; syncEditor(); resetConsole();
+};
 
 /* ============================================================
    テーマ / 同期 / モバイル
