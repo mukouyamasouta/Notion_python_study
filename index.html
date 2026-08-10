@@ -815,7 +815,16 @@ function highlight(src){
    エディタ
    ============================================================ */
 const $  = s => document.querySelector(s);
-const ta = $("#code"), hl = $("#hl").firstElementChild, gutter = $("#gutter"), ghost = $("#ghost");
+const ta = $("#code"), hlPre = $("#hl"), hl = hlPre.firstElementChild, gutter = $("#gutter"), ghost = $("#ghost");
+
+/* ハイライト表示レイヤー（pre.hl）は textarea の「後ろ」に重ねているだけの見た目用の層で、
+   textarea 自身が内部スクロールしても連動しない。そのままだと、画面外まで書き進めたときに
+   ハイライト表示だけが取り残され、実際のカーソル位置と表示がズレて見える（＝今回のバグ）。
+   textarea の scrollTop/scrollLeft を毎回ハイライト層に transform で反映して追従させる。 */
+function syncScrollLayers(){
+  gutter.scrollTop = ta.scrollTop;
+  hlPre.style.transform = `translate(${-ta.scrollLeft}px, ${-ta.scrollTop}px)`;
+}
 
 function syncEditor(){
   const v = ta.value;
@@ -823,10 +832,12 @@ function syncEditor(){
   const lines = v.split("\n").length;
   gutter.textContent = Array.from({length:Math.max(lines,1)},(_,i)=>i+1).join("\n");
   ghost.style.display = v.length ? "none" : "block";
+  syncScrollLayers();      // 入力でカーソル位置が動いて自動スクロールした場合にも追従させる
 }
 ta.addEventListener("input", syncEditor);
-ta.addEventListener("scroll", ()=>{ gutter.scrollTop = ta.scrollTop; });
-$("#edScroll").addEventListener("scroll", e => { gutter.scrollTop = e.target.scrollTop; });
+ta.addEventListener("scroll", syncScrollLayers);
+ta.addEventListener("click", syncScrollLayers);   // クリックでのカーソル移動にも追従させる
+ta.addEventListener("keyup", syncScrollLayers);    // 矢印キーなどでのカーソル移動にも追従させる
 ta.addEventListener("keydown", e => {
   if(e.key === "Tab"){                       // Tab でインデント
     e.preventDefault();
