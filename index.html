@@ -402,6 +402,10 @@ button{font-family:inherit;font-size:inherit;cursor:pointer;border:none;backgrou
   min-height:100%;min-width:100%;
 }
 pre.hl{position:absolute;inset:0;pointer-events:none;color:var(--ed-fg)}
+/* ブラウザ標準スタイルは <code> の font-family を汎用 monospace に強制上書きするため、
+   textarea と文字幅が微妙にズレて「書くほどカーソルと表示が離れていく」原因になっていた。
+   pre 側で明示的に継承させ、両レイヤーで確実に同じフォントを使わせる。 */
+pre.hl code{font-family:inherit;font-size:inherit;line-height:inherit;white-space:inherit;tab-size:inherit}
 pre.hl .kw{color:var(--kw)} pre.hl .st{color:var(--st)} pre.hl .nu{color:var(--nu)}
 pre.hl .cm{color:var(--cm);font-style:italic} pre.hl .bi{color:var(--bi)} pre.hl .fn{color:var(--fn)}
 textarea.code{
