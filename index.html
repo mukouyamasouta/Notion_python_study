@@ -244,6 +244,9 @@ button{font-family:inherit;font-size:inherit;cursor:pointer;border:none;backgrou
   font-family:var(--mono);font-size:12.5px;
   background:var(--panel);padding:1px 5px;border-radius:4px;border:1px solid var(--border);
 }
+.statement ol.steps{margin:10px 0 0 1.3em}
+.statement ol.steps li{margin-bottom:8px}
+.statement ol.steps li:last-child{margin-bottom:0}
 
 .block{margin-top:20px}
 .block-h{
@@ -255,6 +258,11 @@ button{font-family:inherit;font-size:inherit;cursor:pointer;border:none;backgrou
   background:var(--panel-2);border:1px solid var(--border);border-radius:var(--radius);
   padding:13px 15px;font-family:var(--mono);font-size:13px;line-height:1.85;
   white-space:pre;overflow-x:auto;color:var(--text);
+}
+.stdin-box{
+  background:var(--panel-2);border:1px solid var(--border);border-radius:var(--radius);
+  padding:13px 15px;font-family:var(--mono);font-size:13px;line-height:1.85;
+  white-space:pre;overflow-x:auto;color:var(--text-2);
 }
 .meta-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
 .chip{
@@ -400,6 +408,7 @@ textarea.code::selection{background:rgba(127,227,210,.25)}
 .btn-ghost:hover{background:var(--panel-2)}
 .btn-amber{background:var(--amber);color:#fff}
 .btn-amber:hover{filter:brightness(1.07)}
+.btn:disabled{opacity:.5;cursor:not-allowed;pointer-events:none}
 
 .console{
   flex:0 0 auto;height:172px;display:flex;flex-direction:column;
@@ -481,7 +490,10 @@ textarea.code::selection{background:rgba(127,227,210,.25)}
   </div>
   <div class="spacer"></div>
   <div class="sync" title="Notionから取り込んだ日時">
-    <span class="dot"></span><span>Notion同期</span> 2026/08/01 20:02
+    <span class="dot"></span><span>Notion同期</span> <span id="syncTime">—</span>
+  </div>
+  <div class="sync" id="pyStatus" title="Pythonの実行環境">
+    <span class="dot" id="pyDot" style="background:var(--muted);box-shadow:none"></span><span id="pyStatusText">Python環境 準備中…</span>
   </div>
   <div class="streak">🔥 7日連続</div>
   <button class="icon-btn" id="btnSync" title="Notionから再取り込み">⟳</button>
@@ -525,8 +537,13 @@ textarea.code::selection{background:rgba(127,227,210,.25)}
         <h1 class="prob-title"><span class="mark">≡</span><span id="pTitle"></span></h1>
         <div class="statement" id="pStatement"></div>
 
+        <div class="block" id="stdinBlock" style="display:none">
+          <div class="block-h"><span class="gi">⌨️</span><span id="stdinLabel">入力例</span></div>
+          <div class="stdin-box" id="pStdin"></div>
+        </div>
+
         <div class="block">
-          <div class="block-h"><span class="gi">📥</span>期待する出力値</div>
+          <div class="block-h"><span class="gi">📤</span>期待する出力値</div>
           <div class="expected" id="pExpected"></div>
         </div>
 
@@ -615,14 +632,18 @@ textarea.code::selection{background:rgba(127,227,210,.25)}
   </div>
 </div>
 
+<!-- Pyodide: 実際にブラウザ内で Python を実行するための WebAssembly ランタイム -->
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
+<!-- Notion「🐍 Python知識ベース」から生成された問題データ（毎週金曜19:00に自動更新） -->
+<script src="data.js"></script>
 <script>
 /* ============================================================
-   データ構造
+   旧データ（フォールバック）
    ------------------------------------------------------------
-   ここが Notion → problems.json のスキーマそのものになります。
-   Phase 2 で MCP / API から生成した JSON をそのまま流し込みます。
+   data.js の読み込みに失敗した場合に備えた最小限のサンプル。
+   通常は data.js の DB がそのまま使われます。
    ============================================================ */
-const DB = {
+const FALLBACK_DB = {
   lastSync: "2026-08-01T20:02:00+09:00",
   tree: [
     { id:"n-root", title:"プログラミング学習", type:"folder", open:true, children:[
@@ -711,12 +732,23 @@ const DB = {
   }
 };
 
+/* data.js が正常に読み込まれていればそちらを使う。読み込み失敗時のみ FALLBACK_DB。
+   （data.js は script src 経由で読み込まれるため、失敗時は変数 DB 自体が未定義になる） */
+if (typeof DB === "undefined" || !DB) { var DB = FALLBACK_DB; }
+
 /* ============================================================
    状態
    ============================================================ */
-let curId = "p-301";
+let curId = DB.problems["df-2"] ? "df-2" : Object.keys(DB.problems)[0];
 let revealed = 0;          // 開いたヒント数
+let problemStartedAt = Date.now();
 const progress = {};       // 問題ID -> status（本番は localStorage / KV）
+
+function formatElapsed(ms){
+  const totalSec = Math.max(0, Math.round(ms / 1000));
+  const m = Math.floor(totalSec / 60), s = totalSec % 60;
+  return `${m}分${String(s).padStart(2,"0")}秒`;
+}
 
 /* ============================================================
    Python 簡易シンタックスハイライト
@@ -824,7 +856,7 @@ $("#q").addEventListener("input", renderTree);
    問題の読み込み
    ============================================================ */
 function loadProblem(id){
-  curId = id; revealed = 0;
+  curId = id; revealed = 0; problemStartedAt = Date.now();
   const p = DB.problems[id];
 
   // パンくず（Notion のパスをそのまま表示）
@@ -839,6 +871,14 @@ function loadProblem(id){
   $("#pStars").textContent   = "★".repeat(p.difficulty) + "☆".repeat(3 - p.difficulty);
   $("#pTags").textContent    = p.tags;
   $("#pTime").textContent    = p.time;
+
+  if(p.stdin){
+    $("#stdinBlock").style.display = "";
+    $("#stdinLabel").textContent = p.stdinLabel || "入力例";
+    $("#pStdin").textContent = p.stdin.replace(/\n$/, "");
+  } else {
+    $("#stdinBlock").style.display = "none";
+  }
 
   document.querySelectorAll(".dstar").forEach((d,i) => d.classList.toggle("on", i < p.difficulty));
 
@@ -932,32 +972,105 @@ function switchTab(name){
 document.querySelectorAll(".tab").forEach(t => t.onclick = () => switchTab(t.dataset.tab));
 
 /* ============================================================
-   実行 & 採点（※デザイン段階のためモック動作）
+   Python 実行エンジン（Pyodide / WebAssembly で本物の Python を実行）
    ============================================================ */
+let pyodide = null;
+let pyodideLoading = null;
+const loadedPkgs = new Set();
+
+function setPyStatus(text, colorVar){
+  $("#pyStatusText").textContent = text;
+  if(colorVar){ $("#pyDot").style.background = `var(${colorVar})`; $("#pyDot").style.boxShadow = `0 0 0 3px var(--accent-soft)`; }
+}
+
+async function ensurePyodide(){
+  if(pyodide) return pyodide;
+  if(!pyodideLoading){
+    pyodideLoading = (async () => {
+      setPyStatus("Python環境 起動中…（初回のみ）");
+      const py = await loadPyodide();
+      await py.runPythonAsync(`
+import sys, io, contextlib, traceback
+
+def __run_user_code(src, stdin_text):
+    buf = io.StringIO()
+    old_stdin = sys.stdin
+    sys.stdin = io.StringIO(stdin_text or "")
+    try:
+        with contextlib.redirect_stdout(buf):
+            exec(src, {"__name__": "__main__"})
+        return {"ok": True, "output": buf.getvalue(), "error": None}
+    except Exception as e:
+        return {"ok": False, "output": buf.getvalue(),
+                "error": "".join(traceback.format_exception_only(type(e), e)).strip()}
+    finally:
+        sys.stdin = old_stdin
+`);
+      pyodide = py;
+      setPyStatus("Python環境 準備完了", "--accent");
+      return py;
+    })();
+  }
+  return pyodideLoading;
+}
+ensurePyodide(); // 起動直後からバックグラウンドで読み込みを開始しておく
+
+async function ensurePackages(pkgs){
+  if(!pkgs || !pkgs.length) return;
+  const need = pkgs.filter(p => !loadedPkgs.has(p));
+  if(!need.length) return;
+  setPyStatus(`パッケージ読込中…（${need.join(", ")}）`);
+  await pyodide.loadPackage(need);
+  need.forEach(p => loadedPkgs.add(p));
+  setPyStatus("Python環境 準備完了", "--accent");
+}
+
 function resetConsole(){
   $("#out").innerHTML = `<span class="dim">「コードの実行」を押すと、ここに結果が表示されます。</span>`;
   $("#verdict").className = "verdict";
 }
 function normalize(s){ return s.trim().split("\n").map(l => l.trimEnd()).join("\n"); }
 
-function runCode(){
+async function runCode(){
   const p = DB.problems[curId], src = ta.value;
   const out = $("#out");
   if(!src.trim()){
     out.innerHTML = `<span class="ng">SyntaxError: コードが空です</span>`;
     return null;
   }
-  // ── 本番では Pyodide(WASM) が実際に Python を実行します ──
-  const looksRight = /print\s*\(/.test(src) && /\[\s*0?\s*:\s*2\s*\]|\["?a"?\s*:\s*"?b"?\]/.test(src);
-  const result = looksRight ? p.expected : "   num string  bool\na  3.0  paiza   NaN\nb  1.0    NaN  True\nc  NaN  daiza   NaN";
-  out.innerHTML = esc(result) + `\n\n<span class="dim">— exit code 0 · 0.31s —</span>`;
-  return result;
+  const btnRun = $("#btnRun"), btnGrade = $("#btnGrade");
+  btnRun.disabled = true; btnGrade.disabled = true;
+  out.innerHTML = `<span class="dim">実行中…</span>`;
+  try{
+    await ensurePyodide();
+    await ensurePackages(p.pkgs);
+    const t0 = performance.now();
+    const resProxy = pyodide.globals.get("__run_user_code")(src, p.stdin || "");
+    const res = resProxy.toJs({ dict_converter: Object.fromEntries });
+    resProxy.destroy();
+    const dt = ((performance.now() - t0) / 1000).toFixed(2);
+    if(res.ok){
+      const shown = res.output.replace(/\n$/, "");
+      out.innerHTML = (shown ? esc(shown) : `<span class="dim">（出力なし）</span>`)
+        + `\n\n<span class="dim">— exit code 0 · ${dt}s —</span>`;
+      return shown;
+    } else {
+      const shown = res.output ? esc(res.output.replace(/\n$/, "")) + "\n" : "";
+      out.innerHTML = shown + `<span class="ng">${esc(res.error)}</span>`;
+      return null;
+    }
+  } catch(err){
+    out.innerHTML = `<span class="ng">実行環境エラー: ${esc(String(err && err.message || err))}</span>`;
+    return null;
+  } finally {
+    btnRun.disabled = false; btnGrade.disabled = false;
+  }
 }
-$("#btnRun").onclick = () => { runCode(); $("#verdict").className = "verdict"; };
+$("#btnRun").onclick = async () => { await runCode(); $("#verdict").className = "verdict"; };
 
-$("#btnGrade").onclick = () => {
+$("#btnGrade").onclick = async () => {
   const p = DB.problems[curId];
-  const result = runCode();
+  const result = await runCode();
   if(result === null) return;
   const ok = normalize(result) === normalize(p.expected);
   $("#verdict").className = "verdict " + (ok ? "ok" : "ng");
@@ -966,7 +1079,7 @@ $("#btnGrade").onclick = () => {
   $("#mEm").textContent   = ok ? (revealed === 0 ? "🏆" : "🎉") : "🤔";
   $("#mTitle").textContent= ok ? (revealed === 0 ? "ノーヒント正解！" : "正解！") : "もう少し";
   $("#mMsg").innerHTML    = ok
-    ? `${p.title}<br>所要 4分12秒・ヒント ${revealed}件`
+    ? `${p.title}<br>所要 ${formatElapsed(Date.now() - problemStartedAt)}・ヒント ${revealed}件`
     : `出力が期待値と違います。<br>差分を確認して、もう一度試してみましょう。`;
   $("#mDiff").innerHTML = ok
     ? `<span class="plus">出力が期待値と完全に一致しました。</span>`
@@ -999,6 +1112,9 @@ $("#btnSync").onclick = e => {
   const b = e.currentTarget;
   b.style.transition = "transform .8s"; b.style.transform = "rotate(360deg)";
   setTimeout(()=>{ b.style.transition=""; b.style.transform=""; }, 850);
+  // data.js は毎週金曜19:00の自動同期でサーバー側が更新される。
+  // 「同期」ボタンはページを再読み込みして最新の data.js を取得する。
+  setTimeout(() => location.reload(), 500);
 };
 function showMobile(name){
   document.querySelectorAll("[data-mcol]").forEach(c => c.classList.toggle("m-on", c.dataset.mcol === name));
@@ -1006,7 +1122,16 @@ function showMobile(name){
 }
 document.querySelectorAll(".mtab").forEach(t => t.onclick = () => showMobile(t.dataset.m));
 
+function formatSyncTime(iso){
+  try{
+    const d = new Date(iso);
+    const pad = n => String(n).padStart(2,"0");
+    return `${d.getFullYear()}/${pad(d.getMonth()+1)}/${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }catch(e){ return iso || "—"; }
+}
+
 /* 起動 */
+$("#syncTime").textContent = formatSyncTime(DB.lastSync);
 renderTree();
 loadProblem(curId);
 </script>
