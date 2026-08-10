@@ -4,7 +4,7 @@
    手動編集した内容は次回の自動同期で上書きされる可能性があるため注意してください。
    ============================================================ */
 var DB = {
-  "lastSync": "2026-08-10T20:19:00+09:00",
+  "lastSync": "2026-08-10T23:39:00+09:00",
   "sourceUrl": "https://app.notion.com/p/36fe3be8d5ac80dda919cd12d3f97555",
   "tree": [
     {
@@ -244,6 +244,18 @@ var DB = {
                     },
                     {
                       "id": "df-3",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "df-4",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "df-5",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "df-6",
                       "type": "problem"
                     }
                   ]
@@ -1129,6 +1141,93 @@ var DB = {
         "pandas"
       ]
     },
+    "df-4": {
+      "title": "演習課題「列の追加と削除」",
+      "status": "todo",
+      "difficulty": 1,
+      "time": 6,
+      "tags": "pandas, DataFrame, 列の追加, del",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "DataFrameの基本"
+      ],
+      "notionUrl": "https://app.notion.com/p/3a7e3be8d5ac80608af9fc27ec4a195e",
+      "statement": "<ol class='steps'><li><code>pandas</code> を <code>pd</code> としてインポートします。</li><li><code>s = pd.Series({\"a\": 3, \"b\": 1})</code>、<code>t = pd.Series({\"a\": \"paiza\", \"c\": \"daiza\"})</code> から <code>df = pd.DataFrame({\"num\": s, \"string\": t})</code> を作成し、<code>print(df)</code> で出力します。</li><li><code>df[\"bool\"] = pd.Series({\"b\": True})</code> を実行し、新しい列 <code>\"bool\"</code> を追加します。</li><li><code>del df[\"string\"]</code> を実行し、<code>\"string\"</code> 列を削除します。</li><li>もう一度 <code>print(df)</code> を実行し、区切りとして間に空行を1行入れてから出力してください（<code>print()</code> だけ呼ぶと空行になります）。</li></ol>",
+      "expected": "   num string\na  3.0  paiza\nb  1.0    NaN\nc  NaN  daiza\n\n   num  bool\na  3.0   NaN\nb  1.0  True\nc  NaN   NaN",
+      "starter": "",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "辞書と同じ感覚で、<code>df[\"新しい列名\"] = 値</code> と書くだけで列を追加・上書きできます。値に Series を渡すと、行ラベル（インデックス）を基準に値が自動的に対応づけられ、対応する行がなければ <code>NaN</code> になります。列の削除は辞書のキー削除と同じ <code>del df[\"列名\"]</code> です。"
+        }
+      ],
+      "solution": "import pandas as pd\n\ns = pd.Series({\"a\": 3, \"b\": 1})\nt = pd.Series({\"a\": \"paiza\", \"c\": \"daiza\"})\ndf = pd.DataFrame({\"num\": s, \"string\": t})\nprint(df)\nprint()\n\ndf[\"bool\"] = pd.Series({\"b\": True})\ndel df[\"string\"]\nprint(df)",
+      "solutionNote": "<code>df[\"bool\"] = pd.Series({\"b\": True})</code> は、キー <code>\"b\"</code> だけを持つ Series なので、b 行以外（a・c 行）は自動的に <code>NaN</code> で埋まります。<code>del</code> は辞書と同じ感覚でそのまま使え、<code>.pop(\"列名\")</code>（削除した列を戻り値として受け取れる）や <code>.drop(\"列名\", axis=1)</code>（新しい DataFrame を返す）といった別の削除方法もあります。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
+    "df-5": {
+      "title": "セルの参照・更新と行の追加",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 8,
+      "tags": "pandas, DataFrame, at, iat, 行の追加",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "DataFrameの基本"
+      ],
+      "notionUrl": "https://app.notion.com/p/3a7e3be8d5ac80608af9fc27ec4a195e",
+      "statement": "右のコードエリアには <code>df</code> という DataFrame が定義されています。以下を順番に行ってください。<br>1. <code>df.at[\"a\", \"string\"]</code>（a行・string列のセル）を取得して1行出力する。<br>2. <code>df.at[\"a\", \"string\"] = \"python\"</code> でそのセルの値を <code>\"python\"</code> に書き換える。<br>3. <code>df.loc[\"d\"] = pd.Series({\"num\": 813, \"string\": \"pizza\"})</code> で新しい行 <code>\"d\"</code> を追加する。<br>4. 最後に <code>df</code> 全体を <code>print()</code> で出力する。",
+      "expected": "paiza\n     num  string\na    3.0  python\nb    1.0     NaN\nc    NaN   daiza\nd  813.0   pizza",
+      "starter": "import pandas as pd\n\ns = pd.Series({\"a\": 3, \"b\": 1})\nt = pd.Series({\"a\": \"paiza\", \"c\": \"daiza\"})\ndf = pd.DataFrame({\"num\": s, \"string\": t})\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>.loc[]</code>・<code>.iloc[]</code> は行または行と列をまとめて取得しますが、<code>.at[行, 列]</code>（ラベル指定）・<code>.iat[行番号, 列番号]</code>（位置指定）は<b>1つのセルだけ</b>をピンポイントで取得・更新するための、より高速な書き方です。行の追加は、存在しないラベルへ <code>df.loc[\"新しい行\"] = 値</code> で代入するだけで実現できます。"
+        }
+      ],
+      "solution": "import pandas as pd\n\ns = pd.Series({\"a\": 3, \"b\": 1})\nt = pd.Series({\"a\": \"paiza\", \"c\": \"daiza\"})\ndf = pd.DataFrame({\"num\": s, \"string\": t})\n\nprint(df.at[\"a\", \"string\"])\ndf.at[\"a\", \"string\"] = \"python\"\ndf.loc[\"d\"] = pd.Series({\"num\": 813, \"string\": \"pizza\"})\nprint(df)",
+      "solutionNote": "行 <code>\"d\"</code> が追加されたことで、<code>num</code> 列に新しく整数 <code>813</code> が混ざりますが、既存の値が <code>NaN</code> を含む <code>float64</code> だったため、列全体としては <code>float64</code>（<code>813.0</code>）のまま統一されます。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
+    "df-6": {
+      "title": "条件抽出とソート（paiza形式）",
+      "status": "todo",
+      "difficulty": 3,
+      "time": 10,
+      "tags": "pandas, DataFrame, query, sort_values",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "DataFrameの基本"
+      ],
+      "notionUrl": "https://app.notion.com/p/3a7e3be8d5ac80608af9fc27ec4a195e",
+      "statement": "右のコードエリアには <code>df</code> という DataFrame が定義されています。以下の2つを順番に出力してください（間に空行を1行はさむ）。<br>1. <code>num</code> 列の値が <code>2</code> 以上の行だけを、<code>query()</code> を使って抽出する。<br>2. <code>df</code> 全体を、<code>num</code> 列の値で昇順に並び替える。",
+      "expected": "  string  num\nc  paiza    3\nb  pizza    2\n\n  string  num\na  daiza    1\nb  pizza    2\nc  paiza    3",
+      "starter": "import pandas as pd\n\ns = [3, 1, 2]\nt = [\"paiza\", \"daiza\", \"pizza\"]\ndf = pd.DataFrame({\"string\": t, \"num\": s}, index=[\"c\", \"a\", \"b\"])\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>df.query(\"条件式\")</code> は、条件を文字列でそのまま書けるフィルタリング方法です（<code>df[df[\"num\"] >= 2]</code> と同じ結果になります）。並び替えは、値そのもので並び替える <code>sort_values(by=\"列名\")</code> と、インデックスで並び替える <code>sort_index()</code> を区別してください。"
+        }
+      ],
+      "solution": "import pandas as pd\n\ns = [3, 1, 2]\nt = [\"paiza\", \"daiza\", \"pizza\"]\ndf = pd.DataFrame({\"string\": t, \"num\": s}, index=[\"c\", \"a\", \"b\"])\n\nprint(df.query(\"num >= 2\"))\nprint()\nprint(df.sort_values(by=\"num\"))",
+      "solutionNote": "<code>query()</code> の中では、外側で定義した変数を条件式に使いたい場合 <code>@変数名</code>（例: <code>df.query(\"num < @N\")</code>）という書き方をします。<code>sort_values(by=\"num\")</code> は既定で昇順ですが、<code>ascending=False</code> を渡すと降順にできます。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
     "pw-1": {
       "title": "パスワード生成（基本形）",
       "status": "todo",
@@ -1717,6 +1816,34 @@ var DB = {
         {
           "term": "iloc",
           "desc": "行・列を「位置（0始まりの整数）」で指定してデータを取得する方法。"
+        },
+        {
+          "term": "列の追加・更新（df[\"列名\"] = 値）",
+          "desc": "辞書と同じ感覚で、角カッコに列名を指定して代入するだけで列を追加・上書きできます。Series を渡すと行ラベルを基準に自動で対応づけられます。"
+        },
+        {
+          "term": "del / .pop() / .drop(axis=1)",
+          "desc": "列を削除する3つの方法。<code>del df[\"列名\"]</code> はその場で削除、<code>df.pop(\"列名\")</code> は削除した列を戻り値として受け取れる、<code>df.drop(\"列名\", axis=1)</code> は元の df を変えずに新しい DataFrame を返します。"
+        },
+        {
+          "term": ".at[行, 列] / .iat[行番号, 列番号]",
+          "desc": "<code>loc</code>/<code>iloc</code> の仲間で、1つのセルだけをピンポイントで取得・更新するための書き方。<code>at</code> はラベル指定、<code>iat</code> は位置指定です。"
+        },
+        {
+          "term": "行の追加（df.loc[\"新しい行\"] = 値）",
+          "desc": "存在しない行ラベルに対して <code>.loc[]</code> で代入すると、新しい行として追加されます。"
+        },
+        {
+          "term": "DataFrameの演算（df1 + df2, df * 2）",
+          "desc": "DataFrame同士の四則演算は、行・列のラベルを基準に自動で対応づけて計算されます。対応するラベルが片方にしかない場合は <code>NaN</code> になります。"
+        },
+        {
+          "term": ".query(\"条件式\")",
+          "desc": "条件式を文字列でそのまま書いて行を抽出できるメソッド。<code>df[df[\"num\"] >= 2]</code> と同じ結果を、より読みやすく書けます。"
+        },
+        {
+          "term": ".sort_values(by=\"列名\")",
+          "desc": "指定した列の値を基準にして行を並び替えるメソッド。行ラベル（インデックス）基準で並び替える <code>.sort_index()</code> とは区別してください。"
         }
       ]
     },
@@ -1802,7 +1929,7 @@ var DB = {
   },
   "syncMeta": {
     "note": "Notionのページに更新がないか、この一覧をもとに差分チェックします。毎週金曜19:00(JST)の自動同期に加えて、Claudeとのチャットで「更新して」と伝えれば同じチェック・追加作業をいつでも実行できます。詳細は SYNC_PROMPT.md 参照。",
-    "baselineSyncedAt": "2026-08-10T20:19:00+09:00",
+    "baselineSyncedAt": "2026-08-10T23:39:00+09:00",
     "pages": [
       {
         "url": "https://app.notion.com/p/36fe3be8d5ac80c5b830ee4217f62f57",
@@ -1948,11 +2075,14 @@ var DB = {
           "pythonデータ分析入門",
           "DataFrameの基本"
         ],
-        "lastSeenEditedAt": "2026-08-10T10:25:00.000Z",
+        "lastSeenEditedAt": "2026-08-10T14:35:00.000Z",
         "problemIds": [
           "df-1",
           "df-2",
-          "df-3"
+          "df-3",
+          "df-4",
+          "df-5",
+          "df-6"
         ]
       },
       {
