@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NotionDrill — Notion連動アウトプット学習</title>
+<style>
+/* ============================================================
+   デザイントークン
+   ============================================================ */
+:root{
+  --bg:#f6f6f4;
+  --panel:#ffffff;
+  --panel-2:#fbfbfa;
+  --border:#e6e4e0;
+  --border-strong:#d6d3cd;
+  --text:#22211e;
+  --text-2:#55534d;
+  --muted:#8b8880;
+  --accent:#2b9e91;
+  --accent-hover:#23847a;
+  --accent-soft:#e7f4f2;
+  --amber:#c98a1f;
+  --amber-soft:#fdf4e3;
+  --rose:#c4553f;
+  --rose-soft:#fceeeb;
+  --blue:#3f7dc4;
+  --blue-soft:#ecf3fb;
+  --ed-bg:#1c1c26;
+  --ed-bg-2:#23232f;
+  --ed-fg:#e9e7f2;
+  --ed-gutter:#5a586e;
+  --ed-line:#2c2c3a;
+  --kw:#c99ae8; --st:#9ed37a; --nu:#e8a06b; --cm:#6b6a80; --bi:#6fc3d9; --fn:#f0d98a;
+  --radius:10px;
+  --radius-sm:6px;
+  --shadow:0 1px 2px rgba(0,0,0,.04), 0 4px 14px rgba(0,0,0,.05);
+  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP","Segoe UI",Roboto,sans-serif;
+}
+:root[data-theme="dark"]{
+  --bg:#151519;
+  --panel:#1d1d22;
+  --panel-2:#232329;
+  --border:#31313a;
+  --border-strong:#3d3d48;
+  --text:#eceaf2;
+  --text-2:#b6b3c0;
+  --muted:#807d8c;
+  --accent:#43b8a9;
+  --accent-hover:#55c9ba;
+  --accent-soft:#1c3330;
+  --amber-soft:#33291a;
+  --rose-soft:#33211d;
+  --blue-soft:#1b2635;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 4px 14px rgba(0,0,0,.25);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:var(--sans);
+  background:var(--bg);
+  color:var(--text);
+  font-size:14px;
+  line-height:1.7;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+button{font-family:inherit;font-size:inherit;cursor:pointer;border:none;background:none;color:inherit}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:6px;border:2px solid transparent;background-clip:content-box}
+::-webkit-scrollbar-track{background:transparent}
+
+/* ============================================================
+   ヘッダー
+   ============================================================ */
+.topbar{
+  height:52px;flex:0 0 52px;
+  display:flex;align-items:center;gap:14px;
+  padding:0 16px;
+  background:var(--panel);
+  border-bottom:1px solid var(--border);
+  z-index:20;
+}
+.brand{display:flex;align-items:center;gap:9px;font-weight:700;font-size:15px;letter-spacing:-.01em}
+.brand .logo{
+  width:26px;height:26px;border-radius:7px;
+  background:linear-gradient(135deg,var(--accent),#4fbfae);
+  display:grid;place-items:center;color:#fff;font-size:14px;font-weight:800;
+  box-shadow:0 2px 6px rgba(43,158,145,.35);
+}
+.brand small{font-weight:500;color:var(--muted);font-size:11px;letter-spacing:.04em}
+.topbar .spacer{flex:1}
+
+.sync{
+  display:flex;align-items:center;gap:7px;
+  font-size:12px;color:var(--text-2);
+  background:var(--panel-2);border:1px solid var(--border);
+  padding:5px 11px;border-radius:99px;
+}
+.sync .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.streak{
+  display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;
+  background:var(--amber-soft);color:var(--amber);
+  padding:5px 11px;border-radius:99px;border:1px solid transparent;
+}
+:root[data-theme="dark"] .streak{color:#e5b45c}
+.icon-btn{
+  width:32px;height:32px;border-radius:var(--radius-sm);
+  display:grid;place-items:center;color:var(--text-2);font-size:15px;
+  transition:background .15s,color .15s;
+}
+.icon-btn:hover{background:var(--panel-2);color:var(--text)}
+
+/* ============================================================
+   3カラムレイアウト
+   ============================================================ */
+.workspace{
+  flex:1;min-height:0;
+  display:grid;
+  grid-template-columns:264px minmax(340px,1fr) minmax(380px,1.05fr);
+}
+.col{min-height:0;min-width:0;display:flex;flex-direction:column;overflow:hidden}
+.col + .col{border-left:1px solid var(--border)}
+
+/* ---------- 1列目: Notion ツリー ---------- */
+.tree-col{background:var(--panel-2)}
+.tree-head{
+  padding:13px 14px 10px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+}
+.tree-head h2{
+  font-size:11px;font-weight:700;letter-spacing:.09em;color:var(--muted);
+  text-transform:uppercase;display:flex;align-items:center;gap:6px;
+}
+.tree-head .src{
+  font-size:10px;color:var(--muted);background:var(--panel);
+  border:1px solid var(--border);padding:2px 7px;border-radius:99px;font-weight:600;
+}
+.search{padding:10px 12px 6px}
+.search input{
+  width:100%;padding:7px 10px 7px 28px;
+  border:1px solid var(--border);border-radius:var(--radius-sm);
+  background:var(--panel);color:var(--text);font-family:inherit;font-size:12.5px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238b8880' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-3.5-3.5'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:8px center;background-size:13px;
+}
+.search input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.tree{flex:1;overflow-y:auto;padding:4px 8px 20px}
+
+.node{user-select:none}
+.node-row{
+  display:flex;align-items:center;gap:6px;
+  padding:5px 8px;border-radius:var(--radius-sm);
+  font-size:13px;color:var(--text-2);
+  transition:background .12s;
+}
+.node-row:hover{background:var(--panel)}
+.node-row .tw{
+  width:14px;flex:0 0 14px;text-align:center;color:var(--muted);font-size:9px;
+  transition:transform .18s;
+}
+.node.open > .node-row .tw{transform:rotate(90deg)}
+.node-row .ico{flex:0 0 16px;font-size:13px;opacity:.85;text-align:center}
+.node-row .label{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.node-kids{margin-left:13px;border-left:1px solid var(--border);padding-left:3px;display:none}
+.node.open > .node-kids{display:block}
+
+.node-row.folder{font-weight:600;color:var(--text)}
+.node-row.problem{padding-left:10px}
+.node-row.problem.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+:root[data-theme="dark"] .node-row.problem.active{color:var(--accent-hover)}
+.badge-st{
+  flex:0 0 auto;width:16px;height:16px;border-radius:50%;
+  display:grid;place-items:center;font-size:9px;font-weight:700;
+}
+.badge-st.done{background:var(--accent);color:#fff}
+.badge-st.wip{background:var(--amber-soft);color:var(--amber);border:1.5px solid var(--amber)}
+.badge-st.todo{border:1.5px solid var(--border-strong);color:transparent}
+
+.tree-foot{
+  border-top:1px solid var(--border);padding:11px 14px;
+  font-size:11.5px;color:var(--muted);
+}
+.progress-bar{height:5px;border-radius:99px;background:var(--border);overflow:hidden;margin:7px 0 5px}
+.progress-bar i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .4s}
+
+/* ---------- 2列目: 問題パネル ---------- */
+.prob-col{background:var(--panel)}
+.crumb{
+  display:flex;align-items:center;gap:5px;flex-wrap:wrap;
+  padding:10px 18px;border-bottom:1px solid var(--border);
+  font-size:11.5px;color:var(--muted);
+}
+.crumb .seg{white-space:nowrap}
+.crumb .sep{opacity:.5}
+.crumb .seg:last-of-type{color:var(--text-2);font-weight:600}
+.crumb .notion-link{
+  margin-left:auto;display:inline-flex;align-items:center;gap:4px;
+  color:var(--muted);text-decoration:none;font-size:11px;
+  border:1px solid var(--border);border-radius:var(--radius-sm);padding:2px 8px;
+  transition:.15s;white-space:nowrap;
+}
+.crumb .notion-link:hover{color:var(--text);border-color:var(--border-strong);background:var(--panel-2)}
+
+.tabs{display:flex;gap:2px;padding:0 14px;border-bottom:1px solid var(--border);background:var(--panel)}
+.tab{
+  padding:10px 14px;font-size:13px;font-weight:600;color:var(--muted);
+  border-bottom:2px solid transparent;margin-bottom:-1px;
+  display:flex;align-items:center;gap:6px;transition:.15s;
+}
+.tab:hover{color:var(--text-2)}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab .pill{
+  font-size:10px;font-weight:700;padding:1px 6px;border-radius:99px;
+  background:var(--panel-2);color:var(--muted);border:1px solid var(--border);
+}
+.tab.active .pill{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+
+.prob-body{flex:1;overflow-y:auto;padding:20px 22px 40px}
+.panel-view{display:none}
+.panel-view.on{display:block;animation:fade .22s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+.prob-title{
+  display:flex;align-items:flex-start;gap:9px;
+  font-size:20px;font-weight:700;line-height:1.45;letter-spacing:-.01em;
+  color:var(--blue);margin-bottom:16px;
+}
+:root[data-theme="dark"] .prob-title{color:#7aa9e0}
+.prob-title .mark{
+  flex:0 0 22px;height:22px;margin-top:5px;border-radius:5px;
+  background:var(--blue);color:#fff;display:grid;place-items:center;font-size:12px;
+}
+.statement{
+  background:var(--blue-soft);border-left:3px solid var(--blue);
+  padding:14px 16px;border-radius:0 var(--radius) var(--radius) 0;
+  font-size:14.5px;line-height:1.9;color:var(--text);
+}
+.statement code{
+  font-family:var(--mono);font-size:12.5px;
+  background:var(--panel);padding:1px 5px;border-radius:4px;border:1px solid var(--border);
+}
+
+.block{margin-top:20px}
+.block-h{
+  display:flex;align-items:center;gap:7px;
+  font-size:14px;font-weight:700;margin-bottom:9px;color:var(--text);
+}
+.block-h .gi{font-size:15px;opacity:.75}
+.expected{
+  background:var(--panel-2);border:1px solid var(--border);border-radius:var(--radius);
+  padding:13px 15px;font-family:var(--mono);font-size:13px;line-height:1.85;
+  white-space:pre;overflow-x:auto;color:var(--text);
+}
+.meta-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.chip{
+  font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:99px;
+  background:var(--panel-2);border:1px solid var(--border);color:var(--text-2);
+  display:inline-flex;align-items:center;gap:5px;
+}
+.stars{letter-spacing:1px;color:var(--amber)}
+
+/* ---------- ヒント ---------- */
+.hint-intro{
+  font-size:12.5px;color:var(--muted);background:var(--panel-2);
+  border:1px dashed var(--border-strong);border-radius:var(--radius);
+  padding:11px 14px;margin-bottom:16px;line-height:1.75;
+}
+.hint{
+  border:1px solid var(--border);border-radius:var(--radius);
+  margin-bottom:11px;overflow:hidden;background:var(--panel);
+  transition:border-color .18s,box-shadow .18s;
+}
+.hint.revealed{border-color:var(--amber);box-shadow:0 0 0 3px var(--amber-soft)}
+.hint-top{
+  display:flex;align-items:center;gap:10px;width:100%;
+  padding:12px 14px;text-align:left;transition:background .15s;
+}
+.hint-top:hover{background:var(--panel-2)}
+.hint-num{
+  flex:0 0 24px;height:24px;border-radius:50%;
+  background:var(--panel-2);border:1px solid var(--border-strong);
+  display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--muted);
+}
+.hint.revealed .hint-num{background:var(--amber);border-color:var(--amber);color:#fff}
+.hint-label{flex:1;font-size:13.5px;font-weight:600}
+.hint-cost{font-size:10.5px;color:var(--muted);font-weight:600}
+.hint-cta{
+  font-size:11.5px;font-weight:700;color:var(--amber);
+  background:var(--amber-soft);padding:3px 10px;border-radius:99px;white-space:nowrap;
+}
+.hint.revealed .hint-cta{display:none}
+.hint-body{display:none;padding:0 14px 14px 48px;font-size:13.5px;line-height:1.85;color:var(--text-2)}
+.hint.revealed .hint-body{display:block;animation:fade .25s}
+.hint-body pre{
+  font-family:var(--mono);font-size:12.5px;line-height:1.75;
+  background:var(--ed-bg);color:var(--ed-fg);
+  padding:12px 14px;border-radius:var(--radius-sm);margin-top:9px;
+  overflow-x:auto;white-space:pre;
+}
+.hint-body .insert-note{
+  margin-top:9px;font-size:11.5px;color:var(--accent);font-weight:600;
+  display:flex;align-items:center;gap:5px;
+}
+.hint-lock{
+  text-align:center;padding:18px;font-size:12.5px;color:var(--muted);
+  border:1px dashed var(--border-strong);border-radius:var(--radius);
+}
+
+/* ---------- 模範解答ゲート ---------- */
+.gate{
+  position:relative;border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;background:var(--panel-2);
+}
+.gate-blur{filter:blur(7px);opacity:.5;pointer-events:none;padding:16px;font-family:var(--mono);font-size:12.5px;line-height:1.8;white-space:pre}
+.gate-over{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:11px;text-align:center;padding:20px;
+}
+.gate-over h4{font-size:15px;font-weight:700}
+.gate-over p{font-size:12.5px;color:var(--muted);max-width:300px;line-height:1.75}
+
+/* ---------- 3列目: エディタ ---------- */
+.code-col{background:var(--ed-bg)}
+.code-head{
+  display:flex;align-items:center;gap:8px;
+  padding:9px 14px;background:var(--ed-bg-2);
+  border-bottom:1px solid #2f2f3d;flex:0 0 auto;
+}
+.code-head .fname{
+  font-family:var(--mono);font-size:12px;color:#a9a6bd;
+  display:flex;align-items:center;gap:6px;
+}
+.code-head .fname .lang{
+  background:#33334a;color:#b9b5d0;font-size:10px;font-weight:700;
+  padding:1px 6px;border-radius:4px;letter-spacing:.03em;
+}
+.code-head .spacer{flex:1}
+.diff-stars{display:flex;gap:4px}
+.dstar{
+  width:26px;height:22px;border-radius:5px;background:#2d2d3d;color:#6c6a85;
+  font-size:10px;font-weight:700;display:grid;place-items:center;transition:.15s;
+}
+.dstar.on{background:#3b3b52;color:#f0d98a}
+.ed-tool{color:#8b88a3;font-size:12px;padding:4px 8px;border-radius:5px;transition:.15s}
+.ed-tool:hover{background:#33334a;color:#dedbe8}
+
+.editor{flex:1;min-height:0;display:flex;position:relative;overflow:hidden}
+.gutter{
+  flex:0 0 46px;padding:12px 8px 12px 0;text-align:right;
+  font-family:var(--mono);font-size:13px;line-height:22px;
+  white-space:pre;                 /* 行番号を1行ずつ縦に並べる */
+  color:var(--ed-gutter);background:var(--ed-bg);user-select:none;overflow:hidden;
+  border-right:1px solid #2a2a38;
+}
+.ed-scroll{flex:1;position:relative;overflow:auto}
+.ed-layer{
+  margin:0;padding:12px 16px;
+  font-family:var(--mono);font-size:13px;line-height:22px;
+  white-space:pre;word-wrap:normal;tab-size:4;
+  min-height:100%;min-width:100%;
+}
+pre.hl{position:absolute;inset:0;pointer-events:none;color:var(--ed-fg)}
+pre.hl .kw{color:var(--kw)} pre.hl .st{color:var(--st)} pre.hl .nu{color:var(--nu)}
+pre.hl .cm{color:var(--cm);font-style:italic} pre.hl .bi{color:var(--bi)} pre.hl .fn{color:var(--fn)}
+textarea.code{
+  position:relative;width:100%;height:100%;
+  background:transparent;color:transparent;caret-color:#7fe3d2;
+  border:none;outline:none;resize:none;overflow:hidden;display:block;
+}
+textarea.code::selection{background:rgba(127,227,210,.25)}
+.ed-ghost{
+  position:absolute;top:12px;left:16px;right:16px;
+  font-family:var(--mono);font-size:13px;line-height:22px;color:#4f4d63;
+  pointer-events:none;white-space:pre-wrap;
+}
+
+.run-bar{
+  display:flex;align-items:center;gap:9px;justify-content:flex-end;
+  padding:10px 14px;background:var(--ed-bg-2);border-top:1px solid #2f2f3d;flex:0 0 auto;
+}
+.run-bar .hintcue{
+  margin-right:auto;font-size:11.5px;color:#8b88a3;
+  display:flex;align-items:center;gap:6px;
+}
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:8px 16px;border-radius:var(--radius-sm);
+  font-size:13px;font-weight:700;transition:.15s;white-space:nowrap;
+}
+.btn-run{background:var(--accent);color:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.btn-run:hover{background:var(--accent-hover)}
+.btn-grade{background:#2b2b3b;color:#e4e1ef;border:1px solid #3d3d52}
+.btn-grade:hover{background:#35354a}
+.btn-ghost{background:var(--panel);border:1px solid var(--border-strong);color:var(--text)}
+.btn-ghost:hover{background:var(--panel-2)}
+.btn-amber{background:var(--amber);color:#fff}
+.btn-amber:hover{filter:brightness(1.07)}
+
+.console{
+  flex:0 0 auto;height:172px;display:flex;flex-direction:column;
+  background:#17171f;border-top:1px solid #2f2f3d;
+}
+.console-head{
+  display:flex;align-items:center;gap:9px;padding:7px 14px;
+  font-size:11px;font-weight:700;letter-spacing:.07em;color:#7d7a94;text-transform:uppercase;
+}
+.console-head .spacer{flex:1}
+.verdict{
+  font-size:11px;font-weight:700;padding:2px 9px;border-radius:99px;letter-spacing:0;
+  text-transform:none;display:none;
+}
+.verdict.ok{display:inline-block;background:rgba(43,158,145,.18);color:#5fd6c4}
+.verdict.ng{display:inline-block;background:rgba(196,85,63,.18);color:#e08b76}
+.console-body{
+  flex:1;overflow:auto;padding:4px 14px 14px;
+  font-family:var(--mono);font-size:12.5px;line-height:1.8;
+  color:#c9c6d8;white-space:pre-wrap;
+}
+.console-body .ok{color:#7fe3b0}
+.console-body .ng{color:#f0a08c}
+.console-body .dim{color:#5c5a72}
+
+/* ---------- 採点結果モーダル ---------- */
+.overlay{
+  position:fixed;inset:0;background:rgba(20,20,26,.5);backdrop-filter:blur(3px);
+  display:none;align-items:center;justify-content:center;z-index:60;padding:20px;
+}
+.overlay.on{display:flex;animation:fade .18s}
+.modal{
+  background:var(--panel);border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.3);
+  width:100%;max-width:400px;padding:26px;text-align:center;
+  animation:pop .25s cubic-bezier(.2,.9,.3,1.2);
+}
+@keyframes pop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+.modal .em{font-size:40px;line-height:1}
+.modal h3{font-size:18px;font-weight:700;margin:10px 0 6px}
+.modal p{font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:18px}
+.modal .diffbox{
+  text-align:left;font-family:var(--mono);font-size:12px;line-height:1.8;
+  background:var(--panel-2);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:11px 13px;margin-bottom:18px;white-space:pre;overflow-x:auto;
+}
+.modal .diffbox .minus{color:var(--rose)}
+.modal .diffbox .plus{color:var(--accent)}
+.modal-btns{display:flex;gap:9px;justify-content:center}
+
+/* ---------- モバイル ---------- */
+.mobile-tabs{display:none}
+@media(max-width:1000px){
+  .workspace{grid-template-columns:1fr}
+  .col{display:none}
+  .col + .col{border-left:none}
+  .col.m-on{display:flex}
+  .mobile-tabs{
+    display:flex;flex:0 0 56px;background:var(--panel);
+    border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom);
+  }
+  .mtab{
+    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+    font-size:10.5px;font-weight:600;color:var(--muted);
+  }
+  .mtab .mi{font-size:17px}
+  .mtab.active{color:var(--accent)}
+  .console{height:132px}
+  .topbar .sync span{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= ヘッダー ================= -->
+<header class="topbar">
+  <div class="brand">
+    <div class="logo">N</div>
+    <div>NotionDrill<br><small>OUTPUT TRAINING</small></div>
+  </div>
+  <div class="spacer"></div>
+  <div class="sync" title="Notionから取り込んだ日時">
+    <span class="dot"></span><span>Notion同期</span> 2026/08/01 20:02
+  </div>
+  <div class="streak">🔥 7日連続</div>
+  <button class="icon-btn" id="btnSync" title="Notionから再取り込み">⟳</button>
+  <button class="icon-btn" id="btnTheme" title="テーマ切替">◐</button>
+</header>
+
+<!-- ================= 本体 ================= -->
+<div class="workspace">
+
+  <!-- ---------- 1列目：Notion構成ツリー ---------- -->
+  <aside class="col tree-col m-on" data-mcol="tree">
+    <div class="tree-head">
+      <h2>📗 Notion 構成</h2>
+      <span class="src">同期</span>
+    </div>
+    <div class="search"><input type="text" id="q" placeholder="問題を検索…"></div>
+    <nav class="tree" id="tree"></nav>
+    <div class="tree-foot">
+      <div style="display:flex;justify-content:space-between">
+        <span>全体の進捗</span><strong id="pgText">3 / 6</strong>
+      </div>
+      <div class="progress-bar"><i id="pgBar" style="width:50%"></i></div>
+      <span>ヒント使用率 33%・平均 4.2分</span>
+    </div>
+  </aside>
+
+  <!-- ---------- 2列目：問題 / ヒント / 模範解答 ---------- -->
+  <main class="col prob-col" data-mcol="prob">
+    <div class="crumb" id="crumb"></div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="prob">問題</button>
+      <button class="tab" data-tab="hint">ヒント <span class="pill" id="hintPill">0/3</span></button>
+      <button class="tab" data-tab="ans">模範解答</button>
+    </div>
+
+    <div class="prob-body">
+
+      <!-- 問題タブ -->
+      <section class="panel-view on" data-view="prob">
+        <h1 class="prob-title"><span class="mark">≡</span><span id="pTitle"></span></h1>
+        <div class="statement" id="pStatement"></div>
+
+        <div class="block">
+          <div class="block-h"><span class="gi">📥</span>期待する出力値</div>
+          <div class="expected" id="pExpected"></div>
+        </div>
+
+        <div class="meta-row">
+          <span class="chip">難易度 <span class="stars" id="pStars"></span></span>
+          <span class="chip">🏷 <span id="pTags"></span></span>
+          <span class="chip">⏱ 目安 <span id="pTime"></span>分</span>
+        </div>
+      </section>
+
+      <!-- ヒントタブ -->
+      <section class="panel-view" data-view="hint">
+        <div class="hint-intro">
+          ヒントは<strong>段階式</strong>です。上から順に開きます。<br>
+          先に自分の言葉でコードを書いてから開くほど、定着します。
+        </div>
+        <div id="hintList"></div>
+      </section>
+
+      <!-- 模範解答タブ -->
+      <section class="panel-view" data-view="ans">
+        <div id="ansWrap"></div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ---------- 3列目：コードエディタ ---------- -->
+  <section class="col code-col" data-mcol="code">
+    <div class="code-head">
+      <div class="fname"><span class="lang">PY</span><span id="fname">main.py</span></div>
+      <div class="spacer"></div>
+      <div class="diff-stars">
+        <span class="dstar on">★1</span><span class="dstar on">★2</span><span class="dstar">★3</span>
+      </div>
+      <button class="ed-tool" id="btnReset" title="コードを初期状態に戻す">⟲ リセット</button>
+    </div>
+
+    <div class="editor">
+      <div class="gutter" id="gutter">1</div>
+      <div class="ed-scroll" id="edScroll">
+        <pre class="hl ed-layer" id="hl"><code></code></pre>
+        <textarea class="code ed-layer" id="code" spellcheck="false" autocomplete="off"
+                  placeholder=""></textarea>
+        <div class="ed-ghost" id="ghost"># まずは何も見ずに、自分の力で書いてみよう。
+# 詰まったら左の「ヒント」タブへ。</div>
+      </div>
+    </div>
+
+    <div class="run-bar">
+      <span class="hintcue" id="cue">💡 ヒント未使用（ノーヒント達成でボーナス）</span>
+      <button class="btn btn-run" id="btnRun">▶ コードの実行</button>
+      <button class="btn btn-grade" id="btnGrade">✔ 採点する</button>
+    </div>
+
+    <div class="console">
+      <div class="console-head">
+        出力
+        <div class="spacer"></div>
+        <span class="verdict" id="verdict"></span>
+      </div>
+      <div class="console-body" id="out"><span class="dim">「コードの実行」を押すと、ここに結果が表示されます。</span></div>
+    </div>
+  </section>
+
+</div>
+
+<!-- モバイル用タブ -->
+<nav class="mobile-tabs">
+  <button class="mtab active" data-m="tree"><span class="mi">📗</span>目次</button>
+  <button class="mtab" data-m="prob"><span class="mi">📝</span>問題</button>
+  <button class="mtab" data-m="code"><span class="mi">⌨️</span>コード</button>
+</nav>
+
+<!-- 採点モーダル -->
+<div class="overlay" id="ov">
+  <div class="modal">
+    <div class="em" id="mEm">🎉</div>
+    <h3 id="mTitle"></h3>
+    <p id="mMsg"></p>
+    <div class="diffbox" id="mDiff"></div>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" id="mClose">閉じる</button>
+      <button class="btn btn-amber" id="mNext">次の問題へ →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   データ構造
+   ------------------------------------------------------------
+   ここが Notion → problems.json のスキーマそのものになります。
+   Phase 2 で MCP / API から生成した JSON をそのまま流し込みます。
+   ============================================================ */
+const DB = {
+  lastSync: "2026-08-01T20:02:00+09:00",
+  tree: [
+    { id:"n-root", title:"プログラミング学習", type:"folder", open:true, children:[
+      { id:"n-py", title:"Python入門", type:"folder", open:true, children:[
+        { id:"n-ch1", title:"第1章 基本文法", type:"folder", open:false, children:[
+          { id:"p-101", type:"problem" },
+          { id:"p-102", type:"problem" },
+        ]},
+        { id:"n-pd", title:"pandas編", type:"folder", open:true, children:[
+          { id:"n-pd1", title:"第1章 Series", type:"folder", open:false, children:[
+            { id:"p-201", type:"problem" },
+          ]},
+          { id:"n-pd2", title:"第2章 DataFrame", type:"folder", open:true, children:[
+            { id:"p-301", type:"problem" },
+            { id:"p-302", type:"problem" },
+            { id:"p-303", type:"problem" },
+          ]},
+        ]},
+      ]},
+    ]}
+  ],
+  problems: {
+    "p-101":{
+      title:'演習課題「変数と型」', status:"done", difficulty:1, time:3, tags:"変数, 型",
+      path:["プログラミング学習","Python入門","第1章 基本文法"],
+      notionUrl:"https://www.notion.so/xxxxxxxx",
+      statement:"変数 <code>name</code> に自分の名前、<code>age</code> に年齢を代入し、<code>print()</code> で1行ずつ出力してください。",
+      expected:"paiza\n21",
+      starter:"", hints:[], solution:'name = "paiza"\nage = 21\nprint(name)\nprint(age)'
+    },
+    "p-102":{
+      title:'演習課題「for文で合計」', status:"done", difficulty:1, time:5, tags:"for, リスト",
+      path:["プログラミング学習","Python入門","第1章 基本文法"],
+      notionUrl:"https://www.notion.so/xxxxxxxx",
+      statement:"リスト <code>nums</code> の全要素の合計を for 文で求め、出力してください。",
+      expected:"15", starter:"nums = [1, 2, 3, 4, 5]\n", hints:[], solution:"total = 0\nfor n in nums:\n    total += n\nprint(total)"
+    },
+    "p-201":{
+      title:'演習課題「Seriesの作成」', status:"done", difficulty:1, time:4, tags:"pandas, Series",
+      path:["プログラミング学習","Python入門","pandas編","第1章 Series"],
+      notionUrl:"https://www.notion.so/xxxxxxxx",
+      statement:"辞書から Series を作り、そのまま出力してください。",
+      expected:"a    3\nb    1\ndtype: int64",
+      starter:"import pandas as pd\n\n", hints:[], solution:'import pandas as pd\n\ns = pd.Series({"a": 3, "b": 1})\nprint(s)'
+    },
+
+    /* ★ スクリーンショットの問題（メイン） */
+    "p-301":{
+      title:'演習課題「行に関するスライシング」',
+      status:"wip", difficulty:2, time:6, tags:"pandas, DataFrame, スライシング",
+      path:["プログラミング学習","Python入門","pandas編","第2章 DataFrame"],
+      notionUrl:"https://www.notion.so/xxxxxxxx",
+      statement:"右のコードエリアには <code>df</code> という DataFrame が定義されています。<code>df</code> を行に関して期待する出力を参考にスライシングし、<code>print()</code> でそのまま出力してください。",
+      expected:"   num string  bool\na  3.0  paiza   NaN\nb  1.0    NaN  True",
+      /* エディタ初期値：ヒント前は「白紙」。前提コードもヒント2で初めて出す */
+      starter:"",
+      hints:[
+        { label:"考え方のヒント", type:"text",
+          body:"DataFrame の <b>行</b>を取り出すときは、列とは違う書き方をします。<br>Python のリストと同じ <code>[開始:終了]</code> の記法が、pandas でも「行方向」に効くことを思い出してください。<br>終了位置は<b>含まれない</b>点に注意。" },
+        { label:"前提コードを見る（エディタに挿入）", type:"code", insert:true,
+          body:'import pandas as pd\n\ns = pd.Series({"a": 3, "b": 1})\nt = pd.Series({"a": "paiza", "c": "daiza"})\nu = pd.Series({"b": True})\ndf = pd.DataFrame({"num": s, "string": t, "bool": u})' },
+        { label:"骨組みコード（穴埋め）", type:"code",
+          body:'# df の行は a, b, c の3行あります。\n# そのうち先頭2行だけを取り出すには…\n\nprint(df[ __ : __ ])' },
+      ],
+      solution:'import pandas as pd\n\ns = pd.Series({"a": 3, "b": 1})\nt = pd.Series({"a": "paiza", "c": "daiza"})\nu = pd.Series({"b": True})\ndf = pd.DataFrame({"num": s, "string": t, "bool": u})\n\nprint(df[0:2])',
+      solutionNote:"DataFrame に対する <code>[n:m]</code> は<b>行</b>のスライシングになります（<code>[\"列名\"]</code> は列の取得）。<code>df[0:2]</code> は 0行目と1行目、つまり a・b の2行を返します。<code>df[\"a\":\"b\"]</code> のようにラベルで書くこともでき、その場合は末尾を<b>含みます</b>。"
+    },
+    "p-302":{
+      title:'演習課題「列に関するスライシング」', status:"todo", difficulty:2, time:6, tags:"pandas, DataFrame",
+      path:["プログラミング学習","Python入門","pandas編","第2章 DataFrame"],
+      notionUrl:"https://www.notion.so/xxxxxxxx",
+      statement:"<code>df</code> から <code>num</code> 列と <code>bool</code> 列だけを取り出して出力してください。",
+      expected:"   num  bool\na  3.0   NaN\nb  1.0  True\nc  NaN   NaN",
+      starter:"", hints:[{label:"考え方のヒント",type:"text",body:"複数列を取り出すときは、列名の<b>リスト</b>を渡します。"}],
+      solution:'print(df[["num", "bool"]])'
+    },
+    "p-303":{
+      title:'演習課題「locとilocの使い分け」', status:"todo", difficulty:3, time:9, tags:"pandas, loc, iloc",
+      path:["プログラミング学習","Python入門","pandas編","第2章 DataFrame"],
+      notionUrl:"https://www.notion.so/xxxxxxxx",
+      statement:"<code>df</code> から b 行の <code>string</code> 列の値を、<code>loc</code> と <code>iloc</code> の両方で取得して出力してください。",
+      expected:"nan\nnan",
+      starter:"", hints:[{label:"考え方のヒント",type:"text",body:"<code>loc</code> は<b>ラベル</b>、<code>iloc</code> は<b>位置(整数)</b>で指定します。"}],
+      solution:'print(df.loc["b", "string"])\nprint(df.iloc[1, 1])'
+    },
+  }
+};
+
+/* ============================================================
+   状態
+   ============================================================ */
+let curId = "p-301";
+let revealed = 0;          // 開いたヒント数
+const progress = {};       // 問題ID -> status（本番は localStorage / KV）
+
+/* ============================================================
+   Python 簡易シンタックスハイライト
+   ============================================================ */
+const RE_PY = /(#[^\n]*)|("""[\s\S]*?"""|'''[\s\S]*?'''|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')|\b(import|from|as|def|class|return|if|elif|else|for|while|in|not|and|or|is|None|True|False|lambda|with|try|except|finally|pass|break|continue|global|yield)\b|\b(\d+\.?\d*)\b|\b(print|len|range|str|int|float|list|dict|set|tuple|sum|min|max|sorted|enumerate|zip|type|open|abs|round)\b|([A-Za-z_]\w*)(?=\s*\()/g;
+const esc = s => s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+function highlight(src){
+  let out="", last=0, m; RE_PY.lastIndex=0;
+  while((m = RE_PY.exec(src))){
+    out += esc(src.slice(last, m.index));
+    const cls = m[1] ? "cm" : m[2] ? "st" : m[3] ? "kw" : m[4] ? "nu" : m[5] ? "bi" : "fn";
+    out += `<span class="${cls}">${esc(m[0])}</span>`;
+    last = m.index + m[0].length;
+  }
+  return out + esc(src.slice(last));
+}
+
+/* ============================================================
+   エディタ
+   ============================================================ */
+const $  = s => document.querySelector(s);
+const ta = $("#code"), hl = $("#hl").firstElementChild, gutter = $("#gutter"), ghost = $("#ghost");
+
+function syncEditor(){
+  const v = ta.value;
+  hl.innerHTML = highlight(v) + "\n";
+  const lines = v.split("\n").length;
+  gutter.textContent = Array.from({length:Math.max(lines,1)},(_,i)=>i+1).join("\n");
+  ghost.style.display = v.length ? "none" : "block";
+}
+ta.addEventListener("input", syncEditor);
+ta.addEventListener("scroll", ()=>{ gutter.scrollTop = ta.scrollTop; });
+$("#edScroll").addEventListener("scroll", e => { gutter.scrollTop = e.target.scrollTop; });
+ta.addEventListener("keydown", e => {
+  if(e.key === "Tab"){                       // Tab でインデント
+    e.preventDefault();
+    const s = ta.selectionStart, t = ta.selectionEnd;
+    ta.value = ta.value.slice(0,s) + "    " + ta.value.slice(t);
+    ta.selectionStart = ta.selectionEnd = s + 4;
+    syncEditor();
+  }
+});
+
+/* ============================================================
+   ツリー描画（Notion の階層をそのまま再現）
+   ============================================================ */
+function nodeTitle(n){ return n.type === "problem" ? DB.problems[n.id].title : n.title; }
+function statusOf(id){ return progress[id] || DB.problems[id].status; }
+
+function renderTree(){
+  const filter = $("#q").value.trim().toLowerCase();
+  const build = (nodes) => {
+    const ul = document.createElement("div");
+    nodes.forEach(n => {
+      if(n.type === "problem"){
+        const p = DB.problems[n.id];
+        if(filter && !p.title.toLowerCase().includes(filter) && !p.tags.toLowerCase().includes(filter)) return;
+        const st = statusOf(n.id);
+        const row = document.createElement("div");
+        row.className = "node";
+        row.innerHTML = `<div class="node-row problem ${n.id===curId?"active":""}" data-open="${n.id}">
+          <span class="tw"></span>
+          <span class="badge-st ${st}">${st==="done"?"✓":st==="wip"?"…":"·"}</span>
+          <span class="label">${nodeTitle(n)}</span>
+        </div>`;
+        ul.appendChild(row);
+      } else {
+        const kids = build(n.children);
+        if(filter && !kids.children.length) return;
+        const el = document.createElement("div");
+        el.className = "node" + ((n.open || filter) ? " open" : "");
+        el.innerHTML = `<div class="node-row folder" data-toggle="1">
+          <span class="tw">▶</span><span class="ico">📁</span>
+          <span class="label">${n.title}</span>
+        </div>`;
+        const box = document.createElement("div");
+        box.className = "node-kids";
+        box.appendChild(kids);
+        el.appendChild(box);
+        ul.appendChild(el);
+      }
+    });
+    return ul;
+  };
+  const tree = $("#tree");
+  tree.innerHTML = "";
+  tree.appendChild(build(DB.tree));
+
+  // 進捗
+  const ids = Object.keys(DB.problems);
+  const done = ids.filter(i => statusOf(i) === "done").length;
+  $("#pgText").textContent = `${done} / ${ids.length}`;
+  $("#pgBar").style.width = (done / ids.length * 100) + "%";
+}
+
+$("#tree").addEventListener("click", e => {
+  const t = e.target.closest("[data-toggle]");
+  if(t){ t.parentElement.classList.toggle("open"); return; }
+  const o = e.target.closest("[data-open]");
+  if(o){ loadProblem(o.dataset.open); if(innerWidth <= 1000) showMobile("prob"); }
+});
+$("#q").addEventListener("input", renderTree);
+
+/* ============================================================
+   問題の読み込み
+   ============================================================ */
+function loadProblem(id){
+  curId = id; revealed = 0;
+  const p = DB.problems[id];
+
+  // パンくず（Notion のパスをそのまま表示）
+  $("#crumb").innerHTML =
+    p.path.map(s => `<span class="seg">${s}</span>`).join(`<span class="sep">/</span>`) +
+    `<span class="sep">/</span><span class="seg">${p.title}</span>` +
+    `<a class="notion-link" href="${p.notionUrl}" target="_blank" rel="noopener">↗ Notionで開く</a>`;
+
+  $("#pTitle").textContent   = p.title;
+  $("#pStatement").innerHTML = p.statement;
+  $("#pExpected").textContent= p.expected;
+  $("#pStars").textContent   = "★".repeat(p.difficulty) + "☆".repeat(3 - p.difficulty);
+  $("#pTags").textContent    = p.tags;
+  $("#pTime").textContent    = p.time;
+
+  document.querySelectorAll(".dstar").forEach((d,i) => d.classList.toggle("on", i < p.difficulty));
+
+  ta.value = p.starter || "";
+  syncEditor();
+  renderHints();
+  renderAnswer();
+  resetConsole();
+  switchTab("prob");
+  renderTree();
+}
+
+/* ============================================================
+   ヒント（段階式・上から順に解放）
+   ============================================================ */
+function renderHints(){
+  const p  = DB.problems[curId];
+  const el = $("#hintList");
+  if(!p.hints.length){
+    el.innerHTML = `<div class="hint-lock">この問題にはヒントが登録されていません。<br>
+      <span style="font-size:11.5px">Notion のページ内に <code>ヒント1:</code> 見出しを作ると自動で取り込まれます。</span></div>`;
+    $("#hintPill").textContent = "0/0";
+    return;
+  }
+  el.innerHTML = p.hints.map((h,i) => `
+    <div class="hint ${i < revealed ? "revealed" : ""}" data-i="${i}">
+      <button class="hint-top">
+        <span class="hint-num">${i+1}</span>
+        <span class="hint-label">${h.label}<br><span class="hint-cost">段階 ${i+1} / ${p.hints.length}</span></span>
+        <span class="hint-cta">${i > revealed ? "🔒 前のヒントを先に" : "タップで表示"}</span>
+      </button>
+      <div class="hint-body">
+        ${h.type === "code" ? `<pre>${highlight(h.body)}</pre>` : h.body}
+        ${h.insert ? `<div class="insert-note">↳ このコードはエディタに自動で挿入されました</div>` : ""}
+      </div>
+    </div>`).join("");
+  $("#hintPill").textContent = `${revealed}/${p.hints.length}`;
+  $("#cue").innerHTML = revealed === 0
+    ? "💡 ヒント未使用（ノーヒント達成でボーナス）"
+    : `💡 ヒント ${revealed}/${p.hints.length} 使用中`;
+}
+
+$("#hintList").addEventListener("click", e => {
+  const box = e.target.closest(".hint"); if(!box) return;
+  const i = +box.dataset.i;
+  if(i > revealed) return;                    // 順番どおりにしか開けない
+  const h = DB.problems[curId].hints[i];
+  if(i === revealed){
+    revealed++;
+    if(h.insert){                             // 前提コードをエディタへ流し込む
+      ta.value = h.body + "\n\n" + ta.value.trim();
+      syncEditor();
+    }
+  }
+  renderHints();
+});
+
+/* ============================================================
+   模範解答（ゲート付き）
+   ============================================================ */
+function renderAnswer(){
+  const p = DB.problems[curId];
+  $("#ansWrap").innerHTML = `
+    <div class="gate" id="gate">
+      <div class="gate-blur">${highlight(p.solution)}</div>
+      <div class="gate-over">
+        <div style="font-size:26px">🔒</div>
+        <h4>先に自分で書いてみよう</h4>
+        <p>一度でも「採点する」を押してから見ると、記憶の定着率が大きく変わります。</p>
+        <button class="btn btn-ghost" id="btnReveal">それでも解答を見る</button>
+      </div>
+    </div>`;
+  $("#btnReveal").onclick = () => {
+    $("#ansWrap").innerHTML = `
+      <div class="block-h" style="margin-bottom:9px"><span class="gi">💡</span>模範解答</div>
+      <div class="expected" style="background:var(--ed-bg);color:var(--ed-fg);border:none">${highlight(p.solution)}</div>
+      ${p.solutionNote ? `<div class="block"><div class="block-h"><span class="gi">📘</span>解説</div>
+        <div class="statement">${p.solutionNote}</div></div>` : ""}
+      <div class="block"><button class="btn btn-ghost" id="btnCopy">📋 エディタに貼り付けて写経する</button></div>`;
+    $("#btnCopy").onclick = () => { ta.value = p.solution; syncEditor(); if(innerWidth<=1000) showMobile("code"); };
+  };
+}
+
+/* ============================================================
+   タブ切替
+   ============================================================ */
+function switchTab(name){
+  document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t.dataset.tab === name));
+  document.querySelectorAll(".panel-view").forEach(v => v.classList.toggle("on", v.dataset.view === name));
+}
+document.querySelectorAll(".tab").forEach(t => t.onclick = () => switchTab(t.dataset.tab));
+
+/* ============================================================
+   実行 & 採点（※デザイン段階のためモック動作）
+   ============================================================ */
+function resetConsole(){
+  $("#out").innerHTML = `<span class="dim">「コードの実行」を押すと、ここに結果が表示されます。</span>`;
+  $("#verdict").className = "verdict";
+}
+function normalize(s){ return s.trim().split("\n").map(l => l.trimEnd()).join("\n"); }
+
+function runCode(){
+  const p = DB.problems[curId], src = ta.value;
+  const out = $("#out");
+  if(!src.trim()){
+    out.innerHTML = `<span class="ng">SyntaxError: コードが空です</span>`;
+    return null;
+  }
+  // ── 本番では Pyodide(WASM) が実際に Python を実行します ──
+  const looksRight = /print\s*\(/.test(src) && /\[\s*0?\s*:\s*2\s*\]|\["?a"?\s*:\s*"?b"?\]/.test(src);
+  const result = looksRight ? p.expected : "   num string  bool\na  3.0  paiza   NaN\nb  1.0    NaN  True\nc  NaN  daiza   NaN";
+  out.innerHTML = esc(result) + `\n\n<span class="dim">— exit code 0 · 0.31s —</span>`;
+  return result;
+}
+$("#btnRun").onclick = () => { runCode(); $("#verdict").className = "verdict"; };
+
+$("#btnGrade").onclick = () => {
+  const p = DB.problems[curId];
+  const result = runCode();
+  if(result === null) return;
+  const ok = normalize(result) === normalize(p.expected);
+  $("#verdict").className = "verdict " + (ok ? "ok" : "ng");
+  $("#verdict").textContent = ok ? "✔ 正解" : "✗ 不正解";
+
+  $("#mEm").textContent   = ok ? (revealed === 0 ? "🏆" : "🎉") : "🤔";
+  $("#mTitle").textContent= ok ? (revealed === 0 ? "ノーヒント正解！" : "正解！") : "もう少し";
+  $("#mMsg").innerHTML    = ok
+    ? `${p.title}<br>所要 4分12秒・ヒント ${revealed}件`
+    : `出力が期待値と違います。<br>差分を確認して、もう一度試してみましょう。`;
+  $("#mDiff").innerHTML = ok
+    ? `<span class="plus">出力が期待値と完全に一致しました。</span>`
+    : normalize(p.expected).split("\n").map(l => `<span class="plus">+ ${esc(l)}</span>`).join("\n")
+      + "\n" + normalize(result).split("\n").map(l => `<span class="minus">- ${esc(l)}</span>`).join("\n");
+  $("#mDiff").style.display = "block";
+
+  if(ok) progress[curId] = "done";
+  renderTree();
+  $("#ov").classList.add("on");
+};
+$("#mClose").onclick = () => $("#ov").classList.remove("on");
+$("#ov").onclick = e => { if(e.target.id === "ov") $("#ov").classList.remove("on"); };
+$("#mNext").onclick = () => {
+  const ids = Object.keys(DB.problems);
+  const next = ids[(ids.indexOf(curId) + 1) % ids.length];
+  $("#ov").classList.remove("on");
+  loadProblem(next);
+};
+$("#btnReset").onclick = () => { ta.value = DB.problems[curId].starter || ""; syncEditor(); resetConsole(); };
+
+/* ============================================================
+   テーマ / 同期 / モバイル
+   ============================================================ */
+$("#btnTheme").onclick = () => {
+  const now = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", now);
+};
+$("#btnSync").onclick = e => {
+  const b = e.currentTarget;
+  b.style.transition = "transform .8s"; b.style.transform = "rotate(360deg)";
+  setTimeout(()=>{ b.style.transition=""; b.style.transform=""; }, 850);
+};
+function showMobile(name){
+  document.querySelectorAll("[data-mcol]").forEach(c => c.classList.toggle("m-on", c.dataset.mcol === name));
+  document.querySelectorAll(".mtab").forEach(t => t.classList.toggle("active", t.dataset.m === name));
+}
+document.querySelectorAll(".mtab").forEach(t => t.onclick = () => showMobile(t.dataset.m));
+
+/* 起動 */
+renderTree();
+loadProblem(curId);
+</script>
+</body>
+</html>
