@@ -4,7 +4,7 @@
    手動編集した内容は次回の自動同期で上書きされる可能性があるため注意してください。
    ============================================================ */
 var DB = {
-  "lastSync": "2026-08-10T20:00:00+09:00",
+  "lastSync": "2026-08-10T20:19:00+09:00",
   "sourceUrl": "https://app.notion.com/p/36fe3be8d5ac80dda919cd12d3f97555",
   "tree": [
     {
@@ -1801,8 +1801,8 @@ var DB = {
     }
   },
   "syncMeta": {
-    "note": "毎週金曜19:00(JST)の自動同期で、このリストの各ページを再取得して変更を検知します。詳細は SYNC_PROMPT.md 参照。",
-    "baselineSyncedAt": "2026-08-10T20:00:00+09:00",
+    "note": "Notionのページに更新がないか、この一覧をもとに差分チェックします。毎週金曜19:00(JST)の自動同期に加えて、Claudeとのチャットで「更新して」と伝えれば同じチェック・追加作業をいつでも実行できます。詳細は SYNC_PROMPT.md 参照。",
+    "baselineSyncedAt": "2026-08-10T20:19:00+09:00",
     "pages": [
       {
         "url": "https://app.notion.com/p/36fe3be8d5ac80c5b830ee4217f62f57",
@@ -1812,7 +1812,7 @@ var DB = {
           "🐍 Python知識ベース",
           "01. sys / stdin 入力"
         ],
-        "lastSeenEditedAt": null,
+        "lastSeenEditedAt": "2026-06-16T02:48:00.000Z",
         "problemIds": [
           "sys-1",
           "sys-2",
@@ -1827,7 +1827,7 @@ var DB = {
           "🐍 Python知識ベース",
           "02. random モジュール"
         ],
-        "lastSeenEditedAt": null,
+        "lastSeenEditedAt": "2026-06-16T02:49:00.000Z",
         "problemIds": [
           "rand-1",
           "rand-2",
@@ -1842,7 +1842,7 @@ var DB = {
           "🐍 Python知識ベース",
           "03. リスト（list）"
         ],
-        "lastSeenEditedAt": null,
+        "lastSeenEditedAt": "2026-06-16T02:50:00.000Z",
         "problemIds": [
           "list-1",
           "list-2",
@@ -1857,7 +1857,7 @@ var DB = {
           "🐍 Python知識ベース",
           "04. 辞書（dict）"
         ],
-        "lastSeenEditedAt": null,
+        "lastSeenEditedAt": "2026-07-05T06:57:00.000Z",
         "problemIds": [
           "dict-1",
           "dict-2",
@@ -1872,7 +1872,7 @@ var DB = {
           "🐍 Python知識ベース",
           "05. 多次元リストとリスト内包表記"
         ],
-        "lastSeenEditedAt": null,
+        "lastSeenEditedAt": "2026-07-05T08:52:00.000Z",
         "problemIds": [
           "nested-1",
           "nested-2",
@@ -1887,7 +1887,7 @@ var DB = {
           "🐍 Python知識ベース",
           "06. 関数（def）・スコープ"
         ],
-        "lastSeenEditedAt": null,
+        "lastSeenEditedAt": "2026-07-05T10:26:00.000Z",
         "problemIds": [
           "func-1",
           "func-2",
@@ -1902,7 +1902,7 @@ var DB = {
           "🐍 Python知識ベース",
           "07. クラス（class）"
         ],
-        "lastSeenEditedAt": null,
+        "lastSeenEditedAt": "2026-07-21T17:22:00.000Z",
         "problemIds": [
           "class-1",
           "class-2",
@@ -1917,7 +1917,7 @@ var DB = {
           "🐍 Python知識ベース",
           "pandas"
         ],
-        "lastSeenEditedAt": null,
+        "lastSeenEditedAt": "2026-06-18T14:07:00.000Z",
         "problemIds": [
           "pdimport-1",
           "pdimport-2"
@@ -1932,7 +1932,7 @@ var DB = {
           "pythonデータ分析入門",
           "Seriesの基本"
         ],
-        "lastSeenEditedAt": null,
+        "lastSeenEditedAt": "2026-08-10T07:11:00.000Z",
         "problemIds": [
           "series-1",
           "series-2",
@@ -1948,7 +1948,7 @@ var DB = {
           "pythonデータ分析入門",
           "DataFrameの基本"
         ],
-        "lastSeenEditedAt": null,
+        "lastSeenEditedAt": "2026-08-10T10:25:00.000Z",
         "problemIds": [
           "df-1",
           "df-2",
@@ -1963,7 +1963,7 @@ var DB = {
           "🐍 Python知識ベース",
           "配列メニュー"
         ],
-        "lastSeenEditedAt": null,
+        "lastSeenEditedAt": "2026-07-08T15:20:00.000Z",
         "problemIds": [
           "pw-1",
           "pw-2"
@@ -1978,7 +1978,7 @@ var DB = {
           "問題集",
           "文字列処理"
         ],
-        "lastSeenEditedAt": null,
+        "lastSeenEditedAt": "2026-07-13T13:01:00.000Z",
         "problemIds": [
           "str-1",
           "str-2",
@@ -1994,7 +1994,7 @@ var DB = {
           "問題集",
           "データセット"
         ],
-        "lastSeenEditedAt": null,
+        "lastSeenEditedAt": "2026-07-13T12:24:00.000Z",
         "problemIds": [
           "dataset-1",
           "dataset-2"
@@ -2009,7 +2009,7 @@ var DB = {
           "問題集",
           "配列"
         ],
-        "lastSeenEditedAt": null,
+        "lastSeenEditedAt": "2026-07-13T15:51:00.000Z",
         "problemIds": [
           "array-1",
           "array-2"
