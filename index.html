@@ -270,6 +270,30 @@ button{font-family:inherit;font-size:inherit;cursor:pointer;border:none;backgrou
 .node-row.chapter .ico{opacity:.9}
 .node-row.chapter.active{background:var(--amber-soft);color:var(--amber);font-weight:600}
 :root[data-theme="dark"] .node-row.chapter.active{color:#e5b45c}
+.book-section{margin-top:22px}
+.book-section h3{
+  font-size:15px;font-weight:700;color:var(--text);margin-bottom:9px;
+  display:flex;align-items:center;gap:7px;
+}
+.book-section h3 .bn{
+  flex:0 0 auto;width:22px;height:22px;border-radius:6px;background:var(--amber-soft);color:var(--amber);
+  display:grid;place-items:center;font-size:11px;font-weight:800;
+}
+.book-body{font-size:13.5px;line-height:1.95;color:var(--text-2)}
+.book-body p{margin-bottom:10px}
+.book-body p:last-child{margin-bottom:0}
+.book-body code{
+  font-family:var(--mono);font-size:12px;background:var(--panel-2);
+  padding:1px 5px;border-radius:4px;border:1px solid var(--border);color:var(--text);
+}
+.book-body pre{
+  font-family:var(--mono);font-size:12.5px;line-height:1.75;
+  background:var(--ed-bg);color:var(--ed-fg);
+  padding:12px 14px;border-radius:var(--radius-sm);margin:9px 0;
+  overflow-x:auto;white-space:pre;
+}
+.book-body ul{margin:8px 0 10px 1.3em}
+.book-body li{margin-bottom:5px}
 .term-list{display:flex;flex-direction:column;gap:10px;margin-top:2px}
 .term-card{
   border:1px solid var(--border);border-radius:var(--radius);background:var(--panel-2);
@@ -601,10 +625,11 @@ textarea.code::selection{background:rgba(127,227,210,.25)}
         <div id="ansWrap"></div>
       </section>
 
-      <!-- チャプター（演習の前に読む用語解説） -->
+      <!-- チャプター（演習の前に読む教科書・用語解説） -->
       <section class="panel-view" data-view="chapter">
         <h1 class="prob-title"><span class="mark" style="background:var(--amber)">📖</span><span id="chTitle"></span></h1>
         <div class="statement" id="chIntro" style="background:var(--amber-soft);border-left-color:var(--amber)"></div>
+        <div id="chBook"></div>
         <div class="block">
           <div class="block-h"><span class="gi">📚</span>このチャプターで登場する用語</div>
           <div class="term-list" id="chTerms"></div>
@@ -855,6 +880,9 @@ ta.addEventListener("keydown", e => {
 /* ============================================================
    ツリー描画（Notion の階層をそのまま再現）
    ============================================================ */
+function linkLabel(url){
+  return /notion\.(so|com)/.test(url || "") ? "Notionで開く" : "参考ページを開く";
+}
 function nodeTitle(n){
   if(n.type === "problem") return DB.problems[n.id].title;
   if(n.type === "chapter") return DB.chapters[n.id].title;
@@ -951,10 +979,17 @@ function loadChapter(id){
   $("#crumb").innerHTML =
     c.path.map(s => `<span class="seg">${s}</span>`).join(`<span class="sep">/</span>`) +
     `<span class="sep">/</span><span class="seg">${c.title}</span>` +
-    `<a class="notion-link" href="${c.notionUrl}" target="_blank" rel="noopener">↗ Notionで開く</a>`;
+    `<a class="notion-link" href="${c.notionUrl}" target="_blank" rel="noopener">↗ ${linkLabel(c.notionUrl)}</a>`;
 
   $("#chTitle").textContent = c.title;
   $("#chIntro").innerHTML = c.intro;
+  $("#chBook").innerHTML = (c.book && c.book.length)
+    ? c.book.map((sec, i) => `
+      <div class="book-section">
+        <h3><span class="bn">${i+1}</span>${sec.h}</h3>
+        <div class="book-body">${sec.body}</div>
+      </div>`).join("")
+    : "";
   $("#chTerms").innerHTML = c.terms.length
     ? c.terms.map(t => `<div class="term-card"><span class="term-name">${t.term}</span><div class="term-desc">${t.desc}</div></div>`).join("")
     : `<div class="term-empty">このチャプターで新しく登場する用語はありません（すでに前のチャプターで紹介済みです）。</div>`;
@@ -974,7 +1009,7 @@ function loadProblem(id){
   $("#crumb").innerHTML =
     p.path.map(s => `<span class="seg">${s}</span>`).join(`<span class="sep">/</span>`) +
     `<span class="sep">/</span><span class="seg">${p.title}</span>` +
-    `<a class="notion-link" href="${p.notionUrl}" target="_blank" rel="noopener">↗ Notionで開く</a>`;
+    `<a class="notion-link" href="${p.notionUrl}" target="_blank" rel="noopener">↗ ${linkLabel(p.notionUrl)}</a>`;
 
   $("#pTitle").textContent   = p.title;
   $("#pStatement").innerHTML = p.statement;
@@ -1101,23 +1136,44 @@ async function ensurePyodide(){
       setPyStatus("Python環境 起動中…（初回のみ）");
       const py = await loadPyodide();
       await py.runPythonAsync(`
-import sys, io, contextlib, traceback
+import sys, io, contextlib, traceback, base64
 
 def __run_user_code(src, stdin_text):
     buf = io.StringIO()
     old_stdin = sys.stdin
     sys.stdin = io.StringIO(stdin_text or "")
+    images = []
     try:
         with contextlib.redirect_stdout(buf):
             exec(src, {"__name__": "__main__"})
-        return {"ok": True, "output": buf.getvalue(), "error": None}
+        __capture_figures(images)
+        return {"ok": True, "output": buf.getvalue(), "error": None, "images": images}
     except Exception as e:
+        __capture_figures(images)
         return {"ok": False, "output": buf.getvalue(),
-                "error": "".join(traceback.format_exception_only(type(e), e)).strip()}
+                "error": "".join(traceback.format_exception_only(type(e), e)).strip(), "images": images}
     finally:
         sys.stdin = old_stdin
+
+def __capture_figures(images):
+    # matplotlib を使った問題でグラフが描かれていれば、PNG画像として回収する。
+    # 未読み込みなら何もしない（通常のテキスト問題では matplotlib 自体をロードしないため無視される）。
+    if "matplotlib.pyplot" not in sys.modules:
+        return
+    plt = sys.modules["matplotlib.pyplot"]
+    for num in plt.get_fignums():
+        fig = plt.figure(num)
+        imgbuf = io.BytesIO()
+        fig.savefig(imgbuf, format="png", bbox_inches="tight", dpi=110)
+        imgbuf.seek(0)
+        images.append(base64.b64encode(imgbuf.read()).decode("ascii"))
+    plt.close("all")
 `);
       pyodide = py;
+      try{
+        // pd.read_csv('iris.csv')（相対パス）がそのまま動くよう、Pythonの作業ディレクトリ直下に書き込む
+        if(DB.datasets && DB.datasets.iris) py.FS.writeFile(py.FS.cwd() + "/iris.csv", DB.datasets.iris);
+      }catch(e){ /* データセット未定義の場合は無視 */ }
       setPyStatus("Python環境 準備完了", "--accent");
       return py;
     })();
@@ -1161,14 +1217,17 @@ async function runCode(){
     const res = resProxy.toJs({ dict_converter: Object.fromEntries });
     resProxy.destroy();
     const dt = ((performance.now() - t0) / 1000).toFixed(2);
+    const imgsHtml = (res.images && res.images.length)
+      ? res.images.map(b64 => `<img src="data:image/png;base64,${b64}" style="max-width:100%;border-radius:6px;margin-top:10px;background:#fff;display:block">`).join("")
+      : "";
     if(res.ok){
       const shown = res.output.replace(/\n$/, "");
       out.innerHTML = (shown ? esc(shown) : `<span class="dim">（出力なし）</span>`)
-        + `\n\n<span class="dim">— exit code 0 · ${dt}s —</span>`;
+        + `\n\n<span class="dim">— exit code 0 · ${dt}s —</span>` + imgsHtml;
       return shown;
     } else {
       const shown = res.output ? esc(res.output.replace(/\n$/, "")) + "\n" : "";
-      out.innerHTML = shown + `<span class="ng">${esc(res.error)}</span>`;
+      out.innerHTML = shown + `<span class="ng">${esc(res.error)}</span>` + imgsHtml;
       return null;
     }
   } catch(err){

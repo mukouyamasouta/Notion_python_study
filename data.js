@@ -4,7 +4,7 @@
    手動編集した内容は次回の自動同期で上書きされる可能性があるため注意してください。
    ============================================================ */
 var DB = {
-  "lastSync": "2026-08-11T21:03:00+09:00",
+  "lastSync": "2026-08-12T04:50:00+09:00",
   "sourceUrl": "https://app.notion.com/p/36fe3be8d5ac80dda919cd12d3f97555",
   "tree": [
     {
@@ -320,7 +320,7 @@ var DB = {
                 {
                   "title": "DataFrameの基本",
                   "type": "folder",
-                  "open": true,
+                  "open": false,
                   "children": [
                     {
                       "id": "ch-df",
@@ -371,6 +371,116 @@ var DB = {
                       "type": "problem"
                     }
                   ]
+                },
+                {
+                  "title": "pandas実践（アイリスデータセット）",
+                  "type": "folder",
+                  "open": true,
+                  "children": [
+                    {
+                      "id": "ch-pdx",
+                      "type": "chapter"
+                    },
+                    {
+                      "id": "pdx-1",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "pdx-2",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "pdx-3",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "pdx-4",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "pdx-5",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "pdx-6",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "pdx-7",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "pdx-8",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "pdx-9",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "pdx-10",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "pdx-11",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "pdx-12",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "pdx-13",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "pdx-14",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "pdx-15",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "pdx-16",
+                      "type": "problem"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "scikit-learn入門",
+              "type": "folder",
+              "open": false,
+              "children": [
+                {
+                  "id": "ch-sklearn",
+                  "type": "chapter"
+                },
+                {
+                  "id": "sk-1",
+                  "type": "problem"
+                },
+                {
+                  "id": "sk-2",
+                  "type": "problem"
+                },
+                {
+                  "id": "sk-3",
+                  "type": "problem"
+                },
+                {
+                  "id": "sk-4",
+                  "type": "problem"
+                },
+                {
+                  "id": "sk-5",
+                  "type": "problem"
+                },
+                {
+                  "id": "sk-6",
+                  "type": "problem"
                 }
               ]
             },
@@ -2092,6 +2202,646 @@ var DB = {
         "pandas"
       ]
     },
+    "pdx-1": {
+      "title": "演習課題「リスト・配列・辞書からSeriesを作る」",
+      "status": "todo",
+      "difficulty": 1,
+      "time": 6,
+      "tags": "pandas, Series, numpy",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "pandas実践（アイリスデータセット）"
+      ],
+      "notionUrl": "https://pandas.pydata.org/pandas-docs/stable/getting_started/index.html",
+      "statement": "<ol class='steps'><li><code>pandas</code> を <code>pd</code>、<code>numpy</code> を <code>np</code> としてインポートします。</li><li>リスト <code>[0, 1, 2]</code> から Series を作り、<code>print()</code> で出力します。</li><li>NumPy配列 <code>np.array([10, 20, 30])</code> から Series を作り、<code>print()</code> で出力します。</li><li>辞書 <code>{0: \"boo\", 1: \"foo\", 2: \"woo\"}</code> から Series を作り、<code>print()</code> で出力します。</li></ol>",
+      "expected": "0    0\n1    1\n2    2\ndtype: int64\n0    10\n1    20\n2    30\ndtype: int32\n0    boo\n1    foo\n2    woo\ndtype: object",
+      "starter": "",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>pd.Series()</code> の引数には、リスト・NumPy配列・辞書のいずれも渡せます。リストや配列を渡した場合はインデックスが自動で 0, 1, 2... になり、辞書を渡した場合はキーがそのままインデックスになります。"
+        }
+      ],
+      "solution": "import pandas as pd\nimport numpy as np\n\ns1 = pd.Series([0, 1, 2])\nprint(s1)\n\ns2 = pd.Series(np.array([10, 20, 30]))\nprint(s2)\n\ns3 = pd.Series({0: \"boo\", 1: \"foo\", 2: \"woo\"})\nprint(s3)",
+      "solutionNote": "3つとも中身は「0, 1, 2 という3つの値」を持つ点は同じですが、<code>dtype</code>（データの型）は元になったデータによって微妙に異なります（<code>np.array</code> は環境によって <code>int32</code>/<code>int64</code> になることがあります）。どんな入れ物からでも Series は作れる、という柔軟さを確認する問題です。",
+      "pkgs": [
+        "pandas",
+        "numpy"
+      ]
+    },
+    "pdx-2": {
+      "title": "多次元リスト・辞書からDataFrameを作る",
+      "status": "todo",
+      "difficulty": 1,
+      "time": 7,
+      "tags": "pandas, DataFrame, index, columns",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "pandas実践（アイリスデータセット）"
+      ],
+      "notionUrl": "https://pandas.pydata.org/pandas-docs/stable/getting_started/index.html",
+      "statement": "<ol class='steps'><li><code>pandas</code> を <code>pd</code> としてインポートします。</li><li>多次元リスト <code>[[0,1,2],[3,4,5],[6,7,8],[9,10,11]]</code> から、行ラベル <code>index=[10,11,12,13]</code>、列名 <code>columns=[\"c1\",\"c2\",\"c3\"]</code> を指定して DataFrame <code>d1</code> を作り、<code>print()</code> で出力します。</li><li>辞書 <code>{\"Initial\": [\"B\",\"F\",\"W\"], \"Name\": [\"boo\",\"foo\",\"woo\"]}</code> から、<code>columns=[\"Name\",\"Initial\"]</code>（列の並び順を指定）で DataFrame <code>d3</code> を作り、<code>print()</code> で出力します。</li></ol>",
+      "expected": "    c1  c2  c3\n10   0   1   2\n11   3   4   5\n12   6   7   8\n13   9  10  11\n  Name Initial\n0  boo       B\n1  foo       F\n2  woo       W",
+      "starter": "",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "多次元リストから作る場合、<code>index=</code>・<code>columns=</code> を省略すると行番号・列番号が自動で振られます。辞書から作る場合は、キーがそのまま列名の候補になりますが、<b>表示する順番</b>を指定したいときは <code>columns=</code> で明示します。"
+        }
+      ],
+      "solution": "import pandas as pd\n\nd1 = pd.DataFrame([[0, 1, 2], [3, 4, 5], [6, 7, 8], [9, 10, 11]], index=[10, 11, 12, 13], columns=[\"c1\", \"c2\", \"c3\"])\nprint(d1)\n\nd3 = pd.DataFrame({\"Initial\": [\"B\", \"F\", \"W\"], \"Name\": [\"boo\", \"foo\", \"woo\"]}, columns=[\"Name\", \"Initial\"])\nprint(d3)",
+      "solutionNote": "<code>d3</code> の元の辞書は <code>Initial</code> が先に書かれていますが、<code>columns=[\"Name\",\"Initial\"]</code> によって出力では <code>Name</code> が先に表示されます。辞書の定義順ではなく、<code>columns</code> の指定順が優先されることを確認してください。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
+    "pdx-3": {
+      "title": "CSVファイルを読み込む（read_csv・head）",
+      "status": "todo",
+      "difficulty": 1,
+      "time": 5,
+      "tags": "pandas, read_csv, head",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "pandas実践（アイリスデータセット）"
+      ],
+      "notionUrl": "https://pandas.pydata.org/pandas-docs/stable/getting_started/index.html",
+      "statement": "<ol class='steps'><li><code>pandas</code> を <code>pd</code> としてインポートします。</li><li><code>pd.read_csv(\"iris.csv\")</code> で、あやめの花の測定データ（アイリスデータセット）を読み込み、変数 <code>iris_d</code> に代入します。</li><li><code>iris_d.head(3)</code>（先頭3行）を <code>print()</code> で出力します。</li></ol>",
+      "expected": "   sepal_length  sepal_width  petal_length  petal_width species\n0           5.1          3.5           1.4          0.2  setosa\n1           4.9          3.0           1.4          0.2  setosa\n2           4.7          3.2           1.3          0.2  setosa",
+      "starter": "",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "このアプリには <code>iris.csv</code>（あやめの「がく片(sepal)」「花弁(petal)」の長さ・幅と品種(species)のデータ）があらかじめ用意されています。<code>pd.read_csv(\"ファイル名\")</code> で読み込むと DataFrame になります。<code>.head(n)</code> は先頭 n 行だけを確認したいときに使う、データ分析で最初に必ず使うメソッドです。"
+        }
+      ],
+      "solution": "import pandas as pd\n\niris_d = pd.read_csv(\"iris.csv\")\nprint(iris_d.head(3))",
+      "solutionNote": "実務のデータ分析では、まず <code>read_csv()</code> でデータを読み込み、<code>.head()</code> で「ちゃんと読み込めているか」「どんな列があるか」を確認するのがお決まりの最初の一歩です。以降の問題はすべてこの <code>iris_d</code> を使います。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
+    "pdx-4": {
+      "title": "indexとlen()でデータ件数を確認する",
+      "status": "todo",
+      "difficulty": 1,
+      "time": 5,
+      "tags": "pandas, index, len, RangeIndex",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "pandas実践（アイリスデータセット）"
+      ],
+      "notionUrl": "https://pandas.pydata.org/pandas-docs/stable/getting_started/index.html",
+      "statement": "右のコードエリアには <code>iris_d</code>（アイリスデータセット）が読み込まれています。<code>iris_d.index</code>（インデックスの情報）を1行目に、<code>len(iris_d.index)</code>（行数）を2行目に出力してください。",
+      "expected": "RangeIndex(start=0, stop=30, step=1)\n30",
+      "starter": "import pandas as pd\n\niris_d = pd.read_csv(\"iris.csv\")\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>.index</code> 属性は、DataFrameの行ラベルの一覧を表す情報を返します。<code>read_csv()</code> で読み込んだだけ（<code>index_col</code> を指定しない）の場合、行ラベルは 0 から始まる連番（<code>RangeIndex</code>）になります。<code>len()</code> にそのままインデックスを渡すと、行の総数が得られます。"
+        }
+      ],
+      "solution": "import pandas as pd\n\niris_d = pd.read_csv(\"iris.csv\")\nprint(iris_d.index)\nprint(len(iris_d.index))",
+      "solutionNote": "<code>RangeIndex(start=0, stop=30, step=1)</code> は「0から29まで、1ずつ増える30個のインデックス」を表しています。<code>len(iris_d)</code>（<code>.index</code>を省略）でも同じ結果が得られます。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
+    "pdx-5": {
+      "title": "先頭・末尾の行をスライスで取り出す",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 6,
+      "tags": "pandas, スライシング",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "pandas実践（アイリスデータセット）"
+      ],
+      "notionUrl": "https://pandas.pydata.org/pandas-docs/stable/getting_started/index.html",
+      "statement": "右のコードエリアには <code>iris_d</code> が読み込まれています。<code>iris_d[:5]</code>（先頭5行）を1つ目に、<code>iris_d[-3:]</code>（末尾3行）を2つ目に出力してください。",
+      "expected": "   sepal_length  sepal_width  petal_length  petal_width species\n0           5.1          3.5           1.4          0.2  setosa\n1           4.9          3.0           1.4          0.2  setosa\n2           4.7          3.2           1.3          0.2  setosa\n3           4.6          3.1           1.5          0.2  setosa\n4           5.0          3.6           1.4          0.2  setosa\n    sepal_length  sepal_width  petal_length  petal_width    species\n27           7.3          2.9           6.3          1.8  virginica\n28           6.7          2.5           5.8          1.8  virginica\n29           7.2          3.6           6.1          2.5  virginica",
+      "starter": "import pandas as pd\n\niris_d = pd.read_csv(\"iris.csv\")\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "DataFrameでも、リストと同じ角カッコのスライシング <code>[開始:終了]</code> が使え、行を範囲で取り出せます。マイナスの数は「末尾から数えた位置」を表すので、<code>[-3:]</code> は「末尾から3行目から最後まで」、つまり最後の3行になります。"
+        }
+      ],
+      "solution": "import pandas as pd\n\niris_d = pd.read_csv(\"iris.csv\")\nprint(iris_d[:5])\nprint(iris_d[-3:])",
+      "solutionNote": "<code>.head(5)</code> と <code>iris_d[:5]</code> は同じ結果になりますが、スライシングのほうが「先頭からN件」以外にも柔軟な範囲指定（例: <code>iris_d[10:15]</code>）に対応できます。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
+    "pdx-6": {
+      "title": "列を抽出する（角カッコ・複数列）",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 7,
+      "tags": "pandas, 列の抽出",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "pandas実践（アイリスデータセット）"
+      ],
+      "notionUrl": "https://pandas.pydata.org/pandas-docs/stable/getting_started/index.html",
+      "statement": "右のコードエリアには <code>iris_d</code> が読み込まれています。<code>iris_d[\"species\"]</code>（<code>species</code>列だけ）の先頭3行を1つ目に、<code>iris_d[[\"sepal_length\",\"species\"]]</code>（2つの列）の先頭3行を2つ目に出力してください。",
+      "expected": "0    setosa\n1    setosa\n2    setosa\nName: species, dtype: object\n   sepal_length species\n0           5.1  setosa\n1           4.9  setosa\n2           4.7  setosa",
+      "starter": "import pandas as pd\n\niris_d = pd.read_csv(\"iris.csv\")\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>df[\"列名\"]</code>（角カッコに文字列を1つ）は<b>1つの列を Series として</b>取り出します（<code>df.列名</code> のようにドットでも同じ結果になります）。<code>df[[\"列名1\",\"列名2\"]]</code>（角カッコの中に<b>列名のリスト</b>）は<b>複数の列を DataFrame として</b>取り出します。"
+        }
+      ],
+      "solution": "import pandas as pd\n\niris_d = pd.read_csv(\"iris.csv\")\nprint(iris_d[\"species\"].head(3))\nprint(iris_d[[\"sepal_length\", \"species\"]].head(3))",
+      "solutionNote": "単一の列を取り出すと Series（1次元）に、複数の列のリストを渡すと DataFrame（2次元、1列だけでも表の形）になります。角カッコが1重か2重かで戻り値の種類が変わる点をしっかり区別しましょう。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
+    "pdx-7": {
+      "title": "ilocで位置を指定してデータを取得する",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 8,
+      "tags": "pandas, iloc",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "pandas実践（アイリスデータセット）"
+      ],
+      "notionUrl": "https://pandas.pydata.org/pandas-docs/stable/getting_started/index.html",
+      "statement": "右のコードエリアには <code>iris_d</code> が読み込まれています。<code>iris_d.iloc[1]</code>（2行目のデータ）を1つ目に、<code>iris_d.iloc[1, 1]</code>（2行目・2列目のセル）を2つ目に、<code>iris_d.iloc[0:3, 0:2]</code>（1〜3行目・1〜2列目の範囲）を3つ目に出力してください。",
+      "expected": "sepal_length       4.9\nsepal_width        3.0\npetal_length       1.4\npetal_width        0.2\nspecies         setosa\nName: 1, dtype: object\n3.0\n   sepal_length  sepal_width\n0           5.1          3.5\n1           4.9          3.0\n2           4.7          3.2",
+      "starter": "import pandas as pd\n\niris_d = pd.read_csv(\"iris.csv\")\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>.iloc[]</code> は、NumPy配列のスライスと同じ感覚で、行・列を<b>0始まりの位置（整数）</b>で指定します。<code>iloc[行]</code>・<code>iloc[行, 列]</code>・<code>iloc[行の範囲, 列の範囲]</code>のように、指定の仕方によって「1行」「1セル」「範囲」を自在に取り出せます。"
+        }
+      ],
+      "solution": "import pandas as pd\n\niris_d = pd.read_csv(\"iris.csv\")\nprint(iris_d.iloc[1])\nprint(iris_d.iloc[1, 1])\nprint(iris_d.iloc[0:3, 0:2])",
+      "solutionNote": "このデータセットは行ラベルが 0 始まりの連番なので、位置とラベルが一致していますが、後の問題で行ラベルと位置がズレるケースを扱う <code>loc</code> と比較しながら理解を深めてください。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
+    "pdx-8": {
+      "title": "locでラベルを指定してデータを取得する",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 8,
+      "tags": "pandas, loc",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "pandas実践（アイリスデータセット）"
+      ],
+      "notionUrl": "https://pandas.pydata.org/pandas-docs/stable/getting_started/index.html",
+      "statement": "右のコードエリアには <code>iris_d</code> が読み込まれています。<code>iris_d.loc[5]</code>（行ラベル5のデータ）を1つ目に、<code>iris_d.loc[5, \"sepal_length\"]</code>（行ラベル5・sepal_length列のセル）を2つ目に、<code>iris_d.loc[1:5, [\"sepal_length\",\"species\"]]</code>（行ラベル1〜5・指定した2列）を3つ目に出力してください。",
+      "expected": "sepal_length       5.4\nsepal_width        3.9\npetal_length       1.7\npetal_width        0.4\nspecies         setosa\nName: 5, dtype: object\n5.4\n   sepal_length species\n1           4.9  setosa\n2           4.7  setosa\n3           4.6  setosa\n4           5.0  setosa\n5           5.4  setosa",
+      "starter": "import pandas as pd\n\niris_d = pd.read_csv(\"iris.csv\")\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>.loc[]</code> は行・列を<b>ラベル（名前）</b>で指定します。今回の行ラベルはたまたま位置と同じ数字ですが、概念としては「番号のふりをした名前」です。範囲指定 <code>loc[1:5]</code> は <code>iloc</code> と違い、<b>終端の5も含む</b>点に注意してください（スライシングの終端を含まない <code>iloc</code>・リストとの違いです）。"
+        }
+      ],
+      "solution": "import pandas as pd\n\niris_d = pd.read_csv(\"iris.csv\")\nprint(iris_d.loc[5])\nprint(iris_d.loc[5, \"sepal_length\"])\nprint(iris_d.loc[1:5, [\"sepal_length\", \"species\"]])",
+      "solutionNote": "<code>iloc[1:5]</code>なら4行（1,2,3,4）ですが、<code>loc[1:5]</code>は5行（1,2,3,4,5）になります。「locのラベル範囲は終端を含む」というのは、pandasの中でも特につまずきやすいポイントです。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
+    "pdx-9": {
+      "title": "複数条件でデータを絞り込む（paiza形式）",
+      "status": "todo",
+      "difficulty": 3,
+      "time": 10,
+      "tags": "pandas, 条件抽出, フィルタリング",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "pandas実践（アイリスデータセット）"
+      ],
+      "notionUrl": "https://pandas.pydata.org/pandas-docs/stable/getting_started/index.html",
+      "statement": "アイリスデータセット <code>iris_d</code> を読み込み、<code>sepal_length</code> 列の値が <code>7.0</code> より大きく、かつ <code>sepal_width</code> 列の値が <code>3.0</code> より小さい行だけを抽出して出力してください。",
+      "expected": "    sepal_length  sepal_width  petal_length  petal_width    species\n27           7.3          2.9           6.3          1.8  virginica",
+      "starter": "",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "NumPy配列と同じく、pandasの条件式のブール演算では <code>and</code>/<code>or</code>/<code>not</code> の代わりに <code>&</code>/<code>|</code>/<code>~</code> を使い、それぞれの条件をカッコで囲みます。<code>df[(条件1) & (条件2)]</code> の形にまとめてください。"
+        }
+      ],
+      "solution": "import pandas as pd\n\niris_d = pd.read_csv(\"iris.csv\")\nprint(iris_d[(iris_d[\"sepal_length\"] > 7.0) & (iris_d[\"sepal_width\"] < 3.0)])",
+      "solutionNote": "このデータセット（30件）の中では、この条件に当てはまる花は1件だけです。条件を1つずつ確認したいときは、まず <code>iris_d[\"sepal_length\"] > 7.0</code> だけを実行して、真偽値の並びを確認してみるのがおすすめです。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
+    "pdx-10": {
+      "title": "列の追加と削除（代入・del・assign・drop）",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 9,
+      "tags": "pandas, 列の追加, assign, drop",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "pandas実践（アイリスデータセット）"
+      ],
+      "notionUrl": "https://pandas.pydata.org/pandas-docs/stable/getting_started/index.html",
+      "statement": "右のコードエリアには <code>iris_d</code> が読み込まれています。以下を順番に行ってください。<br>1. <code>iris_d[\"mycolumn\"] = 1</code> で新しい列を追加し、<code>iris_d.head(2)</code> を出力する。<br>2. <code>del iris_d[\"mycolumn\"]</code> でその列を削除する。<br>3. <code>iris_d.assign(mycolumn=2)</code> で「mycolumn列を追加した<b>新しい</b>DataFrame」を作り、<code>myiris1</code> に代入する（<code>iris_d</code>自体は変えない）。<br>4. <code>myiris1.drop(\"mycolumn\", axis=1)</code> で「mycolumn列を削除した<b>新しい</b>DataFrame」を作り、<code>myiris2</code> に代入し、<code>myiris2.head(2)</code> を出力する。",
+      "expected": "   sepal_length  sepal_width  petal_length  petal_width species  mycolumn\n0           5.1          3.5           1.4          0.2  setosa         1\n1           4.9          3.0           1.4          0.2  setosa         1\n   sepal_length  sepal_width  petal_length  petal_width species\n0           5.1          3.5           1.4          0.2  setosa\n1           4.9          3.0           1.4          0.2  setosa",
+      "starter": "import pandas as pd\n\niris_d = pd.read_csv(\"iris.csv\")\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>df[\"新列\"] = 値</code> と <code>del df[\"列\"]</code> は<b>その場でDataFrameを直接書き換えます</b>。一方 <code>.assign(列名=値)</code> と <code>.drop(列名, axis=1)</code> は<b>元のDataFrameを変えずに、新しいDataFrameを返す</b>という違いがあります。目的に応じて使い分けます。"
+        }
+      ],
+      "solution": "import pandas as pd\n\niris_d = pd.read_csv(\"iris.csv\")\n\niris_d[\"mycolumn\"] = 1\nprint(iris_d.head(2))\n\ndel iris_d[\"mycolumn\"]\n\nmyiris1 = iris_d.assign(mycolumn=2)\nmyiris2 = myiris1.drop(\"mycolumn\", axis=1)\nprint(myiris2.head(2))",
+      "solutionNote": "実際のデータ分析コードでは、「元のデータは壊さずに、加工した結果だけを新しい変数に入れる」という <code>assign</code>/<code>drop</code> 系の書き方がよく好まれます（元データを後で見返せるようにするためです）。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
+    "pdx-11": {
+      "title": "行の追加と削除（concat・drop）",
+      "status": "todo",
+      "difficulty": 3,
+      "time": 10,
+      "tags": "pandas, concat, drop, ignore_index",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "pandas実践（アイリスデータセット）"
+      ],
+      "notionUrl": "https://pandas.pydata.org/pandas-docs/stable/getting_started/index.html",
+      "statement": "右のコードエリアには <code>iris_d</code> が読み込まれています。<code>row = pd.DataFrame([[1,1,1,1,\"setosa\"]], columns=iris_d.columns)</code>で1行だけの新しいDataFrameを作り、<code>pd.concat([iris_d, row], ignore_index=True)</code> で <code>iris_d</code> の末尾に連結して <code>myiris4</code> に代入してください。<code>myiris4.tail(2)</code> を1回出力したあと、<code>myiris4.drop(30)</code>（行ラベル30、つまり追加した行）を <code>myiris4</code> に代入し直し、もう一度 <code>myiris4.tail(2)</code> を出力してください。",
+      "expected": "    sepal_length  sepal_width  petal_length  petal_width    species\n29           7.2          3.6           6.1          2.5  virginica\n30           1.0          1.0           1.0          1.0     setosa\n    sepal_length  sepal_width  petal_length  petal_width    species\n28           6.7          2.5           5.8          1.8  virginica\n29           7.2          3.6           6.1          2.5  virginica",
+      "starter": "import pandas as pd\n\niris_d = pd.read_csv(\"iris.csv\")\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>pd.concat([df1, df2])</code> は複数のDataFrameを連結する関数でしたね。<code>ignore_index=True</code> を付けると、連結後にインデックスが 0, 1, 2... と振り直され、追加した行は最後の番号（この場合は30）になります。行の削除は <code>.drop(行ラベル)</code> で、列削除のときと違い <code>axis</code> の指定は不要です。"
+        }
+      ],
+      "solution": "import pandas as pd\n\niris_d = pd.read_csv(\"iris.csv\")\n\nrow = pd.DataFrame([[1, 1, 1, 1, \"setosa\"]], columns=iris_d.columns)\nmyiris4 = pd.concat([iris_d, row], ignore_index=True)\nprint(myiris4.tail(2))\n\nmyiris4 = myiris4.drop(30)\nprint(myiris4.tail(2))",
+      "solutionNote": "<code>ignore_index=True</code> を付け忘れると、追加した行のインデックスは連番にならず <code>0</code>（<code>row</code>を作ったときの初期インデックス）のままになり、既存の行と番号が重複してしまいます。行を積み重ねるときは、この引数の有無を意識しましょう。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
+    "pdx-12": {
+      "title": "複数列を基準に並び替える（昇順・降順）",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 8,
+      "tags": "pandas, sort_values, 複数列",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "pandas実践（アイリスデータセット）"
+      ],
+      "notionUrl": "https://pandas.pydata.org/pandas-docs/stable/getting_started/index.html",
+      "statement": "右のコードエリアには <code>iris_d</code> が読み込まれています。<code>[\"sepal_length\", \"sepal_width\"]</code>の2列を基準に<b>昇順</b>で並び替えた結果の先頭5行を1つ目に、同じ2列を基準に<code>ascending=False</code>で<b>降順</b>に並び替えた結果の先頭5行を2つ目に出力してください。",
+      "expected": "    sepal_length  sepal_width  petal_length  petal_width     species\n8            4.4          2.9           1.4          0.2      setosa\n3            4.6          3.1           1.5          0.2      setosa\n6            4.6          3.4           1.4          0.3      setosa\n2            4.7          3.2           1.3          0.2      setosa\n17           4.9          2.4           3.3          1.0  versicolor\n    sepal_length  sepal_width  petal_length  petal_width     species\n25           7.6          3.0           6.6          2.1   virginica\n27           7.3          2.9           6.3          1.8   virginica\n29           7.2          3.6           6.1          2.5   virginica\n22           7.1          3.0           5.9          2.1   virginica\n10           7.0          3.2           4.7          1.4  versicolor",
+      "starter": "import pandas as pd\n\niris_d = pd.read_csv(\"iris.csv\")\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>sort_values()</code> の第一引数に<b>列名のリスト</b>を渡すと、複数の基準で並び替えられます（1つ目の列で同じ値の行があった場合に、2つ目の列で並び順を決めます）。既定は昇順で、<code>ascending=False</code>を渡すと降順になります。"
+        }
+      ],
+      "solution": "import pandas as pd\n\niris_d = pd.read_csv(\"iris.csv\")\n\nsorted_iris = iris_d.sort_values([\"sepal_length\", \"sepal_width\"])\nprint(sorted_iris.head(5))\n\nsorted_iris2 = iris_d.sort_values([\"sepal_length\", \"sepal_width\"], ascending=False)\nprint(sorted_iris2.head(5))",
+      "solutionNote": "<code>sort_values()</code> は既定で<b>新しいDataFrameを返す</b>ため、<code>sorted_iris</code>という別の変数に代入しています。元の <code>iris_d</code> 自体を並び替えたい場合は <code>inplace=True</code> を付けます。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
+    "pdx-13": {
+      "title": "describe()で要約統計量を確認する",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 6,
+      "tags": "pandas, describe, 統計量",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "pandas実践（アイリスデータセット）"
+      ],
+      "notionUrl": "https://pandas.pydata.org/pandas-docs/stable/getting_started/index.html",
+      "statement": "右のコードエリアには <code>iris_d</code> が読み込まれています。<code>sepal_length</code> と <code>sepal_width</code> の2列だけを取り出したうえで、<code>.describe()</code> を使って要約統計量（件数・平均・標準偏差・最小値・四分位数・最大値）を出力してください。",
+      "expected": "       sepal_length  sepal_width\ncount     30.000000    30.000000\nmean       5.843333     3.040000\nstd        0.964073     0.372873\nmin        4.400000     2.300000\n25%        4.925000     2.825000\n50%        5.750000     3.000000\n75%        6.575000     3.275000\nmax        7.600000     3.900000",
+      "starter": "import pandas as pd\n\niris_d = pd.read_csv(\"iris.csv\")\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>.describe()</code> はDataFrame（またはSeries）に対して呼ぶだけで、数値列それぞれの主要な統計量をまとめて計算してくれる便利なメソッドです。まず <code>iris_d[[\"sepal_length\", \"sepal_width\"]]</code> で列を絞り込んでから呼び出しましょう。"
+        }
+      ],
+      "solution": "import pandas as pd\n\niris_d = pd.read_csv(\"iris.csv\")\nprint(iris_d[[\"sepal_length\", \"sepal_width\"]].describe())",
+      "solutionNote": "<code>count</code>（件数）、<code>mean</code>（平均）、<code>std</code>（標準偏差）、<code>min</code>/<code>max</code>（最小・最大）、<code>25%</code>/<code>50%</code>/<code>75%</code>（四分位数、50%は中央値）が一度に得られます。データの全体像をつかむ最初の一歩としてよく使われます。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
+    "pdx-14": {
+      "title": "concat()で縦・横に連結する",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 8,
+      "tags": "pandas, concat, axis",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "pandas実践（アイリスデータセット）"
+      ],
+      "notionUrl": "https://pandas.pydata.org/pandas-docs/stable/getting_started/index.html",
+      "statement": "右のコードエリアには <code>iris_d</code> が読み込まれています。<code>pd.concat([iris_d[:2], iris_d[-2:]])</code>（先頭2行と末尾2行を<b>縦方向</b>に連結）を1つ目に、<code>pd.concat([iris_d.loc[:2, [\"sepal_length\"]], iris_d.loc[:2, [\"species\"]]], axis=1)</code>（2つの列を<b>横方向</b>に連結）を2つ目に出力してください。",
+      "expected": "    sepal_length  sepal_width  petal_length  petal_width    species\n0            5.1          3.5           1.4          0.2     setosa\n1            4.9          3.0           1.4          0.2     setosa\n28           6.7          2.5           5.8          1.8  virginica\n29           7.2          3.6           6.1          2.5  virginica\n   sepal_length species\n0           5.1  setosa\n1           4.9  setosa\n2           4.7  setosa",
+      "starter": "import pandas as pd\n\niris_d = pd.read_csv(\"iris.csv\")\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>pd.concat([df1, df2])</code> は既定で<b>縦方向</b>（行を増やす）に連結します。<code>axis=1</code> を渡すと<b>横方向</b>（列を増やす）の連結に切り替わります。今回は同じ<code>iris_d</code>から抜き出した2つの列を横に並べ直しています。"
+        }
+      ],
+      "solution": "import pandas as pd\n\niris_d = pd.read_csv(\"iris.csv\")\n\nprint(pd.concat([iris_d[:2], iris_d[-2:]]))\nprint(pd.concat([iris_d.loc[:2, [\"sepal_length\"]], iris_d.loc[:2, [\"species\"]]], axis=1))",
+      "solutionNote": "縦連結ではラベル（列名）が同じもの同士が積み重なり、横連結ではラベル（行ラベル）が同じもの同士が横に並びます。<code>axis</code> の考え方は <code>drop()</code>・<code>sort_index()</code>など、pandasの他のメソッドとも共通しています。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
+    "pdx-15": {
+      "title": "merge()で2つの表を結合する（paiza形式）",
+      "status": "todo",
+      "difficulty": 3,
+      "time": 12,
+      "tags": "pandas, merge",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "pandas実践（アイリスデータセット）"
+      ],
+      "notionUrl": "https://pandas.pydata.org/pandas-docs/stable/getting_started/index.html",
+      "statement": "アイリスデータセット <code>iris_d</code> の行ラベル <code>0, 10, 20</code>（3品種を1件ずつ代表させたもの）を使い、<code>sepal_length</code>・<code>species</code>の2列からなる表 <code>sepal_len</code> と、<code>sepal_width</code>・<code>species</code>の2列からなる表 <code>sepal_wid</code> を作ってください。続けて、<code>pd.merge(sepal_len, sepal_wid, on=\"species\")</code> で <code>species</code> 列をキーにして2つの表を結合し、出力してください。",
+      "expected": "   sepal_length     species  sepal_width\n0           5.1      setosa          3.5\n1           7.0  versicolor          3.2\n2           6.3   virginica          3.3",
+      "starter": "import pandas as pd\n\niris_d = pd.read_csv(\"iris.csv\")\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>sepal_len</code> と <code>sepal_wid</code> は、それぞれ <code>pd.concat([...], axis=1)</code>（横方向の連結）で作れます（<code>pdx-14</code>と同じ手順です）。<code>pd.merge(表1, 表2, on=\"共通の列名\")</code> は、その列の値が一致する行同士を横につなげる、SQLの「結合（JOIN）」に近い操作です。<code>concat</code> が「並べる」のに対し、<code>merge</code> は「共通のキーで対応づける」点が異なります。"
+        }
+      ],
+      "solution": "import pandas as pd\n\niris_d = pd.read_csv(\"iris.csv\")\n\nsepal_len = pd.concat([iris_d.loc[[0, 10, 20], [\"sepal_length\"]], iris_d.loc[[0, 10, 20], [\"species\"]]], axis=1)\nsepal_wid = pd.concat([iris_d.loc[[0, 10, 20], [\"sepal_width\"]], iris_d.loc[[0, 10, 20], [\"species\"]]], axis=1)\n\nsepal = pd.merge(sepal_len, sepal_wid, on=\"species\")\nprint(sepal)",
+      "solutionNote": "<code>merge()</code> は「別々に管理されている表を、共通のキーで1つにまとめたい」というときに使う代表的な機能です。例えば「顧客マスタ」と「注文履歴」を「顧客ID」で結合する、といった実務でも頻出のパターンです。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
+    "pdx-16": {
+      "title": "groupby()でグループごとに集計する（paiza形式）",
+      "status": "todo",
+      "difficulty": 3,
+      "time": 10,
+      "tags": "pandas, groupby, 集計",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "pandas実践（アイリスデータセット）"
+      ],
+      "notionUrl": "https://pandas.pydata.org/pandas-docs/stable/getting_started/index.html",
+      "statement": "アイリスデータセット <code>iris_d</code> を <code>species</code>（品種）ごとにグループ化し、<code>sepal_length</code>・<code>sepal_width</code>の2列について、それぞれの<b>平均値</b>を出力してください。",
+      "expected": "            sepal_length  sepal_width\nspecies                              \nsetosa              4.86         3.31\nversicolor          6.10         2.87\nvirginica           6.57         2.94",
+      "starter": "",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>df.groupby(\"列名\")</code> で、その列の値が同じ行同士をグループにまとめられます。続けて対象にしたい列を <code>[[\"列1\",\"列2\"]]</code> で絞り込み、<code>.mean()</code>（平均）・<code>.sum()</code>（合計）・<code>.count()</code>（件数）などの集計メソッドをつなげると、グループごとの集計結果が得られます。"
+        }
+      ],
+      "solution": "import pandas as pd\n\niris_d = pd.read_csv(\"iris.csv\")\nprint(iris_d.groupby(\"species\")[[\"sepal_length\", \"sepal_width\"]].mean())",
+      "solutionNote": "「部門ごとの売上平均」「月ごとの来客数合計」のように、\"何かの単位でグループ分けしてから集計する\"というのはデータ分析で最も頻繁に行われる操作の1つです。<code>groupby()</code> はその中心となる機能です。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
+    "sk-1": {
+      "title": "教師あり学習・分類（LogisticRegression）",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 12,
+      "tags": "sklearn, 分類, LogisticRegression",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "scikit-learn入門"
+      ],
+      "notionUrl": "https://scikit-learn.org/stable/getting_started.html",
+      "statement": "<ol class='steps'><li><code>sklearn.linear_model</code> から <code>LogisticRegression</code>、<code>sklearn.model_selection</code> から <code>train_test_split</code>、<code>sklearn.metrics</code> から <code>accuracy_score</code> をインポートします。</li><li><code>iris_d = pd.read_csv(\"iris.csv\")</code> でデータを読み込み、4つの測定値の列を <code>X</code>（特徴量）、<code>species</code> 列を <code>y</code>（ラベル）として、それぞれ <code>.values</code> でNumPy配列として取り出します。</li><li><code>train_test_split(X, y, test_size=0.3, random_state=1, stratify=y)</code> で、訓練データとテストデータに分割します。</li><li><code>LogisticRegression(max_iter=200)</code> のインスタンスを作り、<code>.fit(X_train, y_train)</code> で訓練データに適合させます。</li><li><code>.predict(X_test)</code> でテストデータの品種を予測し、<code>accuracy_score(y_test, 予測結果)</code> を <code>round(値, 3)</code> で丸めて出力してください。</li></ol>",
+      "expected": "1.0",
+      "starter": "",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "分類は「ラベルが setosa / versicolor / virginica のような<b>離散値（カテゴリ）</b>」を予測する問題です。<code>fit()</code>で学習、<code>predict()</code>で予測、という2ステップの流れは scikit-learn のほぼ全てのモデルで共通しています。<code>random_state</code> を固定すると、データの分割やモデルの初期状態が毎回同じになり、結果が再現できます。"
+        }
+      ],
+      "solution": "import pandas as pd\nfrom sklearn.linear_model import LogisticRegression\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.metrics import accuracy_score\n\niris_d = pd.read_csv(\"iris.csv\")\nX = iris_d[[\"sepal_length\", \"sepal_width\", \"petal_length\", \"petal_width\"]].values\ny = iris_d[\"species\"].values\n\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1, stratify=y)\nmodel = LogisticRegression(max_iter=200)\nmodel.fit(X_train, y_train)\npred = model.predict(X_test)\nprint(round(accuracy_score(y_test, pred), 3))",
+      "solutionNote": "今回のデータセットは3品種がはっきり分かれた測定値になっているため、正解率（accuracy）は <code>1.0</code>（100%）になります。実際のデータではここまで綺麗に分かれることは少なく、正解率が1.0にならないのが普通です。<code>stratify=y</code> は、訓練用・テスト用それぞれで3品種の割合が偏らないようにする指定です。",
+      "pkgs": [
+        "pandas",
+        "scikit-learn"
+      ]
+    },
+    "sk-2": {
+      "title": "教師あり学習・回帰（LinearRegression）",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 10,
+      "tags": "sklearn, 回帰, LinearRegression, mean_squared_error",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "scikit-learn入門"
+      ],
+      "notionUrl": "https://scikit-learn.org/stable/getting_started.html",
+      "statement": "右のコードエリアには、必要なインポートと <code>iris_d</code> の読み込みが用意されています。<code>petal_length</code> 列を特徴量 <code>X</code>、<code>petal_width</code> 列をラベル <code>y</code> として、<code>train_test_split(X, y, test_size=0.3, random_state=1)</code> で分割してください。<code>LinearRegression()</code> を訓練データに適合させ、テストデータで予測した結果と実際の値を <code>mean_squared_error()</code> で比較し、<code>round(値, 4)</code> で丸めて出力してください。",
+      "expected": "0.0626",
+      "starter": "import pandas as pd\nfrom sklearn.linear_model import LinearRegression\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.metrics import mean_squared_error\n\niris_d = pd.read_csv(\"iris.csv\")\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "回帰は「ラベルが <code>petal_width</code> のような<b>連続値（数値）</b>」を予測する問題です。特徴量 <code>X</code> は<b>2次元</b>（<code>iris_d[[\"petal_length\"]]</code> のように角カッコを2重にした形）である必要がある点に注意してください。<code>mean_squared_error(実際の値, 予測値)</code> は、予測がどれくらいズレていたかを表す指標（平均二乗誤差）で、0に近いほど良い予測です。"
+        }
+      ],
+      "solution": "import pandas as pd\nfrom sklearn.linear_model import LinearRegression\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.metrics import mean_squared_error\n\niris_d = pd.read_csv(\"iris.csv\")\n\nX = iris_d[[\"petal_length\"]].values\ny = iris_d[\"petal_width\"].values\n\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1)\nmodel = LinearRegression()\nmodel.fit(X_train, y_train)\npred = model.predict(X_test)\nprint(round(mean_squared_error(y_test, pred), 4))",
+      "solutionNote": "花弁の長さ（petal_length）と幅（petal_width）には強い関係があるため、誤差はかなり小さい値になります。分類の <code>accuracy_score</code>（高いほど良い）と違い、<code>mean_squared_error</code> は<b>小さいほど良い</b>指標である点を混同しないようにしましょう。",
+      "pkgs": [
+        "pandas",
+        "scikit-learn"
+      ]
+    },
+    "sk-3": {
+      "title": "教師なし学習・クラスタリング（KMeans）",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 10,
+      "tags": "sklearn, クラスタリング, KMeans",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "scikit-learn入門"
+      ],
+      "notionUrl": "https://scikit-learn.org/stable/getting_started.html",
+      "statement": "右のコードエリアには、必要なインポートと <code>iris_d</code> の読み込みが用意されています。<code>petal_length</code>・<code>petal_width</code>の2列を特徴量 <code>X</code> としてください。<code>KMeans(n_clusters=3, random_state=1, n_init=10)</code> のインスタンスを作り、<code>.fit(X)</code> でデータに適合させたあと、<code>.predict(X)</code> で各花が属するクラスタ番号を求め、<code>list()</code> でリストに変換して出力してください。",
+      "expected": "[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 2, 2, 2, 0, 2, 2, 2]",
+      "starter": "import pandas as pd\nfrom sklearn.cluster import KMeans\n\niris_d = pd.read_csv(\"iris.csv\")\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "クラスタリングには「正解ラベル（y）」を使いません。<code>species</code> 列を一切使わずに、測定値（特徴量）だけから似ている花同士をグループ（クラスタ）にまとめるのが教師なし学習です。<code>n_clusters=3</code> は「3つのグループに分けたい」という指定です。"
+        }
+      ],
+      "solution": "import pandas as pd\nfrom sklearn.cluster import KMeans\n\niris_d = pd.read_csv(\"iris.csv\")\n\nX = iris_d[[\"petal_length\", \"petal_width\"]].values\nmodel = KMeans(n_clusters=3, random_state=1, n_init=10)\nmodel.fit(X)\nlabels = model.predict(X)\nprint(list(labels))",
+      "solutionNote": "クラスタ番号（0, 1, 2）は品種名と機械的な対応はありません（KMeansは品種を知らずにグループ分けしています）が、実際に品種ごとの正解ラベルと見比べると、綺麗にグループが一致していることを確認できます。番号そのものに意味はなく、あくまで「同じ番号＝似ている」という点が重要です。",
+      "pkgs": [
+        "pandas",
+        "scikit-learn"
+      ]
+    },
+    "sk-4": {
+      "title": "教師なし学習・次元削減（PCA）",
+      "status": "todo",
+      "difficulty": 3,
+      "time": 10,
+      "tags": "sklearn, 次元削減, PCA",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "scikit-learn入門"
+      ],
+      "notionUrl": "https://scikit-learn.org/stable/getting_started.html",
+      "statement": "右のコードエリアには、必要なインポートと <code>iris_d</code> の読み込みが用意されています。4つの測定値の列すべてを特徴量 <code>X</code> としてください。<code>PCA(n_components=2)</code>（4次元のデータを2次元に要約するモデル）を <code>X</code> に適合させ、<code>.transform(X)</code> で次元削減した結果を <code>X_2d</code> に代入してください。<code>X_2d.shape</code>（配列の形）を1行目に、<code>X_2d</code> の1件目のデータを小数第2位に丸めたリストを2行目に出力してください。",
+      "expected": "(30, 2)\n[-2.76, -0.49]",
+      "starter": "import pandas as pd\nfrom sklearn.decomposition import PCA\n\niris_d = pd.read_csv(\"iris.csv\")\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "次元削減も教師なし学習の一種で、「4つあった特徴量（がく片・花弁の長さ幅）の情報を、できるだけ失わないように、より少ない数（ここでは2つ）の新しい指標にまとめ直す」という技術です。<code>[round(v, 2) for v in X_2d[0]]</code> のようにリスト内包表記を使うと、1件分のデータをまとめて丸められます。"
+        }
+      ],
+      "solution": "import pandas as pd\nfrom sklearn.decomposition import PCA\n\niris_d = pd.read_csv(\"iris.csv\")\n\nX = iris_d[[\"sepal_length\", \"sepal_width\", \"petal_length\", \"petal_width\"]].values\nmodel = PCA(n_components=2)\nmodel.fit(X)\nX_2d = model.transform(X)\nprint(X_2d.shape)\nprint([round(v, 2) for v in X_2d[0]])",
+      "solutionNote": "<code>(30, 2)</code> は「30件のデータが、それぞれ2つの新しい数値（主成分）で表現された」ことを意味します。4次元のままではグラフに描けませんが、2次元に圧縮することで、散布図として可視化できるようになります（次の問題で実際に確認します）。",
+      "pkgs": [
+        "pandas",
+        "scikit-learn"
+      ]
+    },
+    "sk-5": {
+      "title": "分類データを散布図で可視化する",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 9,
+      "tags": "matplotlib, 可視化, 散布図",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "scikit-learn入門"
+      ],
+      "notionUrl": "https://scikit-learn.org/stable/getting_started.html",
+      "statement": "<ol class='steps'><li><code>matplotlib</code> を <code>matplotlib.use(\"AGG\")</code>でブラウザ表示用に設定したうえで、<code>matplotlib.pyplot</code> を <code>plt</code> としてインポートします（この2行はすでに書かれています）。</li><li><code>iris_d</code> を読み込み、<code>species</code> 列を <code>{\"setosa\":0,\"versicolor\":1,\"virginica\":2}</code> で数値に変換した <code>species_num</code> を作ります（<code>.map()</code>メソッドを使います）。</li><li><code>plt.scatter(iris_d[\"petal_length\"], iris_d[\"petal_width\"], c=species_num)</code> で、花弁の長さ・幅を軸にした散布図を、品種ごとに色分けして描きます。</li><li><code>print(\"グラフを表示しました\")</code> を実行してください。</li></ol>",
+      "expected": "グラフを表示しました",
+      "starter": "import pandas as pd\nimport matplotlib\nmatplotlib.use(\"AGG\")\nimport matplotlib.pyplot as plt\n\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>plt.scatter(x軸の値, y軸の値, c=色分けに使う値)</code> で散布図が描けます。<code>c=</code>に数値の列（今回は品種を0,1,2に変換したもの）を渡すと、値ごとに自動で色分けされます。「コードの実行」を押すと、出力欄の下にグラフが表示されます。"
+        }
+      ],
+      "solution": "import pandas as pd\nimport matplotlib\nmatplotlib.use(\"AGG\")\nimport matplotlib.pyplot as plt\n\niris_d = pd.read_csv(\"iris.csv\")\nspecies_num = iris_d[\"species\"].map({\"setosa\": 0, \"versicolor\": 1, \"virginica\": 2})\nplt.scatter(iris_d[\"petal_length\"], iris_d[\"petal_width\"], c=species_num)\nplt.xlabel(\"petal_length\")\nplt.ylabel(\"petal_width\")\nprint(\"グラフを表示しました\")",
+      "solutionNote": "グラフを見ると、花弁の長さ・幅だけでも3品種がかなりはっきり分かれていることが分かります。<code>sk-1</code>の分類で正解率が100%になったのも、このように特徴量だけで品種がよく分離できるからです。",
+      "pkgs": [
+        "pandas",
+        "matplotlib"
+      ]
+    },
+    "sk-6": {
+      "title": "KMeansのクラスタリング結果を可視化する（paiza形式）",
+      "status": "todo",
+      "difficulty": 3,
+      "time": 12,
+      "tags": "sklearn, matplotlib, KMeans, 可視化",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "scikit-learn入門"
+      ],
+      "notionUrl": "https://scikit-learn.org/stable/getting_started.html",
+      "statement": "アイリスデータセットの <code>petal_length</code>・<code>petal_width</code> の2列を使って <code>KMeans(n_clusters=3, random_state=1, n_init=10)</code> でクラスタリングし、結果を <code>iris_d　</code>に <code>\"cluster\"</code> 列として追加してください。<code>plt.scatter()</code> で <code>petal_length</code>・<code>petal_width</code> を軸に、<code>c=iris_d[\"cluster\"]</code>、<code>cmap=\"viridis\"</code> で色分けした散布図を描いたうえで、<code>iris_d[\"cluster\"].value_counts().sort_index()</code>（クラスタ番号ごとの件数、番号順）を出力してください。",
+      "expected": "cluster\n0    12\n1    10\n2     8\nName: count, dtype: int64",
+      "starter": "import pandas as pd\nfrom sklearn.cluster import KMeans\nimport matplotlib\nmatplotlib.use(\"AGG\")\nimport matplotlib.pyplot as plt\n\niris_d = pd.read_csv(\"iris.csv\")\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>sk-3</code>で求めたクラスタ番号を <code>iris_d[\"cluster\"] = model.predict(X)</code> のように新しい列として保存すれば、そのままグラフの色分け（<code>c=</code>）や集計（<code>value_counts()</code>）に使えます。<code>.value_counts()</code>は値ごとの出現回数を数えるメソッド、<code>.sort_index()</code>は結果をクラスタ番号順に並べ替えます。"
+        }
+      ],
+      "solution": "import pandas as pd\nfrom sklearn.cluster import KMeans\nimport matplotlib\nmatplotlib.use(\"AGG\")\nimport matplotlib.pyplot as plt\n\niris_d = pd.read_csv(\"iris.csv\")\n\nX = iris_d[[\"petal_length\", \"petal_width\"]].values\nmodel = KMeans(n_clusters=3, random_state=1, n_init=10)\nmodel.fit(X)\niris_d[\"cluster\"] = model.predict(X)\n\nplt.scatter(iris_d[\"petal_length\"], iris_d[\"petal_width\"], c=iris_d[\"cluster\"], cmap=\"viridis\")\nplt.xlabel(\"petal_length\")\nplt.ylabel(\"petal_width\")\nprint(iris_d[\"cluster\"].value_counts().sort_index())",
+      "solutionNote": "<code>sk-5</code>で描いた「本当の品種」による色分けと、この問題の「KMeansが見つけたクラスタ」による色分けを見比べてみてください。正解ラベルを一切使っていないのに、非常によく似たグループ分けができていることが、教師なし学習の面白さです。",
+      "pkgs": [
+        "pandas",
+        "scikit-learn",
+        "matplotlib"
+      ]
+    },
     "pw-1": {
       "title": "パスワード生成（基本形）",
       "status": "todo",
@@ -2849,6 +3599,147 @@ var DB = {
         }
       ]
     },
+    "ch-pdx": {
+      "title": "pandas実践（アイリスデータセット）の基礎",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "pandas実践（アイリスデータセット）"
+      ],
+      "notionUrl": "https://pandas.pydata.org/pandas-docs/stable/getting_started/index.html",
+      "intro": "ここまでの Series・DataFrame の基本を、実在する「アイリス（あやめ）データセット」を使って実践レベルまで引き上げます。東京大学 数理・情報教育研究センターの Python 入門教材の内容をベースにしています。",
+      "terms": [
+        {
+          "term": "read_csv()",
+          "desc": "CSVファイルを読み込み、DataFrameを作成する関数。<code>pd.read_csv(\"ファイル名\")</code>。"
+        },
+        {
+          "term": ".head(n) / .tail(n)",
+          "desc": "先頭（または末尾）n行だけを確認するメソッド。nを省略すると5行になります。"
+        },
+        {
+          "term": ".assign(列名=値)",
+          "desc": "元のDataFrameは変えずに、列を追加した新しいDataFrameを返すメソッド。"
+        },
+        {
+          "term": "pd.merge(df1, df2, on=\"列名\")",
+          "desc": "指定した列の値が一致する行同士を横方向に結合する関数。SQLの結合（JOIN）に近い操作です。"
+        },
+        {
+          "term": "df.groupby(\"列名\")",
+          "desc": "指定した列の値が同じ行同士をグループにまとめる操作。続けて <code>.mean()</code> 等の集計メソッドをつなげて使います。"
+        }
+      ],
+      "book": [
+        {
+          "h": "pandasは何をするためのライブラリか",
+          "body": "<p>これまでの章で、<code>pd.Series()</code> や <code>pd.DataFrame()</code> を使って、辞書やリストから小さなデータのかたまりを作る練習をしてきました。ここからは視点を変えて、「表形式のデータをまるごと読み込み、参照し、加工し、集計する」という<b>実際のデータ分析の流れ</b>を、実在する観測データ（アイリスデータセット）を使って体験します。</p><p>pandas が得意とすることは、大きく4つに整理できます（MECEに分けると）。</p><ul><li><b>表形式データの入出力</b> — CSVやExcel、SQLなどのデータを簡単に読み書きできる（<code>read_csv()</code> など）</li><li><b>データの整形・加工</b> — 欠損値の穴埋めや削除、条件による絞り込み、並び替え、列の追加・削除</li><li><b>集計・グループ化</b> — 「品種ごとの平均」のような集計が数行のコードでできる（<code>groupby()</code>）</li><li><b>他ライブラリとの連携</b> — NumPyでの数値計算や、Matplotlibでのグラフ化と組み合わせて使う</li></ul>"
+        },
+        {
+          "h": "Series・DataFrameのおさらいと複数の作り方",
+          "body": "<p>Series・DataFrameは、<b>リスト</b>・<b>NumPy配列</b>・<b>辞書</b>のどれからでも作成できます。どれから作っても、できあがるのは同じ「インデックス付きのデータ」です。リストや配列から作った場合はインデックスが 0, 1, 2... と自動で振られ、辞書から作った場合はキーがそのままインデックスになります。</p><p>DataFrameを作るときは、<code>index=</code>（行ラベル）と <code>columns=</code>（列名・列の順番）を指定できます。省略した場合は自動で連番が振られます。</p>"
+        },
+        {
+          "h": "CSVファイルを読み込む",
+          "body": "<p>実際のデータ分析では、手でリストや辞書を書くのではなく、CSVファイルなどの既存のデータを読み込むところから始まります。<code>pd.read_csv(\"ファイル名\")</code> を使えば、CSVファイルの中身をそのままDataFrameとして読み込めます。</p><p>読み込んだ直後は、<code>.head()</code>（先頭数行の確認）・<code>.index</code>（行数や行ラベルの確認）で「正しく読み込めているか」「どんなデータか」を確認するのが定石です。</p>"
+        },
+        {
+          "h": "データを参照する（スライス・列・iloc・loc）",
+          "body": "<p>DataFrameから一部分だけを取り出す方法は複数あります。目的に応じて使い分けましょう。</p><ul><li><b>行のスライス</b>: <code>df[:5]</code>、<code>df[-3:]</code> のように範囲で行を取り出す</li><li><b>列の指定</b>: <code>df[\"列名\"]</code>（1列・Seriesとして）、<code>df[[\"列1\",\"列2\"]]</code>（複数列・DataFrameとして）</li><li><b><code>iloc</code></b>: 行・列を<b>位置（0始まりの数字）</b>で指定する</li><li><b><code>loc</code></b>: 行・列を<b>ラベル（名前）</b>で指定する。範囲指定は<b>終端を含む</b>点が <code>iloc</code> と異なる</li></ul>"
+        },
+        {
+          "h": "条件でデータを絞り込む",
+          "body": "<p><code>df[条件式]</code> の形で、条件に合う行だけを抽出できます。複数条件を組み合わせるときは、Pythonの <code>and</code>/<code>or</code>/<code>not</code> ではなく、<code>&</code>/<code>|</code>/<code>~</code> を使い、それぞれの条件をカッコで囲む必要があります（これはpandas・NumPy特有のルールです）。</p>"
+        },
+        {
+          "h": "列と行を追加・削除する",
+          "body": "<p>列の追加・削除には、<b>元のDataFrameを直接書き換える</b>方法（<code>df[\"列\"]=値</code>、<code>del df[\"列\"]</code>）と、<b>元は変えずに新しいDataFrameを作る</b>方法（<code>.assign(列=値)</code>、<code>.drop(\"列\", axis=1)</code>）の2種類があります。</p><p>行の追加は <code>pd.concat([df, 追加したい行])</code>（<code>ignore_index=True</code>でインデックスを振り直せる）、行の削除は <code>.drop(行ラベル)</code>（列削除と違い <code>axis</code> の指定は不要）で行います。</p>"
+        },
+        {
+          "h": "データを並び替える・統計量を見る",
+          "body": "<p><code>.sort_index()</code> は行ラベルを基準に、<code>.sort_values(列名またはそのリスト)</code> は指定した列の値を基準に並び替えます。どちらも既定では新しいDataFrameを返し、<code>inplace=True</code>で元のDataFrame自体を書き換えることもできます。</p><p><code>.describe()</code> を使うと、件数・平均・標準偏差・最小値・最大値・四分位数といった要約統計量を一度に確認できます。データの全体像をつかむときの最初の一歩として、非常によく使われます。</p>"
+        },
+        {
+          "h": "複数の表を組み合わせる（concat・merge・groupby）",
+          "body": "<p><code>pd.concat([df1, df2])</code> は、同じ列構成の表を<b>縦</b>に積み重ねる（<code>axis=1</code>で<b>横</b>に並べる）ための関数です。</p><p><code>pd.merge(df1, df2, on=\"共通の列\")</code> は、指定した列の値が一致する行同士を対応づけて結合する関数です。「並べるだけのconcat」と「キーで対応づけるmerge」の違いを意識してください。</p><p><code>df.groupby(\"列\")</code> は、その列の値が同じ行をグループにまとめ、続けて <code>.mean()</code> などの集計メソッドをつなげることで、「品種ごとの平均」のようなグループ別集計が数行で書けます。</p>"
+        }
+      ]
+    },
+    "ch-sklearn": {
+      "title": "scikit-learn入門の基礎",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "scikit-learn入門"
+      ],
+      "notionUrl": "https://scikit-learn.org/stable/getting_started.html",
+      "intro": "アイリスデータセットを使い、機械学習ライブラリ scikit-learn の基本的な使い方を学びます。東京大学 数理・情報教育研究センターの Python 入門教材の内容をベースにしています。",
+      "terms": [
+        {
+          "term": "機械学習",
+          "desc": "観察されたデータをよく表すように、モデルの中のパラメータを自動で調整すること。調整されたモデルを使って、新しいデータに対する予測を行えるようになります。"
+        },
+        {
+          "term": "教師あり学習",
+          "desc": "特徴量（データの性質）に対して、正解となるラベルが用意されている学習方法。ラベルが連続値なら回帰、離散値（カテゴリ）なら分類の問題になります。"
+        },
+        {
+          "term": "教師なし学習",
+          "desc": "正解ラベルを使わず、データの特徴だけから構造やパターンを見つける学習方法。クラスタリングや次元削減が該当します。"
+        },
+        {
+          "term": "特徴量とラベル",
+          "desc": "特徴量はモデルへの入力データ（例: 花の測定値）、ラベルは予測したい正解データ（例: 花の品種）。教師なし学習では特徴量のみを使います。"
+        },
+        {
+          "term": "train_test_split()",
+          "desc": "データセットを、モデルを学習させる訓練データと、性能を評価するテストデータに分割する関数。"
+        },
+        {
+          "term": "fit() / predict()",
+          "desc": "scikit-learnのほぼ全てのモデルに共通する2ステップ。<code>fit()</code>でモデルをデータに適合（学習）させ、<code>predict()</code>で新しいデータに対する予測を行います。"
+        },
+        {
+          "term": "accuracy_score() / mean_squared_error()",
+          "desc": "モデルの性能を評価する関数。分類では正解率（<code>accuracy_score</code>、高いほど良い）、回帰では平均二乗誤差（<code>mean_squared_error</code>、小さいほど良い）がよく使われます。"
+        },
+        {
+          "term": "LogisticRegression / LinearRegression",
+          "desc": "分類を行う代表的なモデルがロジスティック回帰、回帰を行う代表的なモデルが線形回帰です（名前は似ていますが用途が異なります）。"
+        },
+        {
+          "term": "KMeans",
+          "desc": "教師なし学習でデータをグループ分け（クラスタリング）するモデル。<code>n_clusters</code>でグループの数を指定します。"
+        },
+        {
+          "term": "PCA",
+          "desc": "教師なし学習でデータの次元（特徴量の数）を削減するモデル。可視化やデータ圧縮に使われます。"
+        }
+      ],
+      "book": [
+        {
+          "h": "機械学習とは何か",
+          "body": "<p>これまでの章では、<code>if</code>文や関数を使って「こういう入力なら、こう処理する」というルールを、私たちが一つ一つ書いてきました。機械学習は、そのルール（正確には、ルールを表す<b>数式のパラメータ</b>）を、人間ではなく<b>データから自動的に調整させる</b>という考え方です。データによく合うようにパラメータを調整することを「学習」と呼び、学習済みのモデルを使えば、新しく観測されたデータに対しても予測ができるようになります。</p>"
+        },
+        {
+          "h": "教師あり学習と教師なし学習の違い",
+          "body": "<p>機械学習は、大きく2種類にMECEに分けられます。</p><ul><li><b>教師あり学習</b> — 特徴量（データの性質）に対して、あらかじめ「正解」のラベルが用意されている場合。ラベルを教師として、特徴量からラベルを予測するモデルを学習します。</li><li><b>教師なし学習</b> — ラベルが存在せず、特徴量だけからデータの構造やパターンを見つけ出す場合。<b>クラスタリング</b>（似ているデータをグループ分け）や、<b>次元削減</b>（特徴量の数を、情報をできるだけ保ったまま減らす）が該当します。</li></ul>"
+        },
+        {
+          "h": "分類と回帰の違い",
+          "body": "<p>教師あり学習は、予測したいラベルの種類によってさらに2つに分かれます。</p><ul><li><b>分類</b> — ラベルが「setosa / versicolor / virginica」のような<b>離散値（カテゴリ）</b>のとき。「どのグループに属するか」を予測します。</li><li><b>回帰</b> — ラベルが「花弁の幅は何cmか」のような<b>連続値（数値）</b>のとき。「いくつになるか」を予測します。</li></ul>"
+        },
+        {
+          "h": "scikit-learnの基本的な使い方（共通の5ステップ）",
+          "body": "<p>scikit-learnでは、どんなモデルを使う場合でも、おおむね次の流れで進めます。</p><ul><li>1. 使いたいモデルのクラスを選ぶ（例: <code>LogisticRegression</code>）</li><li>2. ハイパーパラメータ（<code>n_clusters</code>など、人間が事前に決める設定値）を指定してインスタンス化する</li><li>3. データを準備する（教師ありなら特徴量とラベルを訓練用・テスト用に分割）</li><li>4. <code>.fit(データ)</code> でモデルをデータに適合させる（学習）</li><li>5. <code>.predict(データ)</code>（教師あり）または <code>.transform(データ)</code>（次元削減）で結果を得て、評価する</li></ul><p>この5ステップの型は、分類・回帰・クラスタリング・次元削減のどれでも共通しているため、1つのモデルの使い方を覚えると、他のモデルにも応用しやすくなります。</p>"
+        },
+        {
+          "h": "代表的な4つの手法の使い分け",
+          "body": "<p>この章の演習問題では、次の4つの代表的なモデルを扱います。</p><ul><li><b>LogisticRegression（分類）</b> — 測定値から花の品種を当てる</li><li><b>LinearRegression（回帰）</b> — 花弁の長さから幅を予測する</li><li><b>KMeans（クラスタリング）</b> — 正解ラベルを使わず、似た花同士をグループ分けする</li><li><b>PCA（次元削減）</b> — 4つあった測定値を2つの指標に要約し、グラフで可視化できるようにする</li></ul><p>いずれも同じアイリスデータセットを題材にしているので、「同じデータに対して、目的によって異なる手法を使い分ける」という感覚をつかんでください。</p>"
+        }
+      ]
+    },
     "ch-pw": {
       "title": "標準入力と文字列生成の基礎",
       "path": [
@@ -2933,9 +3824,12 @@ var DB = {
       ]
     }
   },
+  "datasets": {
+    "iris": "sepal_length,sepal_width,petal_length,petal_width,species\n5.1,3.5,1.4,0.2,setosa\n4.9,3.0,1.4,0.2,setosa\n4.7,3.2,1.3,0.2,setosa\n4.6,3.1,1.5,0.2,setosa\n5.0,3.6,1.4,0.2,setosa\n5.4,3.9,1.7,0.4,setosa\n4.6,3.4,1.4,0.3,setosa\n5.0,3.4,1.5,0.2,setosa\n4.4,2.9,1.4,0.2,setosa\n4.9,3.1,1.5,0.1,setosa\n7.0,3.2,4.7,1.4,versicolor\n6.4,3.2,4.5,1.5,versicolor\n6.9,3.1,4.9,1.5,versicolor\n5.5,2.3,4.0,1.3,versicolor\n6.5,2.8,4.6,1.5,versicolor\n5.7,2.8,4.5,1.3,versicolor\n6.3,3.3,4.7,1.6,versicolor\n4.9,2.4,3.3,1.0,versicolor\n6.6,2.9,4.6,1.3,versicolor\n5.2,2.7,3.9,1.4,versicolor\n6.3,3.3,6.0,2.5,virginica\n5.8,2.7,5.1,1.9,virginica\n7.1,3.0,5.9,2.1,virginica\n6.3,2.9,5.6,1.8,virginica\n6.5,3.0,5.8,2.2,virginica\n7.6,3.0,6.6,2.1,virginica\n4.9,2.5,4.5,1.7,virginica\n7.3,2.9,6.3,1.8,virginica\n6.7,2.5,5.8,1.8,virginica\n7.2,3.6,6.1,2.5,virginica\n"
+  },
   "syncMeta": {
     "note": "Notionのページに更新がないか、この一覧をもとに差分チェックします。毎週金曜19:00(JST)の自動同期に加えて、Claudeとのチャットで「更新して」と伝えれば同じチェック・追加作業をいつでも実行できます。詳細は SYNC_PROMPT.md 参照。",
-    "baselineSyncedAt": "2026-08-11T21:03:00+09:00",
+    "baselineSyncedAt": "2026-08-12T04:50:00+09:00",
     "pages": [
       {
         "url": "https://app.notion.com/p/36fe3be8d5ac80c5b830ee4217f62f57",
