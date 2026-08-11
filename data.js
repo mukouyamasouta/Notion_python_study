@@ -4,7 +4,7 @@
    手動編集した内容は次回の自動同期で上書きされる可能性があるため注意してください。
    ============================================================ */
 var DB = {
-  "lastSync": "2026-08-10T23:39:00+09:00",
+  "lastSync": "2026-08-11T18:19:00+09:00",
   "sourceUrl": "https://app.notion.com/p/36fe3be8d5ac80dda919cd12d3f97555",
   "tree": [
     {
@@ -60,6 +60,14 @@ var DB = {
                 {
                   "id": "rand-3",
                   "type": "problem"
+                },
+                {
+                  "id": "rand-4",
+                  "type": "problem"
+                },
+                {
+                  "id": "rand-5",
+                  "type": "problem"
                 }
               ]
             },
@@ -82,6 +90,10 @@ var DB = {
                 },
                 {
                   "id": "list-3",
+                  "type": "problem"
+                },
+                {
+                  "id": "list-4",
                   "type": "problem"
                 }
               ]
@@ -106,6 +118,18 @@ var DB = {
                 {
                   "id": "dict-3",
                   "type": "problem"
+                },
+                {
+                  "id": "dict-4",
+                  "type": "problem"
+                },
+                {
+                  "id": "dict-5",
+                  "type": "problem"
+                },
+                {
+                  "id": "dict-6",
+                  "type": "problem"
                 }
               ]
             },
@@ -128,6 +152,14 @@ var DB = {
                 },
                 {
                   "id": "nested-3",
+                  "type": "problem"
+                },
+                {
+                  "id": "nested-4",
+                  "type": "problem"
+                },
+                {
+                  "id": "nested-5",
                   "type": "problem"
                 }
               ]
@@ -152,6 +184,22 @@ var DB = {
                 {
                   "id": "func-3",
                   "type": "problem"
+                },
+                {
+                  "id": "func-4",
+                  "type": "problem"
+                },
+                {
+                  "id": "func-5",
+                  "type": "problem"
+                },
+                {
+                  "id": "func-6",
+                  "type": "problem"
+                },
+                {
+                  "id": "func-7",
+                  "type": "problem"
                 }
               ]
             },
@@ -174,6 +222,22 @@ var DB = {
                 },
                 {
                   "id": "class-3",
+                  "type": "problem"
+                },
+                {
+                  "id": "class-4",
+                  "type": "problem"
+                },
+                {
+                  "id": "class-5",
+                  "type": "problem"
+                },
+                {
+                  "id": "class-6",
+                  "type": "problem"
+                },
+                {
+                  "id": "class-7",
                   "type": "problem"
                 }
               ]
@@ -305,6 +369,10 @@ var DB = {
                     },
                     {
                       "id": "str-3",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "str-4",
                       "type": "problem"
                     }
                   ]
@@ -516,6 +584,56 @@ var DB = {
       "solution": "import random\n\nitems = [\"剣\", \"盾\", \"薬草\", \"金貨\", \"罠\"]\nrandom.seed(7)\nselected = random.choice(items)\nprint(selected)\nselected2 = random.sample(items, k=2)\nprint(selected2)",
       "solutionNote": "同じ <code>seed</code> でも、乱数を消費する順番（何回目の呼び出しか）によって結果は変わります。<code>choice</code> を先に呼んでから <code>sample</code> を呼ぶという順序も含めて再現性が決まります。"
     },
+    "rand-4": {
+      "title": "演習課題「小数の乱数と範囲指定」",
+      "status": "todo",
+      "difficulty": 1,
+      "time": 5,
+      "tags": "random, random.random, uniform, randrange",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "02. random モジュール"
+      ],
+      "notionUrl": "https://app.notion.com/p/380e3be8d5ac80629d4bff3a896a7f41",
+      "statement": "<ol class='steps'><li><code>random</code> モジュールをインポートし、<code>random.seed(5)</code> で乱数を固定します。</li><li><code>random.random()</code>（0以上1未満の小数）の結果を <code>round(値, 4)</code> で小数第4位に丸めて1行目に出力します。</li><li><code>random.uniform(1.0, 10.0)</code>（1.0以上10.0以下の小数）の結果を <code>round(値, 2)</code> で丸めて2行目に出力します。</li><li><code>random.randrange(10)</code>（0以上10<b>未満</b>の整数）の結果を3行目に出力します。</li></ol>",
+      "expected": "0.6229\n7.68\n8",
+      "starter": "",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>random.randint(a, b)</code> は b を<b>含む</b>のに対し、<code>random.randrange(n)</code> は n を<b>含みません</b>（<code>range()</code> と同じ感覚）。<code>random.random()</code> は引数なしで0〜1の小数、<code>random.uniform(a, b)</code> は好きな範囲の小数を返します。"
+        }
+      ],
+      "solution": "import random\n\nrandom.seed(5)\nprint(round(random.random(), 4))\nprint(round(random.uniform(1.0, 10.0), 2))\nprint(random.randrange(10))",
+      "solutionNote": "乱数の小数はそのまま出力すると桁数が長くなりがちなので、<code>round(値, 桁数)</code> で丸めるのが定石です。"
+    },
+    "rand-5": {
+      "title": "重複ありでメンバーを選ぶ（choices）",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 6,
+      "tags": "random, choices",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "02. random モジュール"
+      ],
+      "notionUrl": "https://app.notion.com/p/380e3be8d5ac80629d4bff3a896a7f41",
+      "statement": "右のコードエリアには <code>party</code> というリストが定義されています。<code>random.seed(2)</code> で乱数を固定したうえで、<code>random.choices(party, k=3)</code> を使って<b>重複ありで</b>3人を選び、<code>print()</code> で出力してください。",
+      "expected": "['僧侶', '僧侶', '勇者']",
+      "starter": "import random\n\nparty = [\"勇者\", \"戦士\", \"魔法使い\", \"僧侶\"]\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>random.sample()</code> は同じ人を二度選ばない「重複なし」でしたが、<code>random.choices()</code> は毎回リスト全体から選び直すため、<b>同じ要素が複数回選ばれることがあります</b>（くじ引きを毎回元に戻すイメージ）。"
+        }
+      ],
+      "solution": "import random\n\nparty = [\"勇者\", \"戦士\", \"魔法使い\", \"僧侶\"]\nrandom.seed(2)\nprint(random.choices(party, k=3))",
+      "solutionNote": "この結果のように <code>'僧侶'</code> が2回選ばれているのが、重複なしの <code>sample</code> との決定的な違いです。「くじを引いたら元に戻す」のが <code>choices</code>、「引いたら戻さない」のが <code>sample</code> と覚えると区別しやすいです。"
+    },
     "list-1": {
       "title": "演習課題「リストの追加と挿入」",
       "status": "todo",
@@ -590,6 +708,31 @@ var DB = {
       ],
       "solution": "party = [\"勇者\", \"戦士\", \"魔法使い\", \"僧侶\"]\nprint(party[::-1])",
       "solutionNote": "<code>[::-1]</code> は新しいリストを作って返すので、元の <code>party</code> は変化しません。同じテクニックは文字列 <code>s[::-1]</code> にも使えます（文字列処理の問題で登場します）。"
+    },
+    "list-4": {
+      "title": "要素の削除・検索・カウント",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 6,
+      "tags": "list, remove, index, count",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "03. リスト（list）"
+      ],
+      "notionUrl": "https://app.notion.com/p/380e3be8d5ac80ee9d6cc19cc08b97f9",
+      "statement": "右のコードエリアには <code>party</code> というリストが定義されています。以下を順番に行ってください。<br>1. <code>.remove(\"戦士\")</code> で、値が <code>\"戦士\"</code> の要素を削除する（削除後の <code>party</code> はまだ出力しない）。<br>2. 削除後の <code>party</code> を <code>print()</code> で出力する。<br>3. <code>.index(\"魔法使い\")</code> で <code>\"魔法使い\"</code> が何番目にあるかを出力する。<br>4. <code>.count(\"勇者\")</code> で <code>\"勇者\"</code> がいくつ含まれているかを出力する。",
+      "expected": "['勇者', '魔法使い', '僧侶', '勇者']\n1\n2",
+      "starter": "party = [\"勇者\", \"戦士\", \"魔法使い\", \"僧侶\", \"勇者\"]\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>.remove(値)</code> は<b>値そのもの</b>を指定して削除するメソッドです（<code>del party[インデックス]</code> は逆に位置で指定します）。同じ値が複数あっても、<code>.remove()</code>は最初に見つかった1つだけを消します。<code>.index(値)</code> は値が最初に見つかった位置、<code>.count(値)</code> はその値がいくつ含まれるかを返します。"
+        }
+      ],
+      "solution": "party = [\"勇者\", \"戦士\", \"魔法使い\", \"僧侶\", \"勇者\"]\nparty.remove(\"戦士\")\nprint(party)\nprint(party.index(\"魔法使い\"))\nprint(party.count(\"勇者\"))",
+      "solutionNote": "<code>\"勇者\"</code> はリストの中に2つ含まれているため、<code>.index(\"勇者\")</code> は先頭側の位置だけを返しますが、<code>.count(\"勇者\")</code> は正しく2を返します。両者の違いに注意してください。"
     },
     "dict-1": {
       "title": "演習課題「辞書への追加とアクセス」",
@@ -671,6 +814,81 @@ var DB = {
       "solution": "apples = [310, 322, 292, 288, 300, 346]\nprint(sorted(apples, reverse=True))",
       "solutionNote": "数値のリストは既定で昇順に並び替えられます。<code>reverse=True</code> を付けるだけで降順に反転できるので、わざわざ <code>[::-1]</code> と組み合わせる必要はありません。"
     },
+    "dict-4": {
+      "title": "キー一覧の取得とキー順ソート",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 6,
+      "tags": "dict, keys, sorted",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "04. 辞書（dict）"
+      ],
+      "notionUrl": "https://app.notion.com/p/380e3be8d5ac806ba5d1e0e7a9e79c20",
+      "statement": "右のコードエリアには <code>enemies</code> という辞書が定義されています。<code>.keys()</code> を使ってキーの一覧を<code>list()</code>に変換して1行目に出力し、続けて <code>sorted(enemies.items())</code> の結果を2行目に出力してください。",
+      "expected": "['ラスボス', 'ミニボス', 'ザコ']\n[('ザコ', 'スライム'), ('ミニボス', 'ゴーレム'), ('ラスボス', '魔王')]",
+      "starter": "enemies = {\"ラスボス\": \"魔王\", \"ミニボス\": \"ゴーレム\", \"ザコ\": \"スライム\"}\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>enemies.keys()</code> はキーだけを取り出す特殊な「ビュー」というものを返すので、リストとして見やすく出力するには <code>list()</code> で囲みます。<code>sorted(dict.items())</code> は、キーと値のペア（タプル）のリストを、<b>キーの文字コード順</b>に並び替えて返します。"
+        }
+      ],
+      "solution": "enemies = {\"ラスボス\": \"魔王\", \"ミニボス\": \"ゴーレム\", \"ザコ\": \"スライム\"}\nprint(list(enemies.keys()))\nprint(sorted(enemies.items()))",
+      "solutionNote": "辞書は登録した順番を保持しますが、<code>sorted()</code> を使うことでキー順に並び替えた「一覧表示」を作ることができます。<code>.values()</code>（値だけを取り出す）という兄弟メソッドもあります。"
+    },
+    "dict-5": {
+      "title": "辞書内包表記で条件に合う要素だけ残す",
+      "status": "todo",
+      "difficulty": 3,
+      "time": 9,
+      "tags": "dict, 辞書内包表記",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "04. 辞書（dict）"
+      ],
+      "notionUrl": "https://app.notion.com/p/380e3be8d5ac806ba5d1e0e7a9e79c20",
+      "statement": "右のコードエリアには <code>enemies</code> という辞書が定義されています。<b>辞書内包表記</b>を使って、キーが <code>\"ザコ\"</code> <b>ではない</b>要素だけを残した新しい辞書 <code>strong</code> を作り、<code>print(strong)</code> で出力してください。",
+      "expected": "{'ミニボス': 'ゴーレム', 'ラスボス': '魔王'}",
+      "starter": "enemies = {\"ザコ\": \"スライム\", \"ミニボス\": \"ゴーレム\", \"ラスボス\": \"魔王\"}\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "リスト内包表記 <code>[式 for 変数 in 範囲]</code> と同じ考え方で、辞書にも <code>{キー式: 値式 for キー, 値 in dict.items() if 条件}</code> という書き方ができます。<code>if</code> 部分を付けると、条件に合う要素だけを残せます。"
+        }
+      ],
+      "solution": "enemies = {\"ザコ\": \"スライム\", \"ミニボス\": \"ゴーレム\", \"ラスボス\": \"魔王\"}\nstrong = {k: v for k, v in enemies.items() if k != \"ザコ\"}\nprint(strong)",
+      "solutionNote": "辞書内包表記は「for文で新しい辞書を作りながらフィルタリングする」処理を1行にまとめたものです。<code>if</code> を付けなければ全要素をそのままコピーした新しい辞書になります。"
+    },
+    "dict-6": {
+      "title": "辞書のマージ（update）",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 6,
+      "tags": "dict, update",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "04. 辞書（dict）"
+      ],
+      "notionUrl": "https://app.notion.com/p/380e3be8d5ac806ba5d1e0e7a9e79c20",
+      "statement": "右のコードエリアには <code>enemies</code> という辞書が定義されています。<code>.update()</code> を使って、<code>{\"ラスボス\": \"魔王\", \"ミニボス\": \"骨の巨人\"}</code> の内容を <code>enemies</code> にマージし、<code>print(enemies)</code> で出力してください。",
+      "expected": "{'ザコ': 'スライム', 'ミニボス': '骨の巨人', 'ラスボス': '魔王'}",
+      "starter": "enemies = {\"ザコ\": \"スライム\", \"ミニボス\": \"ゴーレム\"}\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>dict.update(別の辞書)</code> は、別の辞書の内容を今の辞書に合体させます。<b>すでに存在するキー（この場合は\"ミニボス\"）は新しい値で上書き</b>され、存在しないキー（\"ラスボス\"）は新しく追加されます。"
+        }
+      ],
+      "solution": "enemies = {\"ザコ\": \"スライム\", \"ミニボス\": \"ゴーレム\"}\nenemies.update({\"ラスボス\": \"魔王\", \"ミニボス\": \"骨の巨人\"})\nprint(enemies)",
+      "solutionNote": "「ミニボス」は元々「ゴーレム」でしたが、<code>update()</code> によって「骨の巨人」に上書きされています。一方「ザコ」は <code>update()</code> の対象になっていないため、そのまま残ります。"
+    },
     "nested-1": {
       "title": "演習課題「リスト内包表記で2乗のリストを作る」",
       "status": "todo",
@@ -746,6 +964,56 @@ var DB = {
       "solution": "team = [[\"勇者\", \"剣\"], [\"魔法使い\", \"杖\"]]\nfor i, member in enumerate(team):\n    print(str(i) + \": \" + str(member))",
       "solutionNote": "<code>enumerate</code> を使わない場合は <code>i = 0</code> を自分で用意して手動でインクリメントする必要がありますが、<code>enumerate</code> を使えばインデックス管理をPython側に任せられます。"
     },
+    "nested-4": {
+      "title": "2つのリストを同時に処理する（zip）",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 6,
+      "tags": "zip, 多次元リスト",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "05. 多次元リストとリスト内包表記"
+      ],
+      "notionUrl": "https://app.notion.com/p/380e3be8d5ac8061a702e27420938f60",
+      "statement": "右のコードエリアには <code>names</code> と <code>hp</code> という、対応する順番で並んだ2つのリストが定義されています。<code>zip(names, hp)</code> を使って両方を同時に取り出し、<code>\"（名前）:（HP）\"</code> の形式で1人ずつ出力してください。",
+      "expected": "勇者:100\n戦士:150\n魔法使い:80",
+      "starter": "names = [\"勇者\", \"戦士\", \"魔法使い\"]\nhp = [100, 150, 80]\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>for name, h in zip(names, hp):</code> と書くと、2つのリストの<b>同じ順番の要素同士</b>をペアにして、1回のfor文でまとめて取り出せます。<code>enumerate</code> がインデックスと要素をペアにするのに対し、<code>zip</code> は複数のリストの要素同士をペアにする、と覚えるとよいです。"
+        }
+      ],
+      "solution": "names = [\"勇者\", \"戦士\", \"魔法使い\"]\nhp = [100, 150, 80]\nfor name, h in zip(names, hp):\n    print(name + \":\" + str(h))",
+      "solutionNote": "<code>zip</code> を使わない場合は <code>for i in range(len(names)): names[i], hp[i]</code> のようにインデックスを介して2つのリストにアクセスする必要がありますが、<code>zip</code> を使えばより読みやすく書けます。リストの長さが異なる場合は、短い方に合わせて打ち切られます。"
+    },
+    "nested-5": {
+      "title": "2次元マップを作る（paiza形式）",
+      "status": "todo",
+      "difficulty": 3,
+      "time": 12,
+      "tags": "2次元リスト, リスト内包表記, join",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "05. 多次元リストとリスト内包表記"
+      ],
+      "notionUrl": "https://app.notion.com/p/380e3be8d5ac8061a702e27420938f60",
+      "statement": "3行5列の2次元リスト <code>grid</code> を作成してください。すべてのマスは初め <code>\"森\"</code> で埋め、そのあと次の3か所だけ書き換えます。<br>・1行目の左端（<code>grid[0][0]</code>）と右端（<code>grid[0][4]</code>）を <code>\"町\"</code> に。<br>・2行目の中央（<code>grid[1][2]</code>）を <code>\"城\"</code> に。<br>最後に、各行を <code>\"\".join(行)</code> で1つの文字列に連結しながら、1行ずつ出力してください。",
+      "expected": "町森森森町\n森森城森森\n森森森森森",
+      "starter": "",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "まず <code>[[\"森\" for _ in range(5)] for _ in range(3)]</code> のようなリスト内包表記の2重ループで「全部森」のマップを作ります。そのあと、特定のマスだけ <code>grid[行][列] = \"新しい文字\"</code> で個別に上書きします。出力時は、1行分のリスト（例: <code>[\"森\",\"森\",...]</code>）を <code>\"\".join(行)</code> で隙間なく1つの文字列にできます。"
+        }
+      ],
+      "solution": "grid = [[\"森\" for _ in range(5)] for _ in range(3)]\ngrid[0][0] = \"町\"\ngrid[0][4] = \"町\"\ngrid[1][2] = \"城\"\nfor row in grid:\n    print(\"\".join(row))",
+      "solutionNote": "このように「まず全体を単純な内容で埋め尽くし、あとから特定のマスだけを上書きする」という2段階の考え方は、ゲームのマップ生成や画像処理など、2次元データを扱うさまざまな場面でよく使われる定番パターンです。"
+    },
     "func-1": {
       "title": "演習課題「2つの引数を掛け算する関数」",
       "status": "todo",
@@ -820,6 +1088,106 @@ var DB = {
       ],
       "solution": "def greet(greeting, *names):\n    for name in names:\n        print(\"私は\" + name + \"です。\" + greeting)\n\ngreet(\"こんにちは\", \"勇者\", \"村人\", \"兵士\")",
       "solutionNote": "<code>*names</code> により <code>names</code> の中身は <code>(\"勇者\", \"村人\", \"兵士\")</code> というタプルになります。名前の数が2人でも5人でも、関数の定義を変えずに対応できます。"
+    },
+    "func-4": {
+      "title": "演習課題「lambda式で1行の関数を作る」",
+      "status": "todo",
+      "difficulty": 1,
+      "time": 4,
+      "tags": "def, lambda",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "06. 関数（def）・スコープ"
+      ],
+      "notionUrl": "https://app.notion.com/p/380e3be8d5ac80be9830daaef38bad96",
+      "statement": "<ol class='steps'><li><code>lambda x, y: x + y</code> という無名関数（lambda式）を作り、変数 <code>add</code> に代入します。</li><li><code>print(add(3, 4))</code> を実行して、結果を出力してください。</li></ol>",
+      "expected": "7",
+      "starter": "",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>lambda 引数: 式</code> は、<code>def</code> を使わずに「その場限りの小さな関数」を1行で作る書き方です。<code>add = lambda x, y: x + y</code> は、<code>def add(x, y): return x + y</code> と全く同じ意味になります。"
+        }
+      ],
+      "solution": "add = lambda x, y: x + y\nprint(add(3, 4))",
+      "solutionNote": "lambda式は名前のとおり「名前を付けずに使い捨てできる関数」です。今回のように変数に代入して名前を付けて使うこともできますが、本領を発揮するのは <code>sorted(list, key=lambda x: ...)</code> のように、他の関数の引数として「その場で渡す」ときです。"
+    },
+    "func-5": {
+      "title": "**kwargs でキーワード引数をまとめて受け取る",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 8,
+      "tags": "def, **kwargs, キーワード引数",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "06. 関数（def）・スコープ"
+      ],
+      "notionUrl": "https://app.notion.com/p/380e3be8d5ac80be9830daaef38bad96",
+      "statement": "<code>introduce(**people)</code> という関数を定義してください。<code>**people</code> は「<code>名前=あいさつ</code> の形で渡されたキーワード引数を、まとめて辞書として受け取る」可変長引数です。関数内では <code>people.items()</code> を <code>for</code> で回し、1人につき <code>\"私は（name）です。（greeting）\"</code> という形式で1行ずつ出力してください。最後に <code>introduce(勇者=\"こんにちは\", 村人=\"はじめまして\")</code> を呼び出してください。",
+      "expected": "私は勇者です。こんにちは\n私は村人です。はじめまして",
+      "starter": "",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "引数名の前に <code>*</code> を1つ付けると「複数の値」をタプルでまとめて受け取れましたが（<code>*args</code>）、<code>*</code> を2つ付けると「<code>名前=値</code> の形の複数のキーワード引数」を辞書としてまとめて受け取れます（<code>**kwargs</code>）。受け取った後は普通の辞書と同じように <code>.items()</code> が使えます。"
+        }
+      ],
+      "solution": "def introduce(**people):\n    for name, greeting in people.items():\n        print(\"私は\" + name + \"です。\" + greeting)\n\nintroduce(勇者=\"こんにちは\", 村人=\"はじめまして\")",
+      "solutionNote": "<code>**people</code> の中身は <code>{\"勇者\": \"こんにちは\", \"村人\": \"はじめまして\"}</code> という辞書になります。呼び出し時に渡す人数や名前を自由に変えられる点は <code>*args</code> と同じですが、それぞれの値に「名前（キーワード）」を付けられるのが <code>**kwargs</code> の特徴です。"
+    },
+    "func-6": {
+      "title": "global宣言でグローバル変数を書き換える",
+      "status": "todo",
+      "difficulty": 3,
+      "time": 8,
+      "tags": "def, global, スコープ",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "06. 関数（def）・スコープ"
+      ],
+      "notionUrl": "https://app.notion.com/p/380e3be8d5ac80be9830daaef38bad96",
+      "statement": "右のコードエリアには、関数の外で定義された変数 <code>msg</code>（グローバル変数）と、空の関数 <code>say_hello()</code> が用意されています。<code>say_hello()</code> の中で <code>global msg</code> を宣言したうえで、<code>msg</code> の末尾に <code>\" paiza\"</code> を追記し、<code>print(msg)</code> で出力してください。最後に <code>say_hello()</code> を呼び出し、関数の外でもう一度 <code>print(msg)</code> を実行してください。",
+      "expected": "hello paiza\nhello paiza",
+      "starter": "msg = \"hello\"\n\ndef say_hello():\n    # ここに global 宣言と処理を書く\n\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "関数の中で変数に代入すると、Pythonは基本的に「その関数専用のローカル変数」を新しく作ろうとします。関数の外にある<b>グローバル変数そのもの</b>を書き換えたい場合は、使う前に <code>global 変数名</code> と宣言する必要があります。"
+        }
+      ],
+      "solution": "msg = \"hello\"\n\ndef say_hello():\n    global msg\n    msg += \" paiza\"\n    print(msg)\n\nsay_hello()\nprint(msg)",
+      "solutionNote": "もし <code>global msg</code> を書き忘れると、<code>msg += \" paiza\"</code> の時点で「代入前に参照されたローカル変数」とみなされ、<code>UnboundLocalError</code> というエラーになります。<code>global</code> 宣言は、関数の中から外の変数を書き換えるための「許可証」のようなものです。"
+    },
+    "func-7": {
+      "title": "戦闘シミュレーション（関数と辞書の組み合わせ・paiza形式）",
+      "status": "todo",
+      "difficulty": 3,
+      "time": 10,
+      "tags": "def, dict, for, 実践",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "06. 関数（def）・スコープ"
+      ],
+      "notionUrl": "https://app.notion.com/p/380e3be8d5ac80be9830daaef38bad96",
+      "statement": "右のコードエリアには、攻撃メッセージを出す <code>attack(person)</code> 関数と、敵の残りHPを表示する <code>output_enemy_hp(enemy_hp)</code> 関数、パーティーの攻撃力を表す辞書 <code>team</code>、敵の初期HP <code>enemy_hp = 1000</code> が用意されています。<code>team</code> を <code>for</code> 文で回し、メンバー1人ごとに次の3つを順番に行ってください。<br>1. <code>attack(その人の名前)</code> を呼び出す。<br>2. <code>enemy_hp</code> からその人の攻撃力を引く。<br>3. <code>output_enemy_hp(enemy_hp)</code> を呼び出す。",
+      "expected": "勇者はスライムを攻撃した\n敵のHPは残り800です\n戦士はスライムを攻撃した\n敵のHPは残り650です\n魔法使いはスライムを攻撃した\n敵のHPは残り550です",
+      "starter": "def attack(person):\n    print(person + \"はスライムを攻撃した\")\n\ndef output_enemy_hp(enemy_hp):\n    print(\"敵のHPは残り\" + str(enemy_hp) + \"です\")\n\nenemy_hp = 1000\nteam = {\"勇者\": 200, \"戦士\": 150, \"魔法使い\": 100}\n\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>for person, power in team.items():</code> でメンバー名と攻撃力を同時に取り出せます。<code>enemy_hp</code> はこのfor文の外（トップレベル）で定義された変数なので、for文の中で <code>enemy_hp -= power</code> のように書き換えても、そのまま次のループに引き継がれます（関数の中とは違い、<code>global</code> 宣言は不要です）。"
+        }
+      ],
+      "solution": "def attack(person):\n    print(person + \"はスライムを攻撃した\")\n\ndef output_enemy_hp(enemy_hp):\n    print(\"敵のHPは残り\" + str(enemy_hp) + \"です\")\n\nenemy_hp = 1000\nteam = {\"勇者\": 200, \"戦士\": 150, \"魔法使い\": 100}\n\nfor person, power in team.items():\n    attack(person)\n    enemy_hp -= power\n    output_enemy_hp(enemy_hp)",
+      "solutionNote": "この問題のように、複数の小さな関数（部品）を <code>for</code> 文の中で組み合わせて1つの処理の流れを作るのは、実際のプログラム開発でも非常によく使う構成です。<code>output_enemy_hp</code> 関数の引数名も <code>enemy_hp</code> ですが、これは呼び出し元の変数とは別の「その関数専用の入れ物」です。"
     },
     "class-1": {
       "title": "演習課題「クラスの定義とインスタンス生成」",
@@ -900,6 +1268,106 @@ var DB = {
       ],
       "solution": "class Player:\n    def __init__(self, name):\n        self.name = name\n\n    def attack(self, enemy):\n        print(self.name + \"は、\" + enemy + \"を攻撃した！\")\n\nclass Wizard(Player):\n    def attack(self, enemy):\n        print(self.name + \"は、\" + enemy + \"に炎を放った！\")\n\nparty = [Player(\"勇者\"), Wizard(\"魔法使い\")]\nfor member in party:\n    member.attack(\"スライム\")",
       "solutionNote": "<code>Wizard</code> は <code>Player</code> を継承しているため <code>__init__</code>（name の保存）はそのまま使えます。一方 <code>attack</code> は <code>Wizard</code> 側で再定義されているため、<code>Wizard</code> のインスタンスに対してだけ動作が変わります。これがポリモーフィズム（多態性）の基本です。"
+    },
+    "class-4": {
+      "title": "クラス変数とインスタンス変数（税込計算）",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 9,
+      "tags": "class, クラス変数, インスタンス変数",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "07. クラス（class）"
+      ],
+      "notionUrl": "https://app.notion.com/p/380e3be8d5ac8008973ddeb5974164c1",
+      "statement": "右のコードエリアには <code>Item</code> クラスの枠だけが用意されています。<code>class</code> 直下（<code>__init__</code> の外）に <code>tax = 1.08</code> という<b>クラス変数</b>を定義してください。続けて、価格 <code>price</code> と個数 <code>quantity</code> を受け取る <code>__init__</code> と、<code>self.price * self.quantity * Item.tax</code> を <code>int()</code> で整数にして返す <code>total(self)</code> メソッドを完成させてください。最後に、<code>apple = Item(120, 15)</code> と <code>orange = Item(85, 32)</code> を作り、それぞれ <code>\"合計金額は（金額）円です\"</code> の形式で出力してください。",
+      "expected": "合計金額は1944円です\n合計金額は2937円です",
+      "starter": "class Item:\n    # ここにクラス変数 tax を定義する\n\n    def __init__(self, price, quantity):\n        self.price = price\n        self.quantity = quantity\n\n    def total(self):\n        # ここに合計金額（税込）を計算して return するコードを書く\n\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>self.price</code> や <code>self.quantity</code> は「インスタンス変数」で、インスタンスごとに<b>別々の値</b>を持ちます。一方 <code>class</code> 直下に書いた <code>tax</code> は「クラス変数」で、そのクラスから作られた<b>すべてのインスタンスで共有</b>される値です。クラス変数は <code>Item.tax</code> のようにクラス名から参照できます。"
+        }
+      ],
+      "solution": "class Item:\n    tax = 1.08\n\n    def __init__(self, price, quantity):\n        self.price = price\n        self.quantity = quantity\n\n    def total(self):\n        return int(self.price * self.quantity * Item.tax)\n\napple = Item(120, 15)\nprint(\"合計金額は\" + str(apple.total()) + \"円です\")\n\norange = Item(85, 32)\nprint(\"合計金額は\" + str(orange.total()) + \"円です\")",
+      "solutionNote": "<code>apple</code> と <code>orange</code> は <code>price</code>・<code>quantity</code>（インスタンス変数）はそれぞれ別の値を持ちますが、消費税率 <code>tax</code>（クラス変数）は2つのインスタンスで同じ <code>1.08</code> を共有しています。「全員共通の設定値」はクラス変数、「1人1人違うデータ」はインスタンス変数、と使い分けます。"
+    },
+    "class-5": {
+      "title": "super().__init__() で親の初期化を呼び出す",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 9,
+      "tags": "class, 継承, super, __init__",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "07. クラス（class）"
+      ],
+      "notionUrl": "https://app.notion.com/p/380e3be8d5ac8008973ddeb5974164c1",
+      "statement": "右のコードエリアには <code>Player</code> クラスが定義されています。<code>Player</code> を継承した <code>Wizard</code> クラスを作成してください。<code>Wizard</code> の <code>__init__(self)</code>（引数なし）の中で、<code>super().__init__(\"魔法使い\")</code> を呼び出し、親クラスの初期化処理（<code>name</code> の保存）をそのまま利用してください。さらに <code>attack(self, enemy)</code> をオーバーライドし、<code>\"（name）は、（enemy）に炎を放った！\"</code> と表示するようにしてください。最後に <code>wizard = Wizard()</code> を作成し、<code>wizard.attack(\"スライム\")</code> を呼び出してください。",
+      "expected": "魔法使いは、スライムに炎を放った！",
+      "starter": "class Player:\n    def __init__(self, name):\n        self.name = name\n\n    def attack(self, enemy):\n        print(self.name + \"は、\" + enemy + \"を攻撃した！\")\n\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>super()</code> は「親クラス」を指す特別な書き方です。<code>Wizard</code> のように <code>__init__</code> を独自に定義してしまうと、<code>Player</code> の <code>__init__</code> は自動では呼ばれなくなります。<code>super().__init__(\"魔法使い\")</code> と書くことで、親クラスの初期化処理に「魔法使い」という名前を渡して、明示的に呼び出しています。"
+        }
+      ],
+      "solution": "class Player:\n    def __init__(self, name):\n        self.name = name\n\n    def attack(self, enemy):\n        print(self.name + \"は、\" + enemy + \"を攻撃した！\")\n\nclass Wizard(Player):\n    def __init__(self):\n        super().__init__(\"魔法使い\")\n\n    def attack(self, enemy):\n        print(self.name + \"は、\" + enemy + \"に炎を放った！\")\n\nwizard = Wizard()\nwizard.attack(\"スライム\")",
+      "solutionNote": "<code>super().__init__(\"魔法使い\")</code> は、実質的に <code>Player.__init__(self, \"魔法使い\")</code> を呼んでいるのと同じ効果があり、<code>self.name = \"魔法使い\"</code> が実行されます。継承先で独自の初期化処理を追加しつつ、親の初期化ロジックを再利用したいときによく使われる書き方です。"
+    },
+    "class-6": {
+      "title": "__str__ で print() の表示をカスタマイズする",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 7,
+      "tags": "class, __str__, マジックメソッド",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "07. クラス（class）"
+      ],
+      "notionUrl": "https://app.notion.com/p/380e3be8d5ac8008973ddeb5974164c1",
+      "statement": "<ol class='steps'><li><code>Enemy</code> クラスを定義し、<code>__init__(self, name, hp)</code> で <code>self.name</code>・<code>self.hp</code> を保存します。</li><li><code>__str__(self)</code> というメソッドを定義し、<code>f\"{self.name} (HP:{self.hp})\"</code> という文字列を <code>return</code> します。</li><li><code>e = Enemy(\"スライム\", 30)</code> でインスタンスを作り、<code>print(e)</code> を実行してください（<code>e.__str__()</code> のように自分で呼び出す必要はありません）。</li></ol>",
+      "expected": "スライム (HP:30)",
+      "starter": "",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>print(インスタンス)</code> のように、インスタンスをそのまま <code>print()</code> に渡すと、Pythonは自動的にそのインスタンスの <code>__str__</code> メソッドを呼び出し、その戻り値を表示します。<code>__str__</code> を定義していないクラスだと、<code>&lt;__main__.Enemy object at 0x...&gt;</code> のような読みにくい表示になってしまいます。"
+        }
+      ],
+      "solution": "class Enemy:\n    def __init__(self, name, hp):\n        self.name = name\n        self.hp = hp\n\n    def __str__(self):\n        return f\"{self.name} (HP:{self.hp})\"\n\ne = Enemy(\"スライム\", 30)\nprint(e)",
+      "solutionNote": "<code>__init__</code> と同じように、名前の前後を <code>__</code> で挟んだメソッドは「マジックメソッド（特殊メソッド）」と呼ばれ、Python側から特定のタイミングで自動的に呼び出されます。<code>__str__</code> は「<code>print()</code> や <code>str()</code> に渡されたときにどう表示するか」を自分で決められる仕組みです。"
+    },
+    "class-7": {
+      "title": "ネームマングリング（__ による非公開化）",
+      "status": "todo",
+      "difficulty": 3,
+      "time": 9,
+      "tags": "class, ネームマングリング, カプセル化",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "07. クラス（class）"
+      ],
+      "notionUrl": "https://app.notion.com/p/380e3be8d5ac8008973ddeb5974164c1",
+      "statement": "<code>Player</code> クラスを定義してください。<code>__init__(self, name)</code> で <code>self.name</code> を保存すると同時に、属性名の前にアンダースコアを2つ付けた <code>self.__spell = \"メテオ\"</code> という<b>非公開の属性</b>も保存してください。さらに、<code>use_spell(self)</code> メソッドを定義し、<code>\"（name）は（__spell）を唱えた！\"</code> と出力するようにしてください。最後に <code>p = Player(\"魔法使い\")</code> を作り、<code>p.use_spell()</code> を呼び出してください。",
+      "expected": "魔法使いはメテオを唱えた！",
+      "starter": "",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "属性やメソッドの名前の先頭に <code>__</code>（アンダースコア2つ）を付けると、Pythonはその名前を内部的に書き換え、<b>クラスの外から直接アクセスしにくく</b>します（これをネームマングリングと呼びます）。<code>self.__spell</code> のように定義した属性は、同じクラスの中のメソッド（<code>self.__spell</code>）からは普通にアクセスできますが、<code>p.__spell</code> のように外から直接読もうとするとエラーになります。"
+        }
+      ],
+      "solution": "class Player:\n    def __init__(self, name):\n        self.name = name\n        self.__spell = \"メテオ\"\n\n    def use_spell(self):\n        print(self.name + \"は\" + self.__spell + \"を唱えた！\")\n\np = Player(\"魔法使い\")\np.use_spell()",
+      "solutionNote": "<code>__spell</code> のような名前は、クラスの外からは <code>p._Player__spell</code> という書き換えられた名前でしかアクセスできなくなります。これは「絶対に見られない」わけではなく、「うっかり外から書き換えられるのを防ぐ」ための、Python流のゆるやかなカプセル化（データを隠す工夫）です。"
     },
     "pdimport-1": {
       "title": "演習課題「pandas のインポートと Series の作成」",
@@ -1358,9 +1826,35 @@ var DB = {
         }
       ],
       "solution": "moji = input()\nif moji[::-1] == moji:\n    print(\"YES\")\nelse:\n    print(\"NO\")",
-      "solutionNote": "スライスを使わずに実装したい場合は、<code>\"\".join(reversed(moji))</code>（<code>reversed()</code> で1文字ずつ逆順に取り出し、<code>join</code> で結合する）という書き方でも同じ結果が得られます。",
+      "solutionNote": "スライスを使わずに実装したい場合は、<code>\"\".join(reversed(moji))</code>（<code>reversed()</code> で1文字ずつ逆順に取り出し、<code>join</code> で結合する）という書き方でも同じ結果が得られます。次の問題で、その書き方自体を練習します。",
       "stdin": "しんぶんし\n",
       "stdinLabel": "入力例1"
+    },
+    "str-4": {
+      "title": "reversed() と join() で文字列を反転する",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 6,
+      "tags": "文字列, reversed, join",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "問題集",
+        "文字列処理"
+      ],
+      "notionUrl": "https://app.notion.com/p/39ce3be8d5ac8017b333d81743dc239f",
+      "statement": "右のコードエリアには <code>moji</code> という文字列が定義されています。スライシング <code>[::-1]</code> を<b>使わずに</b>、<code>reversed(moji)</code> と <code>\"\".join()</code> を組み合わせて反転させた文字列を作り、<code>print()</code> で出力してください。",
+      "expected": "しんぶんし",
+      "starter": "moji = \"しんぶんし\"\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>reversed(moji)</code> は、文字列を後ろから1文字ずつバラバラに取り出す「イテレータ」というものを作ります。バラバラのままでは文字列として出力できないので、<code>\"\".join(...)</code>（区切り文字なしで1つに合体させる）でひとつの文字列に戻します。"
+        }
+      ],
+      "solution": "moji = \"しんぶんし\"\nreversed_moji = \"\".join(reversed(moji))\nprint(reversed_moji)",
+      "solutionNote": "<code>[::-1]</code> のほうが短く書けますが、<code>reversed()</code> はリストなど文字列以外の「順番に取り出せるもの」にも使える、より汎用的な関数です。<code>join()</code> と組み合わせるこの書き方も、実務でよく見かけます。"
     },
     "dataset-1": {
       "title": "演習課題「在庫辞書から検索する」",
@@ -1562,6 +2056,22 @@ var DB = {
         {
           "term": "random.sample(list, k=)",
           "desc": "リストの中から重複なしで k 個の要素をランダムに選ぶ関数。"
+        },
+        {
+          "term": "random.random()",
+          "desc": "0以上1未満の小数をランダムに1つ返す関数。引数はありません。"
+        },
+        {
+          "term": "random.uniform(a, b)",
+          "desc": "a以上b以下の範囲で、小数をランダムに1つ返す関数。"
+        },
+        {
+          "term": "random.randrange(n)",
+          "desc": "0以上n<b>未満</b>の整数をランダムに1つ返す関数。<code>range()</code>と同じ感覚で終端を含みません。"
+        },
+        {
+          "term": "random.choices(list, k=)",
+          "desc": "リストの中から<b>重複ありで</b> k 個の要素をランダムに選ぶ関数（同じ要素が複数回選ばれることがあります）。"
         }
       ]
     },
@@ -1598,6 +2108,18 @@ var DB = {
         {
           "term": "スライシング [開始:終了:ステップ]",
           "desc": "リストや文字列の一部を範囲指定で取り出す記法。ステップに <code>-1</code> を指定すると逆順に取り出せます。"
+        },
+        {
+          "term": ".remove(値)",
+          "desc": "リストから、指定した<b>値</b>と最初に一致する要素を1つ削除するメソッド。"
+        },
+        {
+          "term": ".index(値)",
+          "desc": "指定した値が、リストの中で最初に見つかった位置（インデックス）を返すメソッド。"
+        },
+        {
+          "term": ".count(値)",
+          "desc": "指定した値がリストの中にいくつ含まれているかを返すメソッド。"
         }
       ]
     },
@@ -1622,6 +2144,18 @@ var DB = {
         {
           "term": ".items()",
           "desc": "辞書のキーと値のペアを同時に取り出すためのメソッド。<code>for</code> 文と組み合わせてよく使います。"
+        },
+        {
+          "term": ".keys()",
+          "desc": "辞書のキーだけを取り出すメソッド。<code>list()</code> で囲むと普通のリストとして扱えます。"
+        },
+        {
+          "term": "辞書内包表記",
+          "desc": "<code>{キー式: 値式 for キー, 値 in dict.items() if 条件}</code> の形で、for文と辞書作成を1行にまとめる書き方。<code>if</code> を付けると条件に合う要素だけを残せます。"
+        },
+        {
+          "term": ".update(別の辞書)",
+          "desc": "別の辞書の内容を今の辞書にマージするメソッド。同じキーがあれば新しい値で上書きされ、なければ新規追加されます。"
         }
       ]
     },
@@ -1658,6 +2192,10 @@ var DB = {
         {
           "term": "str()",
           "desc": "値を文字列に変換する関数。文字列同士でないと <code>+</code> で連結できないため使います。"
+        },
+        {
+          "term": "zip()",
+          "desc": "複数のリストの、同じ順番にある要素同士をペアにして同時に取り出せる関数。"
         }
       ]
     },
@@ -1686,6 +2224,18 @@ var DB = {
         {
           "term": "*args（可変長引数）",
           "desc": "引数名の前に <code>*</code> をつけることで、いくつ渡されてもまとめてタプルとして受け取れる書き方。"
+        },
+        {
+          "term": "lambda",
+          "desc": "<code>lambda 引数: 式</code> の形で、<code>def</code> を使わずにその場限りの小さな関数を1行で作る書き方。"
+        },
+        {
+          "term": "**kwargs（キーワード引数）",
+          "desc": "引数名の前に <code>**</code> をつけることで、<code>名前=値</code> の形で渡された複数のキーワード引数を辞書としてまとめて受け取れる書き方。"
+        },
+        {
+          "term": "global",
+          "desc": "関数の中から、関数の外にあるグローバル変数を書き換えるための宣言。書かないと、関数内で代入した時点で別のローカル変数として扱われます。"
         }
       ]
     },
@@ -1726,6 +2276,22 @@ var DB = {
         {
           "term": "オーバーライド",
           "desc": "継承した親クラスのメソッドと同じ名前のメソッドを子クラスで定義し直し、動作を上書きすること。"
+        },
+        {
+          "term": "クラス変数とインスタンス変数",
+          "desc": "<code>class</code> 直下に定義するクラス変数は全インスタンスで共有され、<code>self.属性名</code> のインスタンス変数はインスタンスごとに別々の値を持ちます。"
+        },
+        {
+          "term": "super()",
+          "desc": "親クラスを指す特別な書き方。<code>super().__init__(...)</code> のように使うと、子クラスから親クラスの初期化処理を明示的に呼び出せます。"
+        },
+        {
+          "term": "__str__",
+          "desc": "<code>print(インスタンス)</code> のときに自動で呼ばれ、表示する文字列をカスタマイズできるマジックメソッド。"
+        },
+        {
+          "term": "ネームマングリング（__属性名）",
+          "desc": "属性・メソッド名の先頭に <code>__</code> を付けると、クラスの外から直接アクセスしにくくなる仕組み。ゆるやかなカプセル化のために使います。"
         }
       ]
     },
@@ -1885,6 +2451,10 @@ var DB = {
         {
           "term": "文字列のスライシング",
           "desc": "リストと同じ <code>[開始:終了]</code> や <code>[::-1]</code> の記法が、文字列（str）にもそのまま使えます。"
+        },
+        {
+          "term": "reversed()",
+          "desc": "文字列やリストなどを、後ろから1文字（1要素）ずつ取り出す「イテレータ」を作る関数。単体では出力できないため、<code>list()</code> や <code>\"\".join()</code> と組み合わせて使います。"
         }
       ]
     },
@@ -1929,7 +2499,7 @@ var DB = {
   },
   "syncMeta": {
     "note": "Notionのページに更新がないか、この一覧をもとに差分チェックします。毎週金曜19:00(JST)の自動同期に加えて、Claudeとのチャットで「更新して」と伝えれば同じチェック・追加作業をいつでも実行できます。詳細は SYNC_PROMPT.md 参照。",
-    "baselineSyncedAt": "2026-08-10T23:39:00+09:00",
+    "baselineSyncedAt": "2026-08-11T18:19:00+09:00",
     "pages": [
       {
         "url": "https://app.notion.com/p/36fe3be8d5ac80c5b830ee4217f62f57",
@@ -1958,7 +2528,9 @@ var DB = {
         "problemIds": [
           "rand-1",
           "rand-2",
-          "rand-3"
+          "rand-3",
+          "rand-4",
+          "rand-5"
         ]
       },
       {
@@ -1973,7 +2545,8 @@ var DB = {
         "problemIds": [
           "list-1",
           "list-2",
-          "list-3"
+          "list-3",
+          "list-4"
         ]
       },
       {
@@ -1988,7 +2561,10 @@ var DB = {
         "problemIds": [
           "dict-1",
           "dict-2",
-          "dict-3"
+          "dict-3",
+          "dict-4",
+          "dict-5",
+          "dict-6"
         ]
       },
       {
@@ -2003,7 +2579,9 @@ var DB = {
         "problemIds": [
           "nested-1",
           "nested-2",
-          "nested-3"
+          "nested-3",
+          "nested-4",
+          "nested-5"
         ]
       },
       {
@@ -2018,7 +2596,11 @@ var DB = {
         "problemIds": [
           "func-1",
           "func-2",
-          "func-3"
+          "func-3",
+          "func-4",
+          "func-5",
+          "func-6",
+          "func-7"
         ]
       },
       {
@@ -2033,7 +2615,11 @@ var DB = {
         "problemIds": [
           "class-1",
           "class-2",
-          "class-3"
+          "class-3",
+          "class-4",
+          "class-5",
+          "class-6",
+          "class-7"
         ]
       },
       {
@@ -2112,7 +2698,8 @@ var DB = {
         "problemIds": [
           "str-1",
           "str-2",
-          "str-3"
+          "str-3",
+          "str-4"
         ]
       },
       {
