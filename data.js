@@ -4,7 +4,7 @@
    手動編集した内容は次回の自動同期で上書きされる可能性があるため注意してください。
    ============================================================ */
 var DB = {
-  "lastSync": "2026-08-11T18:19:00+09:00",
+  "lastSync": "2026-08-11T21:03:00+09:00",
   "sourceUrl": "https://app.notion.com/p/36fe3be8d5ac80dda919cd12d3f97555",
   "tree": [
     {
@@ -286,6 +286,34 @@ var DB = {
                     {
                       "id": "series-3",
                       "type": "problem"
+                    },
+                    {
+                      "id": "series-4",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "series-5",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "series-6",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "series-7",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "series-8",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "series-9",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "series-10",
+                      "type": "problem"
                     }
                   ]
                 },
@@ -320,6 +348,26 @@ var DB = {
                     },
                     {
                       "id": "df-6",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "df-7",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "df-8",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "df-9",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "df-10",
+                      "type": "problem"
+                    },
+                    {
+                      "id": "df-11",
                       "type": "problem"
                     }
                   ]
@@ -1512,6 +1560,209 @@ var DB = {
         "pandas"
       ]
     },
+    "series-4": {
+      "title": "位置によるスライシング",
+      "status": "todo",
+      "difficulty": 1,
+      "time": 4,
+      "tags": "pandas, Series, スライシング",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "Seriesの基本"
+      ],
+      "notionUrl": "https://app.notion.com/p/3a5e3be8d5ac800a9354c1069473813c",
+      "statement": "<ol class='steps'><li><code>pandas</code> を <code>pd</code> としてインポートします。</li><li>辞書 <code>{\"a\": 3, \"b\": 1, \"c\": 4}</code> から Series を作成し、変数 <code>s</code> に代入します。</li><li><code>s[0:2]</code>（先頭2要素、リストと同じ位置指定のスライシング）を <code>print()</code> で出力してください。</li></ol>",
+      "expected": "a    3\nb    1\ndtype: int64",
+      "starter": "",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "Series にもリストと同じ <code>[開始:終了]</code> のスライシングが使えます。この場合はラベルではなく<b>位置（0始まり）</b>で範囲を指定しているので、<code>s[0:2]</code> は先頭から2つ、つまり a・b を取り出します。"
+        }
+      ],
+      "solution": "import pandas as pd\n\ns = pd.Series({\"a\": 3, \"b\": 1, \"c\": 4})\nprint(s[0:2])",
+      "solutionNote": "位置によるスライシング <code>s[0:2]</code> と、以前学んだラベルのリスト <code>s[[\"a\", \"c\"]]</code> は、どちらも複数要素を取り出しますが、「範囲」で指定するか「個別」に指定するかが異なります。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
+    "series-5": {
+      "title": "スカラー値を複製してSeriesを作る",
+      "status": "todo",
+      "difficulty": 1,
+      "time": 5,
+      "tags": "pandas, Series, ブロードキャスト",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "Seriesの基本"
+      ],
+      "notionUrl": "https://app.notion.com/p/3a5e3be8d5ac800a9354c1069473813c",
+      "statement": "<ol class='steps'><li><code>pandas</code> を <code>pd</code> としてインポートします。</li><li>文字列のリスト <code>ind = [\"a\", \"b\", \"c\"]</code> を作成します。</li><li><code>pd.Series(1, index=ind)</code> のように、データとして<b>単一の値 <code>1</code></b> と、複数要素のインデックス <code>ind</code> を渡して Series を作成し、変数 <code>s2</code> に代入します。</li><li><code>print(s2)</code> で出力してください。</li></ol>",
+      "expected": "a    1\nb    1\nc    1\ndtype: int64",
+      "starter": "",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "辞書ではなく単一の値（スカラー値）を渡すと、pandasは <code>index</code> に指定した数だけ、その値を自動的に複製して埋めてくれます。値の代わりに <code>[2, 5, 7]</code> のようなリストを渡せば、対応する順番で個別の値を設定することもできます。"
+        }
+      ],
+      "solution": "import pandas as pd\n\nind = [\"a\", \"b\", \"c\"]\ns2 = pd.Series(1, index=ind)\nprint(s2)",
+      "solutionNote": "辞書とは違い、Series は同じ値が複数の行に重複していても問題ありません。この性質を利用して「とりあえず全部同じ初期値で埋めておく」という使い方ができます。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
+    "series-6": {
+      "title": "Seriesの更新・追加・削除",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 8,
+      "tags": "pandas, Series, 更新, 削除",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "Seriesの基本"
+      ],
+      "notionUrl": "https://app.notion.com/p/3a5e3be8d5ac800a9354c1069473813c",
+      "statement": "右のコードエリアには Series <code>s</code> が定義されています。以下を順番に行ってください。<br>1. <code>s[\"a\"] = 344</code> で a の値を更新する。<br>2. <code>del s[\"c\"]</code> で c を削除する。<br>3. <code>s[\"d\"] = 12</code> で新しい要素 d を追加する。<br>4. <code>s.pop(\"d\")</code> で d を削除する（このメソッドの戻り値は使わない）。<br>5. <code>print(s.drop(\"a\"))</code> で、<b>a を除いた新しい Series</b> を出力する（<code>s</code> 自体は変えない）。<br>6. 最後に <code>print(s)</code> で <code>s</code> 自体を出力する。",
+      "expected": "b    1\ndtype: int64\na    344\nb      1\ndtype: int64",
+      "starter": "import pandas as pd\n\ns = pd.Series({\"a\": 3, \"b\": 1, \"c\": 2})\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "辞書と同じ感覚で、角カッコへの代入で更新・追加ができ、<code>del</code> で削除できます。<code>.pop(キー)</code> はその要素を取り除きつつ、削除した値を戻り値として返します（今回は戻り値を使いません）。<code>.drop(キー)</code> は <code>del</code> と違い、<b>元の <code>s</code> は変えずに</b>、指定したキーを除いた「新しい」Series を返します。"
+        }
+      ],
+      "solution": "import pandas as pd\n\ns = pd.Series({\"a\": 3, \"b\": 1, \"c\": 2})\n\ns[\"a\"] = 344\ndel s[\"c\"]\ns[\"d\"] = 12\ns.pop(\"d\")\nprint(s.drop(\"a\"))\nprint(s)",
+      "solutionNote": "<code>s.drop(\"a\")</code> を出力した時点では <code>s</code> 自体はまだ a を含んでいますが、その後 <code>print(s)</code> で確認すると a は残ったままです。<code>drop()</code> が「元のデータは変えずに新しい結果を返す」タイプの操作であることがよく分かります。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
+    "series-7": {
+      "title": "Series同士の演算（ラベルでの自動整列）",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 8,
+      "tags": "pandas, Series, 演算",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "Seriesの基本"
+      ],
+      "notionUrl": "https://app.notion.com/p/3a5e3be8d5ac800a9354c1069473813c",
+      "statement": "右のコードエリアには <code>s</code> と <code>t</code> という2つの Series が定義されています。<code>s + t</code> の結果を<code>print()</code> で出力してください。",
+      "expected": "a    36\nb    12\nc    24\ndtype: int64",
+      "starter": "import pandas as pd\n\ns = pd.Series({\"a\": 3, \"b\": 1, \"c\": 2})\nt = pd.Series({\"b\": 11, \"c\": 22, \"a\": 33})\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "Series 同士の四則演算は、リストのように<b>並んでいる順番</b>ではなく、<b>ラベル（インデックス）が同じもの同士</b>で計算されます。<code>s</code> と <code>t</code> は登場順がバラバラでも、同じラベル \"a\" 同士、\"b\" 同士が足し算されます。"
+        }
+      ],
+      "solution": "import pandas as pd\n\ns = pd.Series({\"a\": 3, \"b\": 1, \"c\": 2})\nt = pd.Series({\"b\": 11, \"c\": 22, \"a\": 33})\nprint(s + t)",
+      "solutionNote": "仮に <code>t</code> に <code>s</code> にはないラベルがあった場合、対応する相手が見つからないため、その行は欠損値 <code>NaN</code> になります。「順番」ではなく「ラベル」で自動的に対応づけられる点が、普通のリストの計算と大きく異なるポイントです。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
+    "series-8": {
+      "title": "index属性とrename()での名前変更",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 7,
+      "tags": "pandas, Series, index, rename",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "Seriesの基本"
+      ],
+      "notionUrl": "https://app.notion.com/p/3a5e3be8d5ac800a9354c1069473813c",
+      "statement": "右のコードエリアには Series <code>s</code> が定義されています。<code>s.index</code>（インデックスの一覧）を1行目に出力してください。続けて、<code>pd.Series([1, 2, 3], name=\"nums\")</code> で新しい Series を作り、<code>.rename(\"values\", inplace=True)</code> を使って<b>その場で</b>名前を <code>\"values\"</code> に変更し、出力してください。",
+      "expected": "Index(['a', 'b', 'c'], dtype='object')\n0    1\n1    2\n2    3\nName: values, dtype: int64",
+      "starter": "import pandas as pd\n\ns = pd.Series({\"a\": 3, \"b\": 1, \"c\": 2})\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>.index</code> は Series の行ラベル一覧を確認できる属性です。<code>.rename(新しい名前)</code> は通常「名前を変えた<b>新しい</b> Series」を返しますが、<code>inplace=True</code> を付けると、新しい Series を作らずに<b>元の変数自体</b>を直接書き換えます。"
+        }
+      ],
+      "solution": "import pandas as pd\n\ns = pd.Series({\"a\": 3, \"b\": 1, \"c\": 2})\nprint(s.index)\n\ns2 = pd.Series([1, 2, 3], name=\"nums\")\ns2.rename(\"values\", inplace=True)\nprint(s2)",
+      "solutionNote": "<code>name</code> は Series そのものにつけられた「列名」のようなラベルで、後で <code>pd.DataFrame(s)</code> のように表に変換したときに、その列の見出しとして使われます。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
+    "series-9": {
+      "title": "SeriesをDataFrameに変換する（paiza形式）",
+      "status": "todo",
+      "difficulty": 3,
+      "time": 10,
+      "tags": "pandas, Series, DataFrame, index.name",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "Seriesの基本"
+      ],
+      "notionUrl": "https://app.notion.com/p/3a5e3be8d5ac800a9354c1069473813c",
+      "statement": "テストの点数を表す Series <code>s = pd.Series([80, 95, 70], index=[\"田中\", \"佐藤\", \"鈴木\"], name=\"点数\")</code> を作成してください。<code>s.index.name</code> に <code>\"氏名\"</code> を設定したうえで <code>s</code> を出力し、続けて <code>pd.DataFrame(s)</code> で <code>s</code> を表（DataFrame）に変換したものも出力してください。",
+      "expected": "氏名\n田中    80\n佐藤    95\n鈴木    70\nName: 点数, dtype: int64\n    点数\n氏名    \n田中  80\n佐藤  95\n鈴木  70",
+      "starter": "",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>s.name</code> がSeries自体（＝表にしたときの列）の名前だったのに対し、<code>s.index.name</code> はインデックス（＝表にしたときの行ラベルの見出し）の名前です。1次元の Series をそのまま <code>pd.DataFrame()</code> に渡すと、その名前や index.name を引き継いだまま、1列だけの表に変換できます。"
+        }
+      ],
+      "solution": "import pandas as pd\n\ns = pd.Series([80, 95, 70], index=[\"田中\", \"佐藤\", \"鈴木\"], name=\"点数\")\ns.index.name = \"氏名\"\nprint(s)\ndf = pd.DataFrame(s)\nprint(df)",
+      "solutionNote": "Series を DataFrame に変換すると、Series 自体の <code>name</code>（\"点数\"）がそのまま列名になり、<code>index.name</code>（\"氏名\"）が行ラベルの見出しになります。1次元のラベル付きデータを、そのまま表形式のデータに育てられる典型的な流れです。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
+    "series-10": {
+      "title": "Seriesのソート（sort_index / sort_values）",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 7,
+      "tags": "pandas, Series, sort_index, sort_values",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "Seriesの基本"
+      ],
+      "notionUrl": "https://app.notion.com/p/3a5e3be8d5ac800a9354c1069473813c",
+      "statement": "右のコードエリアには Series <code>s</code> が定義されています。<code>s.sort_index(ascending=False)</code>（インデックスを<b>降順</b>に並び替え）を1つ目に、空行をはさんで <code>s.sort_values()</code>（値を<b>昇順</b>に並び替え）を2つ目に出力してください。",
+      "expected": "c    1\nb    3\na    2\ndtype: int64\n\nc    1\na    2\nb    3\ndtype: int64",
+      "starter": "import pandas as pd\n\ns = pd.Series({\"b\": 3, \"c\": 1, \"a\": 2})\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>sort_index()</code> は<b>行ラベル（インデックス）</b>を基準に並び替え、<code>sort_values()</code> は<b>データの値</b>を基準に並び替えます。どちらも既定では昇順ですが、<code>sort_index()</code> には <code>ascending=False</code> を渡すことで降順にできます。"
+        }
+      ],
+      "solution": "import pandas as pd\n\ns = pd.Series({\"b\": 3, \"c\": 1, \"a\": 2})\nprint(s.sort_index(ascending=False))\nprint()\nprint(s.sort_values())",
+      "solutionNote": "<code>s</code> はもともと b, c, a の順で登録されていますが、<code>sort_index(ascending=False)</code> はラベルのアルファベット逆順（c, b, a）に、<code>sort_values()</code> は値の小さい順（c:1, a:2, b:3）に並び替えます。混同しやすいので、「index」か「values」かを意識して使い分けましょう。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
     "df-1": {
       "title": "DataFrameの作成と行のスライシング",
       "status": "todo",
@@ -1692,6 +1943,151 @@ var DB = {
       ],
       "solution": "import pandas as pd\n\ns = [3, 1, 2]\nt = [\"paiza\", \"daiza\", \"pizza\"]\ndf = pd.DataFrame({\"string\": t, \"num\": s}, index=[\"c\", \"a\", \"b\"])\n\nprint(df.query(\"num >= 2\"))\nprint()\nprint(df.sort_values(by=\"num\"))",
       "solutionNote": "<code>query()</code> の中では、外側で定義した変数を条件式に使いたい場合 <code>@変数名</code>（例: <code>df.query(\"num < @N\")</code>）という書き方をします。<code>sort_values(by=\"num\")</code> は既定で昇順ですが、<code>ascending=False</code> を渡すと降順にできます。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
+    "df-7": {
+      "title": "index / columns を指定した再インデックス",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 9,
+      "tags": "pandas, DataFrame, index, columns, 再インデックス",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "DataFrameの基本"
+      ],
+      "notionUrl": "https://app.notion.com/p/3a7e3be8d5ac80608af9fc27ec4a195e",
+      "statement": "右のコードエリアには <code>s</code>・<code>t</code> という2つの Series が定義されています。<code>pd.DataFrame()</code> の引数に <code>index=[\"a\", \"d\", \"c\", \"b\"]</code>（表示する行の並び順・種類そのものを指定）と <code>columns=[\"string\", \"num\", \"new\"]</code>（表示する列の並び順・種類そのものを指定）を渡して <code>df</code> を作成し、<code>print(df)</code> で出力してください。",
+      "expected": "  string  num  new\na  paiza  3.0  NaN\nd    NaN  NaN  NaN\nc  daiza  NaN  NaN\nb    NaN  1.0  NaN",
+      "starter": "import pandas as pd\n\ns = pd.Series({\"a\": 3, \"b\": 1})\nt = pd.Series({\"a\": \"paiza\", \"c\": \"daiza\"})\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "これまでは列名だけを指定して DataFrame を作ってきましたが、<code>index=</code> と <code>columns=</code> を明示的に渡すと、<b>表示する行・列そのものを強制的に指定</b>できます。元の Series や辞書のキーに存在しないラベル（この場合は行の \"d\"、列の \"new\"）を指定すると、その行・列は丸ごと <code>NaN</code> で埋まります。"
+        }
+      ],
+      "solution": "import pandas as pd\n\ns = pd.Series({\"a\": 3, \"b\": 1})\nt = pd.Series({\"a\": \"paiza\", \"c\": \"daiza\"})\n\ndf = pd.DataFrame({\"num\": s, \"string\": t}, index=[\"a\", \"d\", \"c\", \"b\"], columns=[\"string\", \"num\", \"new\"])\nprint(df)",
+      "solutionNote": "<code>index=</code>・<code>columns=</code> を省略すると、元データに存在するラベルからpandasが自動的に決めてくれますが、明示的に指定すると「この行・列だけを、この順番で見たい」という表示側の都合を優先できます。存在しないラベルを指定すれば、空の行・列を意図的に作ることもできます。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
+    "df-8": {
+      "title": "drop()で行・列を削除する",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 8,
+      "tags": "pandas, DataFrame, drop",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "DataFrameの基本"
+      ],
+      "notionUrl": "https://app.notion.com/p/3a7e3be8d5ac80608af9fc27ec4a195e",
+      "statement": "右のコードエリアには <code>df</code> という DataFrame が定義されています。<code>df.drop(\"a\")</code>（行ラベル <code>\"a\"</code> の行を削除した新しいDataFrame）を1つ目に、空行をはさんで <code>df.drop(\"num\", axis=1)</code>（列 <code>\"num\"</code> を削除した新しいDataFrame）を2つ目に出力してください（どちらも <code>df</code> 自体は変えません）。",
+      "expected": "   num string\nb    1  daiza\nc    2  pizza\n\n  string\na  paiza\nb  daiza\nc  pizza",
+      "starter": "import pandas as pd\n\ns = pd.Series({\"a\": 3, \"b\": 1, \"c\": 2})\nt = pd.Series({\"a\": \"paiza\", \"b\": \"daiza\", \"c\": \"pizza\"})\ndf = pd.DataFrame({\"num\": s, \"string\": t})\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>.drop()</code> は既定では<b>行</b>をラベルで削除します（<code>df.drop(\"a\")</code>）。<b>列</b>を削除したいときは <code>axis=1</code> を追加します（<code>df.drop(\"列名\", axis=1)</code>）。<code>del</code> や <code>.pop()</code> と違い、<code>.drop()</code> は元の <code>df</code> をそのままに、削除後の「新しい」DataFrameを返す点が特徴です。"
+        }
+      ],
+      "solution": "import pandas as pd\n\ns = pd.Series({\"a\": 3, \"b\": 1, \"c\": 2})\nt = pd.Series({\"a\": \"paiza\", \"b\": \"daiza\", \"c\": \"pizza\"})\ndf = pd.DataFrame({\"num\": s, \"string\": t})\n\nprint(df.drop(\"a\"))\nprint()\nprint(df.drop(\"num\", axis=1))",
+      "solutionNote": "<code>axis=0</code>（既定・行方向）と <code>axis=1</code>（列方向）は、pandasのさまざまなメソッドで共通して使われる考え方です。「0が行、1が列」と覚えておくと、他のメソッドを学ぶときにも役立ちます。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
+    "df-9": {
+      "title": "concat()で複数の表を連結する",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 9,
+      "tags": "pandas, DataFrame, concat",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "DataFrameの基本"
+      ],
+      "notionUrl": "https://app.notion.com/p/3a7e3be8d5ac80608af9fc27ec4a195e",
+      "statement": "右のコードエリアには <code>df1</code>・<code>df2</code> という、同じ列構成を持つ2つの DataFrame が定義されています。<code>pd.concat([df1, df2])</code> を使って縦方向に連結し、<code>print()</code> で出力してください。",
+      "expected": "   num string\na    3  paiza\nb    1  daiza\nd  813  pizza",
+      "starter": "import pandas as pd\n\ndf1 = pd.DataFrame({\"num\": [3, 1], \"string\": [\"paiza\", \"daiza\"]}, index=[\"a\", \"b\"])\ndf2 = pd.DataFrame({\"num\": [813], \"string\": [\"pizza\"]}, index=[\"d\"])\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>pd.concat([df1, df2])</code> は、複数の DataFrame や Series をリストにまとめて渡すことで、1つに連結する関数です。列の名前が同じもの同士は、上から下へそのまま積み重なります（行数が増えるイメージ）。<code>axis=1</code> を渡すと、今度は横方向（列を増やす方向）に連結できます。"
+        }
+      ],
+      "solution": "import pandas as pd\n\ndf1 = pd.DataFrame({\"num\": [3, 1], \"string\": [\"paiza\", \"daiza\"]}, index=[\"a\", \"b\"])\ndf2 = pd.DataFrame({\"num\": [813], \"string\": [\"pizza\"]}, index=[\"d\"])\n\nprint(pd.concat([df1, df2]))",
+      "solutionNote": "この問題の結果は、実は <code>df.loc[\"d\"] = ...</code> で1行だけ追加する場合と同じ表になります。<code>concat</code> はまとまった数の行・表を一気に連結したいときに便利です。<code>ignore_index=True</code> を渡すと、連結後にインデックスを 0, 1, 2... と振り直すこともできます。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
+    "df-10": {
+      "title": "DataFrame同士の演算",
+      "status": "todo",
+      "difficulty": 3,
+      "time": 9,
+      "tags": "pandas, DataFrame, 演算",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "DataFrameの基本"
+      ],
+      "notionUrl": "https://app.notion.com/p/3a7e3be8d5ac80608af9fc27ec4a195e",
+      "statement": "右のコードエリアには <code>df1</code>・<code>df2</code> という、行・列の構成が一部異なる2つの DataFrame が定義されています。<code>df1 + df2</code> の結果を1つ目に、空行をはさんで <code>df1 * 2</code> の結果を2つ目に出力してください。",
+      "expected": "   name   num  string\na   NaN  11.0     NaN\nb   NaN   NaN     NaN\nc   NaN   NaN     NaN\nd   NaN  44.0     NaN\n\n   num      string\na    2  paizapaiza\nb    4         NaN\nd    8  daizadaiza",
+      "starter": "import pandas as pd\n\ndf1 = pd.DataFrame({\"num\": {\"a\": 1, \"b\": 2, \"d\": 4},\n                    \"string\": {\"a\": \"paiza\", \"d\": \"daiza\"}})\ndf2 = pd.DataFrame({\"num\": {\"a\": 10, \"c\": 30, \"d\": 40},\n                    \"name\": {\"c\": \"pizza\", \"d\": \".io\"}})\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "DataFrame同士の演算も、Seriesと同じく<b>行ラベル・列ラベルの両方</b>が一致する部分だけ計算されます。<code>df1</code> にしかない列（\"string\"）や、<code>df2</code> にしかない行（\"c\"）は、対応する相手がいないため <code>NaN</code> になります。数値の掛け算 <code>df1 * 2</code> では、文字列の列は「2回繰り返す」という文字列演算になる点にも注目してください。"
+        }
+      ],
+      "solution": "import pandas as pd\n\ndf1 = pd.DataFrame({\"num\": {\"a\": 1, \"b\": 2, \"d\": 4},\n                    \"string\": {\"a\": \"paiza\", \"d\": \"daiza\"}})\ndf2 = pd.DataFrame({\"num\": {\"a\": 10, \"c\": 30, \"d\": 40},\n                    \"name\": {\"c\": \"pizza\", \"d\": \".io\"}})\n\nprint(df1 + df2)\nprint()\nprint(df1 * 2)",
+      "solutionNote": "<code>df1 + df2</code> の <code>num</code> 列だけが両方に存在するため唯一計算され（a: 1+10=11, d: 4+40=44）、それ以外はすべて <code>NaN</code> になります。一方 <code>df1 * 2</code> は相手の表がないので単純に自分自身の2倍（数値は掛け算、文字列は2回繰り返し）になります。",
+      "pkgs": [
+        "pandas"
+      ]
+    },
+    "df-11": {
+      "title": "列方向のソート（sort_index(axis=1)）",
+      "status": "todo",
+      "difficulty": 2,
+      "time": 7,
+      "tags": "pandas, DataFrame, sort_index",
+      "path": [
+        "学習・就活管理ハブ",
+        "🐍 Python知識ベース",
+        "pythonデータ分析入門",
+        "DataFrameの基本"
+      ],
+      "notionUrl": "https://app.notion.com/p/3a7e3be8d5ac80608af9fc27ec4a195e",
+      "statement": "右のコードエリアには <code>df</code> という DataFrame が定義されています。<code>df.sort_index(axis=1)</code> を使って<b>列の並び順</b>をアルファベット順に並び替え、<code>print()</code> で出力してください（行の並び順は変えません）。",
+      "expected": "   num string\nc    3  paiza\na    1  daiza\nb    2  pizza",
+      "starter": "import pandas as pd\n\ns = [3, 1, 2]\nt = [\"paiza\", \"daiza\", \"pizza\"]\ndf = pd.DataFrame({\"string\": t, \"num\": s}, index=[\"c\", \"a\", \"b\"])\n",
+      "hints": [
+        {
+          "label": "考え方のヒント",
+          "type": "text",
+          "body": "<code>df.sort_index()</code> は既定では<b>行</b>のラベルを並び替えますが、<code>axis=1</code> を渡すと<b>列</b>のラベルを並び替える動作に切り替わります。<code>\"num\"</code> と <code>\"string\"</code> をアルファベット順に並べると、\"num\" が先になります。"
+        }
+      ],
+      "solution": "import pandas as pd\n\ns = [3, 1, 2]\nt = [\"paiza\", \"daiza\", \"pizza\"]\ndf = pd.DataFrame({\"string\": t, \"num\": s}, index=[\"c\", \"a\", \"b\"])\n\nprint(df.sort_index(axis=1))",
+      "solutionNote": "行を並び替える <code>sort_values(by=\"列名\")</code>・<code>sort_index()</code>（既定）と、列を並び替える <code>sort_index(axis=1)</code> を混同しないよう注意してください。<code>axis</code> の考え方は <code>drop()</code> のときと共通です。",
       "pkgs": [
         "pandas"
       ]
@@ -2349,6 +2745,34 @@ var DB = {
         {
           "term": "&（複数条件の組み合わせ）",
           "desc": "pandasで複数の条件を組み合わせるときは <code>and</code> ではなく <code>&</code> を使い、それぞれの条件をカッコで囲みます。"
+        },
+        {
+          "term": "Seriesの位置スライシング",
+          "desc": "<code>s[0:2]</code> のように、リストと同じ位置（0始まり）でのスライシングも使えます。"
+        },
+        {
+          "term": "スカラー値からのSeries作成",
+          "desc": "<code>pd.Series(値, index=リスト)</code> のように単一の値を渡すと、指定した数だけその値が自動的に複製されます。"
+        },
+        {
+          "term": "Seriesの更新・追加・削除",
+          "desc": "辞書と同じ感覚で <code>s[キー]=値</code>（更新・追加）、<code>del s[キー]</code>（削除）ができます。<code>.pop(キー)</code> は削除しつつ値を返し、<code>.drop(キー)</code> は元を変えず新しいSeriesを返します。"
+        },
+        {
+          "term": "Series同士の演算",
+          "desc": "Series同士の四則演算は、並び順ではなく<b>ラベルが一致するもの同士</b>で計算されます。対応するラベルが片方にしかない場合は <code>NaN</code> になります。"
+        },
+        {
+          "term": ".rename() / inplace",
+          "desc": "Seriesの <code>name</code>（列名にあたる名前）を変更するメソッド。既定では新しいSeriesを返しますが、<code>inplace=True</code> を付けると元の変数自体を直接書き換えます。"
+        },
+        {
+          "term": "index.name",
+          "desc": "インデックス自体につけられる見出し名。DataFrameに変換したときに、行ラベルの列見出しとして表示されます。"
+        },
+        {
+          "term": "sort_index() / sort_values()",
+          "desc": "<code>sort_index()</code> は行ラベル基準、<code>sort_values()</code> は値そのもの基準で並び替えるメソッド。"
         }
       ]
     },
@@ -2389,7 +2813,7 @@ var DB = {
         },
         {
           "term": "del / .pop() / .drop(axis=1)",
-          "desc": "列を削除する3つの方法。<code>del df[\"列名\"]</code> はその場で削除、<code>df.pop(\"列名\")</code> は削除した列を戻り値として受け取れる、<code>df.drop(\"列名\", axis=1)</code> は元の df を変えずに新しい DataFrame を返します。"
+          "desc": "列を削除する3つの方法。<code>del df[\"列名\"]</code> はその場で削除、<code>df.pop(\"列名\")</code> は削除した列を戻り値として受け取れる、<code>df.drop(\"列名\", axis=1)</code> は元の df を変えずに新しい DataFrame を返します。<code>axis</code> を省略した <code>df.drop(\"行名\")</code> は、代わりに<b>行</b>を削除します。"
         },
         {
           "term": ".at[行, 列] / .iat[行番号, 列番号]",
@@ -2400,16 +2824,28 @@ var DB = {
           "desc": "存在しない行ラベルに対して <code>.loc[]</code> で代入すると、新しい行として追加されます。"
         },
         {
-          "term": "DataFrameの演算（df1 + df2, df * 2）",
-          "desc": "DataFrame同士の四則演算は、行・列のラベルを基準に自動で対応づけて計算されます。対応するラベルが片方にしかない場合は <code>NaN</code> になります。"
-        },
-        {
           "term": ".query(\"条件式\")",
           "desc": "条件式を文字列でそのまま書いて行を抽出できるメソッド。<code>df[df[\"num\"] >= 2]</code> と同じ結果を、より読みやすく書けます。"
         },
         {
           "term": ".sort_values(by=\"列名\")",
           "desc": "指定した列の値を基準にして行を並び替えるメソッド。行ラベル（インデックス）基準で並び替える <code>.sort_index()</code> とは区別してください。"
+        },
+        {
+          "term": "index= / columns= での再インデックス",
+          "desc": "<code>pd.DataFrame(データ, index=[...], columns=[...])</code> のように渡すと、表示する行・列そのものを明示的に指定できます。元データに存在しないラベルを指定すると、その行・列は <code>NaN</code> で埋まります。"
+        },
+        {
+          "term": "pd.concat([df1, df2])",
+          "desc": "複数のDataFrameやSeriesをリストにまとめて渡し、1つに連結する関数。既定では縦方向（行の追加）に連結し、<code>axis=1</code>で横方向（列の追加）にもできます。"
+        },
+        {
+          "term": "DataFrameの演算（df1 + df2, df * 2）",
+          "desc": "DataFrame同士の四則演算は、行・列のラベルを基準に自動で対応づけて計算されます。対応するラベルが片方にしかない場合は <code>NaN</code> になります。"
+        },
+        {
+          "term": "sort_index(axis=1)",
+          "desc": "列のラベルを基準にして、列そのものの並び順を並び替えるメソッド。<code>axis</code> を省略した <code>sort_index()</code> は行ラベル基準になります。"
         }
       ]
     },
@@ -2499,7 +2935,7 @@ var DB = {
   },
   "syncMeta": {
     "note": "Notionのページに更新がないか、この一覧をもとに差分チェックします。毎週金曜19:00(JST)の自動同期に加えて、Claudeとのチャットで「更新して」と伝えれば同じチェック・追加作業をいつでも実行できます。詳細は SYNC_PROMPT.md 参照。",
-    "baselineSyncedAt": "2026-08-11T18:19:00+09:00",
+    "baselineSyncedAt": "2026-08-11T21:03:00+09:00",
     "pages": [
       {
         "url": "https://app.notion.com/p/36fe3be8d5ac80c5b830ee4217f62f57",
@@ -2645,11 +3081,18 @@ var DB = {
           "pythonデータ分析入門",
           "Seriesの基本"
         ],
-        "lastSeenEditedAt": "2026-08-10T07:11:00.000Z",
+        "lastSeenEditedAt": "2026-08-10T07:11:14.287Z",
         "problemIds": [
           "series-1",
           "series-2",
-          "series-3"
+          "series-3",
+          "series-4",
+          "series-5",
+          "series-6",
+          "series-7",
+          "series-8",
+          "series-9",
+          "series-10"
         ]
       },
       {
@@ -2668,7 +3111,12 @@ var DB = {
           "df-3",
           "df-4",
           "df-5",
-          "df-6"
+          "df-6",
+          "df-7",
+          "df-8",
+          "df-9",
+          "df-10",
+          "df-11"
         ]
       },
       {
